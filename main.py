@@ -249,7 +249,7 @@ def main():
         ),
         expected_output=tasks_config['generate_caption_task']['expected_output'],
         agent=caption_writer,
-        context=[task1]  # Needs script context
+        context=[task_validate]  # Needs validated script
     )
 
     # Task 5: Archiving
