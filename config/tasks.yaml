@@ -127,8 +127,12 @@
       the script is INVALID.
 
     ENDING:
-    - The final clip (Clip 5) must end with a personal realization or quiet insight.
-    - The final clip must still start with a bridge opener before the insight.
+    - For STANDALONE topics: Clip 5 must end with a personal realization
+      or quiet insight that connects the science to the viewer personally.
+    - For SERIES topics: Clip 5 must end with a forward hook as described
+      in the SERIES AWARENESS block above. Do NOT add a personal realization
+      on top of the forward hook — the hook IS the ending.
+    - Regardless of topic type, Clip 5 must always start with a bridge opener.
 
     OUTPUT FORMAT (STRICT - NO DEVIATION):
     Title: <short, clear title>
@@ -388,6 +392,12 @@ generate_editing_task:
     - CRITICAL: DO NOT instruct the editor to separate narrator from ambient,
       or to adjust ambient separately during pauses, because Veo generates
       them as a single merged audio track.
+    - How to add ONE separate background music track in VN spanning all 5 clips
+      Use the CATEGORY from the topic profile and the CATEGORY-SPECIFIC BACKGROUND
+      MUSIC GUIDE from your backstory to select the correct music style
+    - Set the background music volume to 8%
+    - Add 1-second fade-in at the start of the music track
+      Add 2-second fade-out at the end of the music track
 
     ═══════════════════════════════════════
     SECTION D — COLOR GRADE

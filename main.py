@@ -152,6 +152,7 @@ def main():
 
     # --- Get Topic (Auto or Manual) ---
     topic = None
+    original_topic_line = None  # Safety default for manual input mode
     topic_file = "topics.txt"
     completed_file = "completed_topics.txt"
     all_topics = []
@@ -217,14 +218,17 @@ def main():
         print(f"   📌 Topic (cleaned): '{topic}'")
 
     # --- Count episode number if series detected ---
-    if series_name and os.path.exists(completed_file):
-        with open(completed_file, 'r') as f:
-            completed = f.readlines()
-        # Count how many completed topics had the same series name
-        series_episode = sum(
-            1 for t in completed 
-            if series_name.lower() in t.lower()
-        ) + 1
+    if series_name:
+        if os.path.exists(completed_file):
+            with open(completed_file, 'r') as f:
+                completed = f.readlines()
+            # Count how many completed topics had the same series name
+            series_episode = sum(
+                1 for t in completed 
+                if series_name.lower() in t.lower()
+            ) + 1
+        else:
+            series_episode = 1  # No completed file yet — this is Episode 1
         print(f"   🎬 Episode number in series: {series_episode}")
 
     # --- Classify Topic & Build Profile ---

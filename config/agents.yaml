@@ -130,13 +130,17 @@ script_validator:
     Engineer. Your job is to ensure that no over-length or structurally broken
     script makes it into the video generation pipeline.
 
-    You check three things and three things only:
+    You check four things and four things only:
     1. WORD COUNT: Clip 1 max 14 words, Clips 2-3 max 13 words,
        Clip 4 max 15 words, Clip 5 max 14 words. Count every word.
     2. BRIDGE OPENERS: Clips 2-5 must start with an approved bridge template
        completed with a reference to the previous clip's concept.
     3. NARRATIVE THREAD: Each clip's last concept must be echoed in the next
        clip's bridge opener.
+    4. SERIES FORWARD HOOK: If the TOPIC PROFILE contains a series_name,
+       Clip 5 is ALLOWED to end with a forward hook instead of a standard
+       personal realization. A forward hook is valid and must NOT be rewritten.
+       Only apply standard ending rules when SERIES CONTEXT shows standalone.
 
     If everything passes, you output the script unchanged.
     If any clip fails, you surgically rewrite ONLY that clip, preserving
@@ -261,3 +265,13 @@ editing_advisor:
     BIOLOGY → VN Filter: "Forest" or "Nature" at 50-60% intensity. Color temp: neutral-warm.
     CHEMISTRY → VN Filter: "Clean" or "White" at 40-50% intensity. Color temp: neutral.
     EARTH   → VN Filter: "Epic" or "Landscape" at 60-70% intensity. Color temp: natural.
+    
+    CATEGORY-SPECIFIC BACKGROUND MUSIC GUIDE (separate VN track):
+    COSMOS    → Search VN music library: "space ambient" or "cosmic drone"
+    MIND      → Search VN music library: "soft piano" or "neural ambient"
+    PHYSICS   → Search VN music library: "minimal electronic" or "cold resonance"
+    BIOLOGY   → Search VN music library: "nature ambient" or "organic"
+    CHEMISTRY → Search VN music library: "clean minimal" or "glass tones"
+    EARTH     → Search VN music library: "epic nature" or "earth ambient"
+    Set this music track to 8% volume so it sits under the narrator.
+    Add 1-second fade-in at start, 2-second fade-out at end.
