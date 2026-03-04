@@ -48,9 +48,9 @@ VISUAL_DNA = {
         "sfx_layers": "deep space resonance drone, stellar particle crackle, vacuum silence",
         "keywords": [
             "universe", "space", "atom", "atoms", "energy", "matter",
-            "empty", "void", "particle", "quantum", "cosmic", "galaxy",
-            "star", "orbit", "gravity", "dark matter", "black hole",
-            "frozen", "solid", "light", "photon", "wave"
+            "empty", "void", "cosmic", "galaxy",
+            "star", "orbit", "dark matter", "black hole",
+            "frozen", "solid", "light", "photon"
         ],
     },
     "MIND": {

@@ -165,6 +165,7 @@ def main():
         all_topics = [t.strip() for t in lines if t.strip() and not t.strip().startswith("#")]
         
         if all_topics:
+            original_topic_line = all_topics[0]
             topic = all_topics[0]
             print(f"\nAuto-selected topic from file: '{topic}'")
     
@@ -209,11 +210,11 @@ def main():
             # Check if it is a series token
             elif token_upper.startswith("SERIES:"):
                 series_name = token[7:].strip()  # Remove "SERIES:" prefix
-                print(f"   � Series detected: {series_name}")
+                print(f"   🎞️  Series detected: {series_name}")
         
         # Clean the topic — remove all bracket tokens
         topic = re.sub(r'\[[^\]]+\]\s*', '', topic).strip()
-        print(f"   �📌 Topic (cleaned): '{topic}'")
+        print(f"   📌 Topic (cleaned): '{topic}'")
 
     # --- Count episode number if series detected ---
     if series_name and os.path.exists(completed_file):
@@ -320,7 +321,7 @@ def main():
         description=task5_desc,
         expected_output=tasks_config['archive_content_task']['expected_output'],
         agent=archivist,
-        context=[task1, task2, task4, task_editing],
+        context=[task_validate, task2, task4, task_editing],
         tools=[file_tool]
     )
 
@@ -343,7 +344,7 @@ def main():
 
         # --- Success! Update Files ---
         # Only now do we move the topic to completed
-        if all_topics and all_topics[0] == topic:
+        if all_topics and all_topics[0] == original_topic_line:
             print(f"\n✅ Marking '{topic}' as complete...")
             
             # Remove from topics.txt
@@ -357,7 +358,7 @@ def main():
             # Add to completed_topics.txt
             try:
                 with open(completed_file, 'a') as f:
-                    f.write(topic + "\n")
+                    f.write(original_topic_line + "\n")
             except Exception as e:
                 print(f"⚠️ Error updating completed_topics.txt: {e}")
                 

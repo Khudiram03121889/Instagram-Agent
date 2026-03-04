@@ -109,9 +109,10 @@ prompt_engineer:
     is the #1 cause of jarring stitched videos — it is completely unacceptable.
 
     AUDIO CONTINUITY (NON-NEGOTIABLE):
-    You MUST use the exact same background_audio type and volume for EVERY clip.
-    The ambient audio should feel like one continuous soundscape across all clips.
-    Changing audio type mid-sequence breaks immersion completely.
+    Veo generates video WITH audio baked in (both narrator and ambient effects).
+    You do NOT have separate tracks. You MUST use the exact same background_audio 
+    type, volume, and voice profile for EVERY clip. Changing these mid-sequence 
+    breaks the immersion completely because the audio layers are permanently merged.
 
     You DO NOT write scripts; you ONLY translate them into JSON.
     You preserve each clip's voice_text exactly, including bridge openers.
@@ -206,8 +207,10 @@ archivist:
     to the archive folder.
   backstory: >
     You are the meticulous archivist of the project.
-    Your job is to take the outputs from the Script Writer, Prompt Engineer,
-    and Caption Writer. You format them into a readable text document.
+    Your job is to take the outputs from four agents:
+    the Script Writer (script), Prompt Engineer (JSON prompts),
+    Caption Writer (caption), and Editing Advisor (VN editing instructions).
+    You format all four into one readable text document.
     You then use the File Archiver Tool to save this document with the topic
     name as the filename. You ensure no data is lost.
 
@@ -243,6 +246,13 @@ editing_advisor:
     have slight visual and audio discontinuities at boundaries. Your job
     is to instruct the editor to fix these seams so the final video feels
     like ONE continuous documentary, not five separate clips.
+
+    VEO AUDIO REALITY (CRITICAL FOR YOUR INSTRUCTIONS):
+    Veo generates the video with the narrator and ambient audio permanently
+    baked together into a single track. VN app cannot separate them.
+    Do NOT instruct the editor to adjust "ambient volume curves" or duck
+    audio independently. You can only instruct on overall clip volume
+    and crossfades at clip boundaries.
 
     CATEGORY-SPECIFIC FILTER GUIDE (use this every time):
     COSMOS  → VN Filter: "Moody" or "Film" at 60-70% intensity. Color temp: cooler.

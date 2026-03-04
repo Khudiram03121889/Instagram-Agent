@@ -7,3 +7,4 @@ set PYTHONUTF8=1
 
 :: Run the agent
 python main.py
+pause

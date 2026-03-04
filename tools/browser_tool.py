@@ -111,7 +111,7 @@ def _build_cinematic_prompt(item: dict, clip_number: int = 1) -> str:
     # to trigger voice generation instead of subtitle rendering.
     # Keep total prompt concise (~100-120 words).
     prompt = (
-        f"A calm male narrator says: {voice_text}. "
+        f"A {narrator_mood.lower()} narrator says: {voice_text}. "
         f"{camera}. "
         f"{visual}. {lighting}. "
         f"{video_style}. "
