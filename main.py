@@ -18,6 +18,7 @@ from tools.browser_tool import VideoGenerationTool
 from tools.file_tool import FileArchiverTool
 from tools.topic_classifier import classify_topic, format_profile_for_agent
 from playwright.sync_api import sync_playwright
+import re
 
 # Load environment variables
 load_dotenv()
@@ -131,6 +132,15 @@ def main():
         llm=my_llm
     )
 
+    script_validator = Agent(
+        role=agents_config['script_validator']['role'],
+        goal=agents_config['script_validator']['goal'],
+        backstory=agents_config['script_validator']['backstory'],
+        verbose=True,
+        allow_delegation=False,
+        llm=my_llm
+    )
+
     # --- Get Topic (Auto or Manual) ---
     topic = None
     topic_file = "topics.txt"
@@ -160,9 +170,18 @@ def main():
             print("Action: Add more topics to 'topics.txt'")
             return
     
+    # --- Parse Category Prefix (e.g. [COSMOS] Why dark matter is invisible) ---
+    category_override = None
+    prefix_match = re.match(r'^\[([A-Za-z]+)\]\s*(.+)$', topic)
+    if prefix_match:
+        category_override = prefix_match.group(1).upper()
+        topic = prefix_match.group(2).strip()
+        print(f"   🏷️  Found category prefix: [{category_override}]")
+        print(f"   📌 Topic (cleaned): '{topic}'")
+
     # --- Classify Topic & Build Profile ---
     print(f"\n🔬 Classifying topic...")
-    topic_profile_dict = classify_topic(topic)
+    topic_profile_dict = classify_topic(topic, category_override=category_override)
     topic_profile_str = format_profile_for_agent(topic_profile_dict)
     print(f"   ✅ Category detected: [{topic_profile_dict['category']}]")
     print(f"   🎬 Cinematic style: {topic_profile_dict['video_style'][:60]}...")
@@ -192,14 +211,22 @@ def main():
         agent=script_writer
     )
 
-    # Task 2: JSON Prompts
+    # Task 1.5: Script Validation
+    task_validate = Task(
+        description=tasks_config['validate_script_task']['description'],
+        expected_output=tasks_config['validate_script_task']['expected_output'],
+        agent=script_validator,
+        context=[task1]
+    )
+
+    # Task 2: JSON Prompts (now receives VALIDATED script)
     task2 = Task(
         description=tasks_config['format_json_task']['description'].replace(
             "{topic_profile}", topic_profile_str
         ),
         expected_output=tasks_config['format_json_task']['expected_output'],
         agent=prompt_engineer,
-        context=[task1]
+        context=[task_validate]
     )
 
     # Task 3: Video Generation
@@ -226,21 +253,20 @@ def main():
     )
 
     # Task 5: Archiving
-    # We pass the topic into the description so the agent knows what filename to use
     task5_desc = tasks_config['archive_content_task']['description'].replace("{topic}", topic)
     
     task5 = Task(
         description=task5_desc,
         expected_output=tasks_config['archive_content_task']['expected_output'],
         agent=archivist,
-        context=[task1, task2, task4], # Needs script, prompts, and caption
+        context=[task1, task2, task4],
         tools=[file_tool]
     )
 
     # --- Create Crew ---
     crew = Crew(
-        agents=[script_writer, prompt_engineer, browser_operator, caption_writer, archivist],
-        tasks=[task1, task2, task3, task4, task5],
+        agents=[script_writer, script_validator, prompt_engineer, browser_operator, caption_writer, archivist],
+        tasks=[task1, task_validate, task2, task3, task4, task5],
         verbose=True,
         process=Process.sequential
     )

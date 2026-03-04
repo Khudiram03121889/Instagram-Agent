@@ -6,7 +6,4 @@ cd /d "D:\Python\Programs\instagram agent"
 set PYTHONUTF8=1
 
 :: Run the agent
-python main.py >> "daily_log.txt" 2>&1
-
-:: Optional: keep window open for a few seconds if user is watching
-:: timeout /t 5
+python main.py

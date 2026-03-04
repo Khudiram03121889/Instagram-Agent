@@ -40,7 +40,12 @@ def _build_cinematic_prompt(item: dict, clip_number: int = 1) -> str:
     visual      = item.get("visual", "").strip()
     voice_text  = item.get("voice_text", "").strip()
     audio       = item.get("background_audio", {})
-    audio_type  = audio.get("type", "ambient atmospheric")
+    audio_type  = audio.get("type")
+    if not audio_type:
+        raise ValueError(
+            f"CRITICAL: background_audio.type missing from clip {clip_number} JSON. "
+            "The topic_classifier assigns unique audio per category — this field is required."
+        )
     
     # Extract topic_classifier fields
     narrator_mood = item.get("narrator_delivery", "Calm, documentary")
@@ -158,7 +163,28 @@ class VideoGenerationTool(BaseTool):
                     # or if brackets weren't found (though expected for a list)
                     data = json.loads(content.replace("```json", "").replace("```", ""))
 
-                def normalize_item(item: dict) -> dict:
+                # Per-clip word limits aligned with cognitive importance:
+                # Hook & Anchor get more breathing room, transition clips are tighter.
+                CLIP_WORD_LIMITS = {1: 14, 2: 13, 3: 13, 4: 15, 5: 14}
+
+                def _truncate_at_sentence_boundary(text: str, max_words: int) -> str:
+                    """Truncate at the last sentence-ending punctuation before max_words."""
+                    words = text.split()
+                    if len(words) <= max_words:
+                        return text
+                    candidate = " ".join(words[:max_words])
+                    # Find last sentence boundary (.?!) in the candidate
+                    last_boundary = -1
+                    for punct in ['. ', '? ', '! ']:
+                        idx = candidate.rfind(punct)
+                        if idx > last_boundary:
+                            last_boundary = idx + 1  # include the punctuation
+                    if last_boundary > len(candidate) // 3:  # only use if not too early
+                        return candidate[:last_boundary].strip()
+                    # Fallback: trim to max_words - 1 for breathing room
+                    return " ".join(words[:max_words - 1])
+
+                def normalize_item(item: dict, clip_number: int = 1) -> dict:
                     missing = [k for k in required_keys if k not in item]
                     if missing:
                         raise ValueError(f"Missing required keys: {', '.join(missing)}")
@@ -167,16 +193,14 @@ class VideoGenerationTool(BaseTool):
                     if not item.get("voice_text") or not str(item["voice_text"]).strip():
                         raise ValueError("CRITICAL: 'voice_text' is empty. Audio generation requires text.")
 
-                    # Word-count guardrail: Veo generates ~8-second clips at ~2.5 words/sec.
-                    # Scripts exceeding ~20 words will be cut off mid-sentence.
+                    # Per-clip word count guardrail
                     voice_text_str = str(item["voice_text"]).strip()
                     word_count = len(voice_text_str.split())
-                    MAX_WORDS = 20  # ~8 seconds at 2.5 words/sec
-                    TRIM_TO = 18   # Leave breathing room
-                    if word_count > MAX_WORDS:
-                        trimmed = " ".join(voice_text_str.split()[:TRIM_TO])
-                        print(f"   ⚠️ voice_text has {word_count} words (max {MAX_WORDS}). "
-                              f"Trimmed to {TRIM_TO}: '{trimmed[:40]}...'")
+                    max_words = CLIP_WORD_LIMITS.get(clip_number, 13)
+                    if word_count > max_words:
+                        trimmed = _truncate_at_sentence_boundary(voice_text_str, max_words)
+                        print(f"   ⚠️ Clip {clip_number} voice_text has {word_count} words "
+                              f"(max {max_words}). Trimmed: '{trimmed[:50]}...'")
                         item["voice_text"] = trimmed
 
                     # Preserve a clear, consistent key order
@@ -196,19 +220,15 @@ class VideoGenerationTool(BaseTool):
                     if "clip" in item:
                         normalized["clip"] = item["clip"]
                     
-                    # Ensure any other keys are also carried over if needed, 
-                    # but strictly defined structure is better for consistency.
                     return normalized
 
                 if isinstance(data, list):
                     for item in data:
                         if isinstance(item, dict):
-                            normalized_item = normalize_item(item)
+                            clip_index = len(final_prompts) + 1  # 1-based position so far
+                            normalized_item = normalize_item(item, clip_index)
                             
                             # CONVERT TO CINEMATIC NATURAL LANGUAGE PROMPT
-                            # Build a rich, multi-sentence prompt so Google Flow/Veo
-                            # understands the cinematic intent, not just a visual noun.
-                            clip_index = len(final_prompts) + 1  # 1-based position so far
                             nl_prompt = _build_cinematic_prompt(normalized_item, clip_index)
                             
                             print(f"   📝 Cinematic Prompt [{clip_index}]: {nl_prompt[:70]}...")
@@ -216,7 +236,7 @@ class VideoGenerationTool(BaseTool):
                             
                 elif isinstance(data, dict):
                     # Single clip object
-                    normalized_item = normalize_item(data)
+                    normalized_item = normalize_item(data, 1)
                     nl_prompt = _build_cinematic_prompt(normalized_item, 1)
                     final_prompts.append(nl_prompt)
                 
@@ -313,12 +333,9 @@ class VideoGenerationTool(BaseTool):
                         else:
                             print("   ✅ Video tab selected")
                             
-                    # --- Check Portrait / Landscape ---
-                    orientation = expected_settings.get("Aspect Ratio", "Portrait").lower()
-                    if "landscape" in orientation:
-                        orientation_btn = page.locator("button[role='tab'][id*='-trigger-LANDSCAPE'], button[role='tab']:has-text('Landscape')").first
-                    else:
-                        orientation_btn = page.locator("button[role='tab'][id*='-trigger-PORTRAIT'], button[role='tab']:has-text('Portrait')").first
+                    # --- Set Portrait (all Instagram reels are portrait 9:16) ---
+                    orientation = "portrait"
+                    orientation_btn = page.locator("button[role='tab'][id*='-trigger-PORTRAIT'], button[role='tab']:has-text('Portrait')").first
                         
                     if orientation_btn.is_visible():
                         is_active = orientation_btn.get_attribute("aria-selected") == "true" or orientation_btn.get_attribute("data-state") == "active" or orientation_btn.get_attribute("aria-pressed") == "true"
@@ -384,19 +401,39 @@ class VideoGenerationTool(BaseTool):
                     # The arrow button is typically right next to the input
                     generate_btn = page.locator("button:has(i:has-text('arrow_forward')), button.gdArnN, button[aria-label*='Send']").first
                     
-                    generate_btn.click()
-                    print("   ✅ Generate clicked!")
-
-                    # --- STEP 3: Wait for Completion ---
-                    print("   ⏳ Waiting for generation (timeout 3 mins)...")
+                    # --- STEP 3: Generate with Retry Logic ---
+                    MAX_RETRIES = 2
+                    clip_succeeded = False
                     
-                    try:
-                        page.wait_for_timeout(10000) # Initial wait
-                        page.locator(".loading-spinner, .progress-bar").wait_for(state="hidden", timeout=180000)
-                        results.append(f"Clip {clip_num}: ✅ Generated")
-                    except Exception as e:
-                        print(f"   ⚠️ Timeout or error waiting for video: {e}")
-                        results.append(f"Clip {clip_num}: ⚠️ Started but wait timed out")
+                    for attempt in range(MAX_RETRIES):
+                        attempt_label = f"(attempt {attempt + 1}/{MAX_RETRIES})"
+                        try:
+                            if attempt > 0:
+                                print(f"   🔄 Retrying clip {clip_num} {attempt_label}...")
+                                # Re-enter prompt for retry
+                                prompt_box.fill(prompt)
+                                time.sleep(1)
+                            
+                            generate_btn.click()
+                            print(f"   ✅ Generate clicked! {attempt_label}")
+                            
+                            print(f"   ⏳ Waiting for generation (timeout 3 mins) {attempt_label}...")
+                            page.wait_for_timeout(10000)  # Initial wait
+                            page.locator(".loading-spinner, .progress-bar").wait_for(state="hidden", timeout=180000)
+                            
+                            results.append(f"Clip {clip_num}: ✅ Generated")
+                            clip_succeeded = True
+                            break  # Success — exit retry loop
+                            
+                        except Exception as e:
+                            print(f"   ⚠️ {attempt_label} failed: {e}")
+                            if attempt < MAX_RETRIES - 1:
+                                print(f"   ⏳ Waiting 5 seconds before retry...")
+                                time.sleep(5)
+                    
+                    if not clip_succeeded:
+                        results.append(f"Clip {clip_num}: ❌ FAILED after {MAX_RETRIES} attempts")
+                        print(f"   ❌ Clip {clip_num} permanently failed after {MAX_RETRIES} attempts")
                     
                     time.sleep(2)
                 

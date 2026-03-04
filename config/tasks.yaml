@@ -29,8 +29,13 @@
       - Clips 2, 3, 4, and 5 MUST begin with a bridge opener TEMPLATE that you MUST
         complete using the previous clip's concept.
 
-      WORD COUNT & COMPRESSION (STRICT):
-      - Each clip MUST be under 15 words.
+      WORD COUNT & COMPRESSION (STRICT — PER-CLIP LIMITS):
+      - Clip 1 (Hook):      max 14 words (~9 seconds)
+      - Clip 2 (Curiosity):  max 13 words (~8 seconds)
+      - Clip 3 (Reason):     max 13 words (~8 seconds)
+      - Clip 4 (Meaning):    max 15 words (~10 seconds)
+      - Clip 5 (Anchor):     max 14 words (~9 seconds)
+      - Total reel: ~44 seconds.
       - Delete filler words (the, a, and). Use action verbs and adjective stacking.
       - If a script isn't poetic and compressed, it is INVALID.
 
@@ -63,12 +68,15 @@
       the script is INVALID.
     - If any bridge opener is used without the echoing concept, the script is INVALID.
 
-    TIMING (CRITICAL):
-    - Each clip must be safely spoken within 8 seconds.
+    TIMING (CRITICAL — PER-CLIP LIMITS):
     - Assume a calm narration speed of ~2 words per second.
-    - Therefore, each clip MUST NOT exceed 15 words.
-    - If any clip exceeds this limit, the script is INVALID and must be revised.
-    - Total reel is 5 clips x ~8 seconds = ~40 seconds.
+    - Clip 1: max 14 words (~9 seconds).
+    - Clip 2: max 13 words (~8 seconds).
+    - Clip 3: max 13 words (~8 seconds).
+    - Clip 4: max 15 words (~10 seconds).
+    - Clip 5: max 14 words (~9 seconds).
+    - If any clip exceeds its per-clip limit, the script is INVALID and must be revised.
+    - Total reel is 5 clips = ~44 seconds.
 
     STYLE:
     - Tone must be calm, curious, and documentary-like.
@@ -107,11 +115,46 @@
 
     The script must be revised until all timing and continuity rules are satisfied.
   expected_output: >
-    A 5-clip reel script where each clip is under 15 words (8-second spoken limit),
-    clips 2-5 start with approved bridge openers, each clip's last concept is echoed
-    in the next clip's opener (Narrative Thread), and the format is exactly as
-    requested with no extra text. Language style must match the topic category.
+    A 5-clip reel script where Clip 1 is under 14 words, Clips 2-3 under 13 words,
+    Clip 4 under 15 words, and Clip 5 under 14 words. Clips 2-5 start with approved
+    bridge openers, each clip's last concept is echoed in the next clip's opener
+    (Narrative Thread), and the format is exactly as requested with no extra text.
+    Language style must match the topic category.
   agent: script_writer
+
+validate_script_task:
+  description: >
+    You are the Script Quality Validator. You receive a 5-clip reel script from
+    the Script Writer and your ONLY job is to validate it against the strict rules.
+
+    CHECK EVERY CLIP FOR:
+
+    1. WORD COUNT (PER-CLIP LIMITS):
+       - Clip 1 (Hook):     max 14 words
+       - Clip 2 (Curiosity): max 13 words
+       - Clip 3 (Reason):    max 13 words
+       - Clip 4 (Meaning):   max 15 words
+       - Clip 5 (Anchor):    max 14 words
+       - Count EVERY word including articles and bridge openers.
+
+    2. BRIDGE OPENERS (Clips 2-5):
+       - Each clip MUST start with one of the approved bridge templates.
+       - The bridge opener MUST be completed with a noun/adjective from the previous clip.
+       - No two consecutive clips may use the same bridge template.
+
+    3. NARRATIVE THREAD:
+       - Each clip's last concept must be echoed in the next clip's bridge opener.
+       - If any clip can be understood independently, the thread is broken.
+
+    RULES:
+    - If ALL clips pass → output the script EXACTLY as received, unchanged.
+    - If any clip FAILS → rewrite ONLY that clip. Do not touch passing clips.
+    - After rewriting, verify the fix passes all checks before outputting.
+    - Output in the same format as the original script.
+  expected_output: >
+    A validated 5-clip script that passes all word count, bridge opener, and
+    narrative thread checks. Format identical to the original script.
+  agent: script_validator
 
 format_json_task:
   description: >

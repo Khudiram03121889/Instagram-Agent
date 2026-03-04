@@ -207,8 +207,22 @@ LOCKED_VOICE_PROFILE = {
     "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
 }
 
+# ---------------------------------------------------------------------------
+# TIEBREAKER WORDS
+# When two or more categories score equally, these exclusive primary words
+# decide the winner. Each word should belong to ONLY one category.
+# ---------------------------------------------------------------------------
+TIEBREAKERS = {
+    "PHYSICS":   ["relativity", "entropy", "inertia", "thermodynamics", "momentum", "friction", "mechanics", "newton"],
+    "MIND":      ["brain", "consciousness", "neuron", "perception", "memory", "cortex"],
+    "COSMOS":    ["galaxy", "orbit", "nebula", "dark matter", "black hole", "supernova"],
+    "BIOLOGY":   ["dna", "evolution", "mitochondria", "photosynthesis", "organism", "bacteria"],
+    "CHEMISTRY": ["molecule", "reaction", "acid", "polymer", "compound", "dissolve"],
+    "EARTH":     ["tectonic", "glacier", "erosion", "ecosystem", "volcano", "coral"],
+}
 
-def classify_topic(topic: str) -> dict:
+
+def classify_topic(topic: str, category_override: str = None) -> dict:
     """
     Classifies a science topic string into a cinematic category
     and returns the full topic profile with Visual DNA and locked voice.
@@ -217,21 +231,38 @@ def classify_topic(topic: str) -> dict:
     ----------
     topic : str
         The science topic, e.g. "Why atoms never touch"
+    category_override : str, optional
+        If provided (e.g. "COSMOS"), skip keyword scoring and use this
+        category directly. Must be a valid key in VISUAL_DNA.
 
     Returns
     -------
     dict
-        A topic profile containing:
-        - category (str)
-        - cinematic_reference (str)
-        - video_style (str)
-        - color_palette (str)
-        - motion_language (str)
-        - audio_type (str)
-        - audio_volume (float)
-        - voice_profile (dict)  ← LOCKED, same for all clips
-        - topic (str)             ← original topic echoed back
+        A topic profile containing category, visual DNA, audio DNA,
+        and the locked voice profile.
     """
+    # --- Override Path: skip scoring if category is pre-declared ---
+    if category_override:
+        override_upper = category_override.upper().strip()
+        if override_upper in VISUAL_DNA:
+            print(f"   ✅ Using pre-declared category: [{override_upper}] (skipped scoring)")
+            dna = VISUAL_DNA[override_upper]
+            return {
+                "topic": topic,
+                "category": dna["category"],
+                "cinematic_reference": dna["cinematic_reference"],
+                "video_style": dna["video_style"],
+                "color_palette": dna["color_palette"],
+                "motion_language": dna["motion_language"],
+                "audio_type": dna["audio_type"],
+                "audio_volume": dna["audio_volume"],
+                "voice_profile": LOCKED_VOICE_PROFILE.copy(),
+                "narrator_delivery": dna["narrator_delivery"],
+                "sfx_layers": dna["sfx_layers"],
+            }
+        else:
+            print(f"   ⚠️ Invalid category override '{category_override}'. Falling back to scoring.")
+
     topic_lower = topic.lower()
     
     # Score each category by counting keyword matches
@@ -246,9 +277,25 @@ def classify_topic(topic: str) -> dict:
 
     # Pick the highest-scoring category
     best_category = max(scores, key=scores.get)
+    best_score = scores[best_category]
+    
+    # --- Tiebreaker: if multiple categories share the top score ---
+    if best_score > 0:
+        tied_categories = [cat for cat, s in scores.items() if s == best_score]
+        if len(tied_categories) > 1:
+            print(f"   ⚠️ Tie between {tied_categories} (score={best_score}). Running tiebreaker...")
+            for cat in tied_categories:
+                for primary_word in TIEBREAKERS.get(cat, []):
+                    if re.search(r'\b' + re.escape(primary_word) + r'\b', topic_lower):
+                        best_category = cat
+                        print(f"   ✅ Tiebreaker resolved: [{cat}] (matched '{primary_word}')")
+                        break
+                else:
+                    continue
+                break
     
     # If no keyword matched at all, fall back to COSMOS (safe default for abstract science)
-    if scores[best_category] == 0:
+    if best_score == 0:
         best_category = "COSMOS"
 
     dna = VISUAL_DNA[best_category]
@@ -262,9 +309,6 @@ def classify_topic(topic: str) -> dict:
         "motion_language": dna["motion_language"],
         "audio_type": dna["audio_type"],
         "audio_volume": dna["audio_volume"],
-        # CRITICAL: voice is locked here once per topic run.
-        # Every clip in this project will use the exact same
-        # voice settings. Do NOT change this between clips.
         "voice_profile": LOCKED_VOICE_PROFILE.copy(),
         "narrator_delivery": dna["narrator_delivery"],
         "sfx_layers": dna["sfx_layers"],
