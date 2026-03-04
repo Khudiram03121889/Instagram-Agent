@@ -1,0 +1,28 @@
+# Environment & secrets
+.env
+auth.json
+
+# Logs & runtime data
+daily_log.txt
+completed_topics.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
