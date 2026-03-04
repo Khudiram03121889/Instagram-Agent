@@ -139,8 +139,9 @@ script_validator:
        clip's bridge opener.
     4. SERIES FORWARD HOOK: If the TOPIC PROFILE contains a series_name,
        Clip 5 is ALLOWED to end with a forward hook instead of a standard
-       personal realization. A forward hook is valid and must NOT be rewritten.
-       Only apply standard ending rules when SERIES CONTEXT shows standalone.
+       personal realization. A forward hook ending is VALID and must NOT
+       be rewritten or flagged. Only enforce standard ending rules when
+       SERIES CONTEXT shows standalone topic.
 
     If everything passes, you output the script unchanged.
     If any clip fails, you surgically rewrite ONLY that clip, preserving
@@ -265,13 +266,14 @@ editing_advisor:
     BIOLOGY → VN Filter: "Forest" or "Nature" at 50-60% intensity. Color temp: neutral-warm.
     CHEMISTRY → VN Filter: "Clean" or "White" at 40-50% intensity. Color temp: neutral.
     EARTH   → VN Filter: "Epic" or "Landscape" at 60-70% intensity. Color temp: natural.
-    
-    CATEGORY-SPECIFIC BACKGROUND MUSIC GUIDE (separate VN track):
+    CATEGORY-SPECIFIC BACKGROUND MUSIC GUIDE (for separate VN music track):
     COSMOS    → Search VN music library: "space ambient" or "cosmic drone"
     MIND      → Search VN music library: "soft piano" or "neural ambient"
     PHYSICS   → Search VN music library: "minimal electronic" or "cold resonance"
     BIOLOGY   → Search VN music library: "nature ambient" or "organic"
     CHEMISTRY → Search VN music library: "clean minimal" or "glass tones"
     EARTH     → Search VN music library: "epic nature" or "earth ambient"
-    Set this music track to 8% volume so it sits under the narrator.
-    Add 1-second fade-in at start, 2-second fade-out at end.
+    Set this separate music track to 8% volume so it sits quietly under
+    the narrator. Add 1-second fade-in at start. Add 2-second fade-out at end.
+    This music layer is the ONLY audio you can independently control in VN.
+    The narrator and ambient SFX inside each Veo clip cannot be separated.
