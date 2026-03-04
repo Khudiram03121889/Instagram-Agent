@@ -179,19 +179,61 @@ def main():
             print("Action: Add more topics to 'topics.txt'")
             return
     
-    # --- Parse Category Prefix (e.g. [COSMOS] Why dark matter is invisible) ---
+    # --- Parse Category and Series Prefix ---
+    # Supports formats like:
+    # [MIND] Topic name
+    # [MIND][SERIES:BrainLies] Topic name
+    # [COSMOS][SERIES:InvisibleUniverse] Topic name
+
     category_override = None
-    prefix_match = re.match(r'^\[([A-Za-z]+)\]\s*(.+)$', topic)
-    if prefix_match:
-        category_override = prefix_match.group(1).upper()
-        topic = prefix_match.group(2).strip()
-        print(f"   🏷️  Found category prefix: [{category_override}]")
-        print(f"   📌 Topic (cleaned): '{topic}'")
+    series_name = None
+    series_episode = None
+
+    # Extract all bracketed tokens from the start of the topic
+    bracket_pattern = re.compile(r'^\s*(\[[^\]]+\])+')
+    bracket_match = bracket_pattern.match(topic)
+
+    if bracket_match:
+        # Find all individual bracket tokens
+        tokens = re.findall(r'\[([^\]]+)\]', bracket_match.group(0))
+        
+        for token in tokens:
+            token_upper = token.upper().strip()
+            
+            # Check if it is a category token
+            if token_upper in ["COSMOS", "MIND", "PHYSICS", 
+                               "BIOLOGY", "CHEMISTRY", "EARTH"]:
+                category_override = token_upper
+                print(f"   🏷️  Category prefix: [{category_override}]")
+            
+            # Check if it is a series token
+            elif token_upper.startswith("SERIES:"):
+                series_name = token[7:].strip()  # Remove "SERIES:" prefix
+                print(f"   � Series detected: {series_name}")
+        
+        # Clean the topic — remove all bracket tokens
+        topic = re.sub(r'\[[^\]]+\]\s*', '', topic).strip()
+        print(f"   �📌 Topic (cleaned): '{topic}'")
+
+    # --- Count episode number if series detected ---
+    if series_name and os.path.exists(completed_file):
+        with open(completed_file, 'r') as f:
+            completed = f.readlines()
+        # Count how many completed topics had the same series name
+        series_episode = sum(
+            1 for t in completed 
+            if series_name.lower() in t.lower()
+        ) + 1
+        print(f"   🎬 Episode number in series: {series_episode}")
 
     # --- Classify Topic & Build Profile ---
     print(f"\n🔬 Classifying topic...")
     topic_profile_dict = classify_topic(topic, category_override=category_override)
-    topic_profile_str = format_profile_for_agent(topic_profile_dict)
+    topic_profile_str = format_profile_for_agent(
+        topic_profile_dict,
+        series_name=series_name,
+        series_episode=series_episode
+    )
     print(f"   ✅ Category detected: [{topic_profile_dict['category']}]")
     print(f"   🎬 Cinematic style: {topic_profile_dict['video_style'][:60]}...")
     print(f"   🎵 Audio: {topic_profile_dict['audio_type'][:60]}...")

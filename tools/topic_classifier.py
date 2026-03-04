@@ -317,12 +317,36 @@ def classify_topic(topic: str, category_override: str = None) -> dict:
     return profile
 
 
-def format_profile_for_agent(profile: dict) -> str:
+def format_profile_for_agent(
+    profile: dict,
+    series_name: str = None,
+    series_episode: int = None
+) -> str:
     """
     Formats the topic profile into a human-readable string
     for injection into CrewAI task descriptions.
     """
     vp = profile["voice_profile"]
+    
+    # Build series block only if series exists
+    if series_name and series_episode:
+        series_block = f"""
+SERIES CONTEXT (use this for narrative continuity):
+  series_name    : {series_name}
+  episode_number : Episode {series_episode}
+  instruction    : This is Episode {series_episode} of the {series_name} series.
+                   Write Clip 5 to end with a subtle forward hook that makes
+                   the viewer feel there is more to discover in this series.
+                   Never say "next video" or "part 2" — plant curiosity naturally.
+""".strip()
+    else:
+        series_block = """
+SERIES CONTEXT:
+  series_name    : None (standalone topic)
+  instruction    : Write as a complete self-contained reel.
+                   No forward hook needed in Clip 5.
+""".strip()
+
     return f"""
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 TOPIC PROFILE — MANDATORY: ALL AGENTS MUST USE THIS EXACTLY
@@ -330,6 +354,8 @@ TOPIC PROFILE — MANDATORY: ALL AGENTS MUST USE THIS EXACTLY
 Topic    : {profile['topic']}
 Category : {profile['category']}
 Reference: {profile['cinematic_reference']}
+
+{series_block}
 
 VISUAL DNA (use for ALL clips — do not invent your own style):
   video_style    : {profile['video_style']}
