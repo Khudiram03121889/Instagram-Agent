@@ -141,6 +141,15 @@ def main():
         llm=my_llm
     )
 
+    editing_advisor = Agent(
+        role=agents_config['editing_advisor']['role'],
+        goal=agents_config['editing_advisor']['goal'],
+        backstory=agents_config['editing_advisor']['backstory'],
+        verbose=True,
+        allow_delegation=False,
+        llm=my_llm
+    )
+
     # --- Get Topic (Auto or Manual) ---
     topic = None
     topic_file = "topics.txt"
@@ -252,6 +261,16 @@ def main():
         context=[task_validate]  # Needs validated script
     )
 
+    # Task 4.5: Editing Instructions
+    task_editing = Task(
+        description=tasks_config['generate_editing_task']['description'].replace(
+            "{topic_profile}", topic_profile_str
+        ),
+        expected_output=tasks_config['generate_editing_task']['expected_output'],
+        agent=editing_advisor,
+        context=[task_validate, task4]  # needs validated script + caption
+    )
+
     # Task 5: Archiving
     task5_desc = tasks_config['archive_content_task']['description'].replace("{topic}", topic)
     
@@ -259,14 +278,14 @@ def main():
         description=task5_desc,
         expected_output=tasks_config['archive_content_task']['expected_output'],
         agent=archivist,
-        context=[task1, task2, task4],
+        context=[task1, task2, task4, task_editing],
         tools=[file_tool]
     )
 
     # --- Create Crew ---
     crew = Crew(
-        agents=[script_writer, script_validator, prompt_engineer, browser_operator, caption_writer, archivist],
-        tasks=[task1, task_validate, task2, task3, task4, task5],
+        agents=[script_writer, script_validator, prompt_engineer, browser_operator, caption_writer, editing_advisor, archivist],
+        tasks=[task1, task_validate, task2, task3, task4, task_editing, task5],
         verbose=True,
         process=Process.sequential
     )

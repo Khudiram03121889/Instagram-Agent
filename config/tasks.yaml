@@ -280,16 +280,122 @@ generate_caption_task:
 
 archive_content_task:
   description: >
-    Collect the outputs from the Script Writer (Script), Prompt Engineer (JSON Prompts),
-    and Caption Writer (Caption).
+    Collect the outputs from the Script Writer (Script), Prompt Engineer
+    (JSON Prompts), Caption Writer (Caption), and Editing Advisor
+    (Editing Instructions).
 
-    1. Format them into a single readable text string with headers
-       (e.g., "--- SCRIPT ---", "--- PROMPTS ---", "--- CAPTION ---").
+    1. Format them into a single readable text string with these headers
+       in this exact order:
+       "--- SCRIPT ---"
+       "--- PROMPTS ---"
+       "--- CAPTION ---"
+       "--- EDITING INSTRUCTIONS (VN APP) ---"
+
     2. CALL the 'File Archiver Tool' with:
-       - content: The formatted string.
+       - content: The formatted string containing all four sections.
        - topic: {topic} (The topic name provided).
 
     You must explicitly call the tool to save the file.
   expected_output: >
-    Confirmation that the file was saved successfully to the D: drive.
+    Confirmation that the file was saved successfully with all four
+    sections including the VN editing instructions.
   agent: archivist
+
+generate_editing_task:
+  description: >
+    Generate precise VN app editing instructions for the completed reel.
+
+    {topic_profile}
+
+    You have access to:
+    - The validated 5-clip script (from the Script Validator)
+    - The topic profile above (for category-specific filter and audio choices)
+
+    YOUR OUTPUT must be a numbered checklist with EXACTLY these sections
+    in this order. Do not skip any section. Do not add extra sections.
+
+    ═══════════════════════════════════════
+    SECTION A — IMPORT & TIMELINE SETUP
+    ═══════════════════════════════════════
+    Give exact steps for:
+    - How to create a new project in VN at 9:16 ratio
+    - Import order of the 5 clips (Clip 1 first, Clip 5 last)
+    - Timeline arrangement confirmation
+
+    ═══════════════════════════════════════
+    SECTION B — CLIP TIMING & PAUSES
+    ═══════════════════════════════════════
+    For each of the 5 clips, specify:
+    - The clip's role (Hook / Curiosity / Reason / Meaning / Anchor)
+    - Whether to trim or keep full duration
+    - Exact pause to add AFTER each clip (in seconds):
+        After Clip 1: 1.5 seconds
+        After Clip 2: 1.0 second
+        After Clip 3: 1.0 second
+        After Clip 4: 2.0 seconds  ← longest pause, idea must land
+        After Clip 5: 1.5 seconds
+    - How to add a freeze frame or black frame in VN for the pause
+
+    ═══════════════════════════════════════
+    SECTION C — AUDIO FIXES
+    ═══════════════════════════════════════
+    Give exact steps for:
+    - How to add audio crossfade at each clip boundary in VN
+      (use 3-4 frames crossfade duration — specify the exact VN setting)
+    - How to set ambient audio volume curve:
+        During narration: ambient at 10-12% volume
+        During pauses: ambient rises to 25-30% volume
+    - How to check that all 5 clips use the same audio level
+
+    ═══════════════════════════════════════
+    SECTION D — COLOR GRADE
+    ═══════════════════════════════════════
+    Give exact steps for:
+    - Which VN filter to apply (use the CATEGORY from the topic profile
+      to pick from the CATEGORY-SPECIFIC FILTER GUIDE in your backstory)
+    - Exact filter intensity percentage
+    - How to apply the SAME filter to all 5 clips simultaneously in VN
+      (use VN's "Apply to All" feature)
+    - Color temperature direction (warmer or cooler)
+    - Brightness and contrast adjustments if needed (give exact values)
+
+    ═══════════════════════════════════════
+    SECTION E — TRANSITIONS BETWEEN CLIPS
+    ═══════════════════════════════════════
+    Give exact steps for:
+    - Which VN transition to use between each clip pair
+    - Duration of each transition (in frames or seconds)
+    - Rule: transitions must be SUBTLE — never flashy
+    - Recommended: "Dissolve" or "Fade" at 0.3 seconds maximum
+
+    ═══════════════════════════════════════
+    SECTION F — CAPTION OVERLAY (OPTIONAL)
+    ═══════════════════════════════════════
+    Based on the script, specify:
+    - Whether to add any on-screen text
+    - If yes: which clip, what text, what font style in VN,
+      what position (bottom center), what duration
+    - If no: state clearly "No text overlay needed for this reel"
+
+    ═══════════════════════════════════════
+    SECTION G — FINAL EXPORT SETTINGS
+    ═══════════════════════════════════════
+    Give exact VN export settings for Instagram:
+    - Resolution: 1080 x 1920 (9:16)
+    - Frame rate: 30fps
+    - Quality: Highest available in VN
+    - File format: MP4
+    - How to find these settings in VN before exporting
+
+    OUTPUT FORMAT (MANDATORY):
+    Output plain text only. No JSON. No markdown headers.
+    Use the section headers exactly as shown above.
+    Number every instruction within each section starting from 1.
+    Be specific. Be short per step. One action per numbered point.
+
+  expected_output: >
+    A complete 7-section editing checklist specific to VN app and the
+    topic's science category. Every instruction is numbered, actionable,
+    and specific to VN. No vague suggestions. Total output should be
+    readable in under 2 minutes and executable in under 20 minutes.
+  agent: editing_advisor
