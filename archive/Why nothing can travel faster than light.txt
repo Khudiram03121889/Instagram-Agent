@@ -1,0 +1,190 @@
+--- SCRIPT ---
+Title: Cosmic Speed Limit
+
+Clip 1: Your fastest thought, a cosmic whisper, cannot outrun light.
+Clip 2: To understand that ultimate speed, we must ask: why?
+Clip 3: Because of this cosmic law, mass grows, slowing everything.
+Clip 4: That's why reaching distant stars remains an impossible dream.
+Clip 5: This cosmic speed limit dictates all universal destiny. The universe conceals stranger truths still.
+
+--- PROMPTS ---
+[
+  {
+    "clip_label": "CLIP 1",
+    "voice_text": "Your fastest thought, a cosmic whisper, cannot outrun light.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A wide, atmospheric shot of the cosmos. Imagine a single, impossibly bright photon streaking across a vast, dark void, leaving a faint, ephemeral trail like a comet's tail. The particle fields are a deep indigo, with occasional cold blue highlights.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 2",
+    "voice_text": "To understand that ultimate speed, we must ask: why?",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A slightly tighter shot, focusing on a cluster of these bioluminescent particles. One particle, representing a thought or a question, begins to orbit another, larger particle, creating a subtle visual 'lean-in' that invites closer inspection. The motion is an imperceptibly slow drift.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 3",
+    "voice_text": "Because of this cosmic law, mass grows, slowing everything.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A closer, more focused view. Imagine a small, bright particle (representing mass) moving through the particle field. As it picks up speed, the surrounding bioluminescent particles begin to cling to it, visually representing its mass increasing and its movement becoming sluggish, like a ship plowing through heavy silk.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 4",
+    "voice_text": "That's why reaching distant stars remains an impossible dream.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "Show a contrast. On one side, a distant, warm amber nebula is depicted as a shimmering, unreachable beacon. On the other side, a representation of a spaceship, perhaps a faint outline made of cold blue light, is depicted as barely moving, its progress choked by the clinging particles, illustrating the 'impossible dream' of interstellar travel.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 5",
+    "voice_text": "This cosmic speed limit dictates all universal destiny. The universe conceals stranger truths still.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A calmer, more intimate scene. A single, solitary bioluminescent particle drifts slowly, illuminated by the faint glow of distant nebulae. The viewer feels like they are part of this quiet, vast expanse, contemplating the fundamental laws of the universe. The particle eventually drifts towards a subtle, uncharted region of the void, hinting at more discoveries.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  }
+]
+
+--- CAPTION ---
+A speed limit woven into the fabric of existence, dictating universal destiny. The universe conceals truths far stranger than we imagine.
+
+Save this one. It gets more interesting on rewatch.
+
+#Cosmos
+#Astrophysics
+#Universe
+#SpaceExploration
+#DeepSpace
+
+--- EDITING INSTRUCTIONS (VN APP) ---
+SECTION A — IMPORT & TIMELINE SETUP
+1. Open VN and tap the '+' icon to create a new project.
+2. Tap '9:16' at the top to set the aspect ratio.
+3. Tap 'Original' and then 'Import' to select your 5 video clips.
+4. Select the clips in the following order: Clip 1, Clip 2, Clip 3, Clip 4, Clip 5.
+5. Tap the 'Next' arrow to add the clips to the timeline.
+6. Confirm that the 5 imported clips are arranged sequentially on the timeline from left to right.
+7. Note that since the video and audio are pre-combined in each clip, no separate audio syncing is required.
+
+SECTION B — CLIP TIMING & PAUSES
+1. Clip 1 (Hook): Keep the full duration. Add a 1.5-second pause after this clip.
+2. To create the pause after Clip 1, tap on the timeline, then tap 'Split' at the end of Clip 1. Tap the new clip segment (which will be empty or black) and drag its right edge to extend it by 1.5 seconds. Alternatively, tap 'Overlay', then 'Blank', set its duration to 1.5 seconds, and place it after Clip 1.
+3. Clip 2 (Curiosity): Keep the full duration. Add a 1.0-second pause after this clip.
+4. To create the pause after Clip 2, add a 1.0-second blank clip or split and extend a black frame after Clip 2.
+5. Clip 3 (Reason): Keep the full duration. Add a 1.0-second pause after this clip.
+6. To create the pause after Clip 3, add a 1.0-second blank clip or split and extend a black frame after Clip 3.
+7. Clip 4 (Meaning): Keep the full duration. Add a 2.0-second pause after this clip.
+8. To create the pause after Clip 4, add a 2.0-second blank clip or split and extend a black frame after Clip 4.
+9. Clip 5 (Anchor): Keep the full duration. Add a 1.5-second pause after this clip.
+10. To create the pause after Clip 5, add a 1.5-second blank clip or split and extend a black frame after Clip 5.
+
+SECTION C — AUDIO WORKFLOW
+1. The audio is already embedded within each of the 5 video clips. No separate audio tracks need to be added or synced for the primary narration and ambient sounds.
+2. To ensure consistent volume across all clips, tap on each clip individually on the timeline and adjust its 'Volume' setting within the 'Volume' tool to 100%. (Note: If Veo clips have varying embedded volumes, this step normalizes them. If they are already consistent, this step has no effect.)
+3. Tap the 'Music' icon in the main toolbar.
+4. Tap 'Music Library'.
+5. In the search bar, type "space ambient" and select a track.
+6. Tap the '+' icon to add the selected music track to the timeline below the video clips.
+7. Tap on the music track on the timeline to select it.
+8. Tap the 'Volume' tool and set the music volume to exactly 8%.
+9. With the music track still selected, tap the 'Fade' tool.
+10. Set the 'Fade In' duration to 1.0 second.
+11. Set the 'Fade Out' duration to 2.0 seconds.
+
+SECTION D — COLOR GRADE
+1. Tap on Clip 1 on the timeline.
+2. Tap the 'Filter' tool.
+3. Select the 'Film' filter.
+4. Adjust the filter intensity slider to 65%.
+5. Tap the 'Adjust' tool within the Filter menu.
+6. Set the 'Color Temp' slider to a cooler value (e.g., -10).
+7. Tap the 'Back' arrow to return to the main Filter screen.
+8. Tap the 'Apply to All' icon (usually a checkmark with arrows) to apply this filter and adjustment to all 5 clips.
+
+SECTION E — TRANSITIONS BETWEEN CLIPS
+1. Tap the white transition icon located between Clip 1 and Clip 2 on the timeline.
+2. Select 'Dissolve' from the transition options.
+3. Set the transition duration to 0.3 seconds.
+4. Tap the white transition icon between Clip 2 and Clip 3.
+5. Select 'Dissolve' and set the duration to 0.3 seconds.
+6. Tap the white transition icon between Clip 3 and Clip 4.
+7. Select 'Dissolve' and set the duration to 0.3 seconds.
+8. Tap the white transition icon between Clip 4 and Clip 5.
+9. Select 'Dissolve' and set the duration to 0.3 seconds.
+
+SECTION F — CAPTION OVERLAY
+1. No text overlay is needed for this reel.
+
+SECTION G — FINAL EXPORT SETTINGS
+1. Tap the export icon (usually an upward-pointing arrow) in the top right corner.
+2. Ensure 'Resolution' is set to '1080*1920'.
+3. Ensure 'Frame Rate' is set to '30fps'.
+4. Set 'Quality' to 'High' (or the highest available option).
+5. Ensure 'Format' is set to 'MP4'.
+6. Tap 'Export' to begin the rendering process.

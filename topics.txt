@@ -1,26 +1,11 @@
-# SERIES 1: BrainLies (MIND category — 6 episodes)
-[MIND][SERIES:BrainLies] Why your brain edits your memories
-[MIND][SERIES:BrainLies] Why your brain fills in missing information
-[MIND][SERIES:BrainLies] Why your brain predicts before it perceives
-[MIND][SERIES:BrainLies] Why perception is not passive
-[MIND][SERIES:BrainLies] Why you see movement in still images
-[MIND][SERIES:BrainLies] Why boredom is an act of the brain
-
-# SERIES 2: InvisibleUniverse (COSMOS category — 5 episodes)
-[COSMOS][SERIES:InvisibleUniverse] Why stars are nuclear furnaces
-[COSMOS][SERIES:InvisibleUniverse] Why nothing can travel faster than light
 [COSMOS][SERIES:InvisibleUniverse] Why the future affects the past at quantum scale
 [COSMOS][SERIES:InvisibleUniverse] Why friction creates heat at the atomic level
 [COSMOS][SERIES:InvisibleUniverse] Why entropy always increases
-
-# SERIES 3: LifeCode (BIOLOGY category — 5 episodes)
 [BIOLOGY][SERIES:LifeCode] Why your body replaces itself every few years
 [BIOLOGY][SERIES:LifeCode] Why sleep is when your brain cleans itself
 [BIOLOGY][SERIES:LifeCode] Why your gut makes more serotonin than your brain
 [BIOLOGY][SERIES:LifeCode] Why DNA is nature oldest archive
 [BIOLOGY][SERIES:LifeCode] Why viruses are not quite alive
-
-# STANDALONE — post between series to test new categories
 [PHYSICS] Why time moves slower near gravity
 [CHEMISTRY] Why water is the strangest molecule
 [CHEMISTRY] Why fire is a chemical conversation

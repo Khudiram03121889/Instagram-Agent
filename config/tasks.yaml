@@ -336,14 +336,9 @@ archive_content_task:
        "--- CAPTION ---"
        "--- EDITING INSTRUCTIONS (VN APP) ---"
 
-    2. CALL the 'File Archiver Tool' with:
-       - content: The formatted string containing all four sections.
-       - topic: {topic} (The topic name provided).
-
-    You must explicitly call the tool to save the file.
+    Your final answer MUST be the perfectly formatted document containing all four sections.
   expected_output: >
-    Confirmation that the file was saved successfully with all four
-    sections including the VN editing instructions.
+    A single completely formatted text document containing all four sections perfectly assembled.
   agent: archivist
 
 generate_editing_task:
@@ -354,7 +349,10 @@ generate_editing_task:
 
     You have access to:
     - The validated 5-clip script (from the Script Validator)
+    - The generated JSON Prompts (from the Prompt Engineer)
     - The topic profile above (for category-specific filter and audio choices)
+
+    First, ANALYZE the generated JSON prompts to understand how the video and audio were created. Because the clips were generated with `generate_with_video: true`, recognize that the video and audio are intrinsically combined into a single file by the Veo model.
 
     YOUR OUTPUT must be a numbered checklist with EXACTLY these sections
     in this order. Do not skip any section. Do not add extra sections.
@@ -365,7 +363,7 @@ generate_editing_task:
     Give exact steps for:
     - How to create a new project in VN at 9:16 ratio
     - Import order of the 5 clips (Clip 1 first, Clip 5 last)
-    - Timeline arrangement confirmation
+    - Timeline arrangement confirmation. Explicitly state that since video and audio are pre-combined, no audio syncing is needed.
 
     ═══════════════════════════════════════
     SECTION B — CLIP TIMING & PAUSES
@@ -382,16 +380,12 @@ generate_editing_task:
     - How to add a freeze frame or black frame in VN for the pause
 
     ═══════════════════════════════════════
-    SECTION C — AUDIO FIXES
+    SECTION C — AUDIO WORKFLOW
     ═══════════════════════════════════════
-    Give exact steps for:
-    - How to locate the combined audio track for each Veo clip
-    - How to add a short audio crossfade (3-4 frames) between clips
-      to smooth out the merged narrator/ambient audio boundaries
-    - How to normalize the overall clip volume level across all 5 clips
-    - CRITICAL: DO NOT instruct the editor to separate narrator from ambient,
-      or to adjust ambient separately during pauses, because Veo generates
-      them as a single merged audio track.
+    Based on your analysis of the JSON prompts, give exact steps for:
+    - How to manage the audio considering the video and audio are already mixed into one file.
+    - DO NOT instruct the editor to extract audio, sync audio to video, or deal with narrator/ambient tracks separately.
+    - Keep instructions minimal here regarding the primary audio (e.g., normalizing the clip volume level across the 5 clips if needed).
     - How to add ONE separate background music track in VN that spans all 5 clips
       Use the topic's CATEGORY and the CATEGORY-SPECIFIC BACKGROUND MUSIC GUIDE
       from your backstory to select the correct music search term in VN

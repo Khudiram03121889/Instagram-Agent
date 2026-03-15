@@ -15,7 +15,6 @@ import yaml
 from dotenv import load_dotenv
 from crewai import Agent, Task, Crew, Process, LLM
 from tools.browser_tool import VideoGenerationTool
-from tools.file_tool import FileArchiverTool
 from tools.topic_classifier import classify_topic, format_profile_for_agent
 from playwright.sync_api import sync_playwright
 import re
@@ -82,7 +81,6 @@ def main():
 
     # Initialize Tools
     video_tool = VideoGenerationTool()
-    file_tool = FileArchiverTool()
 
     # --- Create Agents ---
     script_writer = Agent(
@@ -128,7 +126,6 @@ def main():
         backstory=agents_config['archivist']['backstory'],
         verbose=True,
         allow_delegation=False,
-        tools=[file_tool],
         llm=my_llm
     )
 
@@ -315,18 +312,27 @@ def main():
         ),
         expected_output=tasks_config['generate_editing_task']['expected_output'],
         agent=editing_advisor,
-        context=[task_validate, task4]  # needs validated script + caption
+        context=[task_validate, task2, task4]  # needs validated script + JSON prompts + caption
     )
 
     # Task 5: Archiving
     task5_desc = tasks_config['archive_content_task']['description'].replace("{topic}", topic)
+    
+    # Generate safe filename and directory for task 5 output
+    safe_topic = "".join(c for c in topic if c.isalnum() or c in (" ", "-", "_")).strip()
+    if not safe_topic:
+        safe_topic = "untitled_project"
+    safe_topic = safe_topic[:120]
+    archive_dir = os.getenv("ARCHIVE_DIR", "archive")
+    os.makedirs(archive_dir, exist_ok=True)
+    archive_file_path = os.path.join(archive_dir, f"{safe_topic}.txt")
     
     task5 = Task(
         description=task5_desc,
         expected_output=tasks_config['archive_content_task']['expected_output'],
         agent=archivist,
         context=[task_validate, task2, task4, task_editing],
-        tools=[file_tool]
+        output_file=archive_file_path
     )
 
     # --- Create Crew ---

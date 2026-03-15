@@ -1,0 +1,186 @@
+--- SCRIPT ---
+Clip 1: That distant gleam pierces the vast, silent void.
+Clip 2: To understand that piercing light, what fuels this immense power?
+Clip 3: Because of this immense power, hydrogen atoms collide, fusing into helium.
+Clip 4: That's why this atomic dance releases incredible energy, transforming matter.
+Clip 5: Which means stars are cosmic furnaces, igniting the universe's hidden potential.
+
+--- PROMPTS ---
+[
+  {
+    "clip_label": "CLIP 1",
+    "voice_text": "That distant gleam pierces the vast, silent void.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A wide, atmospheric shot of the deep-space cinematic void, with soft bioluminescent particle fields drifting imperceptibly slow, establishing the vast, dark cosmic scale. The color palette is deep indigo and midnight black with cold blue highlights.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 2",
+    "voice_text": "To understand that piercing light, what fuels this immense power?",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A slightly tighter shot, focusing on a single, brighter stellar core within the deep-space void, inviting closer inspection. Soft bioluminescent particle fields continue to drift, with a subtle hint of warm amber nebula glow appearing, emphasizing the mystery of its energy source.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 3",
+    "voice_text": "Because of this immense power, hydrogen atoms collide, fusing into helium.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A closer, focused view within the stellar core, depicting abstract representations of subatomic particles as tiny, glowing fireflies colliding and merging. The fusion process is visualized through subtle shifts in light and particle interaction, set against the deep indigo and midnight black void.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 4",
+    "voice_text": "That's why this atomic dance releases incredible energy, transforming matter.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A visual contrast showing the impact of the atomic dance. On one side, a tightly wound, controlled release of light representing fusion. On the other, expanding nebula patterns like unfurling silk, demonstrating the outward radiation and transformation of matter against the void.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 5",
+    "voice_text": "Which means stars are cosmic furnaces, igniting the universe's hidden potential.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "An intimate, calm shot of a single, radiant star in the deep-space void. Subtle, expansive nebula patterns are forming around it, hinting at future cosmic events. The slow orbital drift creates a sense of ongoing discovery and unseen potential, ending with a subtle forward hook.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  }
+]
+
+--- CAPTION ---
+The universe's hidden potential, ignited in stellar furnaces.
+A process that continues to shape all we know.
+
+Save this one. It gets more interesting on rewatch.
+#space
+#astronomy
+#sciencefacts
+#cosmicdust
+#stellarphysics
+
+--- EDITING INSTRUCTIONS (VN APP) ---
+SECTION A — IMPORT & TIMELINE SETUP
+1. Open VN app and tap the '+' icon to create a new project.
+2. Tap '9:16' at the top to set the aspect ratio for Instagram Reels.
+3. Tap 'Original' at the top right of the media library and select '9:16'.
+4. Tap 'Video' and import Clip 1, then Clip 2, then Clip 3, then Clip 4, and finally Clip 5.
+5. Tap the 'Play' icon in the center of the screen to add all imported clips to the timeline.
+6. Confirm that the clips are arranged sequentially on the timeline: Clip 1, Clip 2, Clip 3, Clip 4, Clip 5.
+7. Since the video and audio are pre-combined in each clip file, no separate audio syncing is required.
+
+SECTION B — CLIP TIMING & PAUSES
+1. Select Clip 1 (Hook). Keep its full duration.
+2. After Clip 1, add a pause of 1.5 seconds. To do this, tap 'Split' on the timeline at the end of Clip 1, then tap 'Delete' on the split clip to remove it, effectively creating a 1.5-second gap. Alternatively, tap 'Black Screen' under 'Material' and adjust its duration to 1.5 seconds, placing it after Clip 1.
+3. Select Clip 2 (Curiosity). Keep its full duration.
+4. After Clip 2, add a pause of 1.0 second by splitting and deleting the end of the clip or inserting a 1.0-second black screen.
+5. Select Clip 3 (Reason). Keep its full duration.
+6. After Clip 3, add a pause of 1.0 second by splitting and deleting the end of the clip or inserting a 1.0-second black screen.
+7. Select Clip 4 (Meaning). Keep its full duration.
+8. After Clip 4, add a pause of 2.0 seconds by splitting and deleting the end of the clip or inserting a 2.0-second black screen. This is the longest pause.
+9. Select Clip 5 (Anchor). Keep its full duration.
+10. After Clip 5, add a pause of 1.5 seconds by splitting and deleting the end of the clip or inserting a 1.5-second black screen.
+
+SECTION C — AUDIO WORKFLOW
+1. Recognize that the narrator audio and ambient sound are already mixed into each video clip. No separate audio manipulation is needed for these embedded tracks.
+2. Tap 'Music' in the bottom toolbar.
+3. Tap 'Music Library'.
+4. In the search bar, type 'space ambient' and select a track.
+5. Tap the '+' icon to add the selected music track to the timeline below the video clips.
+6. Tap on the music track on the timeline to select it.
+7. Tap 'Volume' in the bottom toolbar and set the volume to exactly 8%.
+8. Tap 'Fade In' in the bottom toolbar and set the duration to 1.0 second.
+9. Tap 'Fade Out' in the bottom toolbar and set the duration to 2.0 seconds.
+
+SECTION D — COLOR GRADE
+1. Tap on Clip 1 on the timeline to select it.
+2. Tap 'Filter' in the bottom toolbar.
+3. Select the 'Film' filter.
+4. Adjust the intensity slider to 65%.
+5. Tap the checkmark to confirm the filter.
+6. With Clip 1 still selected, tap the 'Apply to All' icon (usually a rectangle with arrows) in the filter menu or timeline options.
+7. Adjust the color temperature to be cooler. To do this, after applying the filter, tap 'Adjust' in the filter menu and decrease the 'Temp' slider towards blue.
+
+SECTION E — TRANSITIONS BETWEEN CLIPS
+1. Tap the small white square icon located between Clip 1 and Clip 2 on the timeline.
+2. Select the 'Dissolve' transition.
+3. Adjust the transition duration slider to 0.3 seconds.
+4. Tap the checkmark to confirm.
+5. Tap the white square icon between Clip 2 and Clip 3.
+6. Select the 'Dissolve' transition and set the duration to 0.3 seconds.
+7. Tap the white square icon between Clip 3 and Clip 4.
+8. Select the 'Dissolve' transition and set the duration to 0.3 seconds.
+9. Tap the white square icon between Clip 4 and Clip 5.
+10. Select the 'Dissolve' transition and set the duration to 0.3 seconds.
+
+SECTION F — CAPTION OVERLAY (OPTIONAL)
+1. No text overlay is needed for this reel.
+
+SECTION G — FINAL EXPORT SETTINGS
+1. Tap the export icon (usually an upward-pointing arrow) in the top right corner of the VN app.
+2. Ensure 'Resolution' is set to '1080 x 1920'.
+3. Ensure 'Frame Rate' is set to '30fps'.
+4. Ensure 'Quality' is set to 'High' (or the highest available option).
+5. Ensure 'Format' is set to 'MP4'.
+6. Tap 'Export' to begin the rendering process.
