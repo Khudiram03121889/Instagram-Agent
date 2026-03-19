@@ -1,4 +1,4 @@
-﻿write_script_task:
+write_script_task:
   description: >
     Write a 30-40 second Instagram Reel script about the topic: {topic}.
   
@@ -15,6 +15,25 @@
       its impact, and its mystery). The script should feel like a complete "mini-world"
       exploration of {topic}.
   
+      THE STORY RULE:
+      These 5 clips are ONE SINGLE STORY, not 5 separate facts.
+      Think of it like a 40-second mini-movie with a beginning, middle, and end.
+      Clip 1 — Opens the story from a real human experience or feeling.
+      Clip 2 — Raises the question: 'But why does this happen?'
+      Clip 3 — Gives the simple scientific reason in plain English.
+      Clip 4 — Shows the surprising or meaningful side of that reason.
+      Clip 5 — Brings it back to the viewer personally. Makes it real for them.
+
+      STORY TEST (run this before finalizing the script):
+      If someone watches only Clip 3 out of context — do they feel lost?
+      If yes — the story is connected. Good.
+      If no — the clips are too independent. Rewrite the bridges.
+
+      LANGUAGE TEST (run this before finalizing):
+      Read the script aloud. Does it sound like a real person talking?
+      If it sounds like reading a textbook — it is wrong. Rewrite.
+      Target: A 14-year-old listening should understand every single word.
+
       HARD REQUIREMENTS:
   
       STRUCTURE:
@@ -79,11 +98,25 @@
     - Total reel is 5 clips = ~44 seconds.
 
     STYLE:
-    - Tone must be calm, curious, and documentary-like.
+    - Tone must be warm, curious, and friendly — like a 22-year-old explaining to a friend.
+    - NOT documentary-like. NOT a BBC narrator. A curious person at a chai break.
     - Avoid fact-dumps, lists, or compressed explanations.
-    - Prefer short sentences over long ones.
+    - Prefer short spoken sentences over long ones.
+    - Use 'you', 'your', 'we', 'think about it', 'here is the thing', 'actually'.
     - LANGUAGE MUST MATCH THE CATEGORY in the TOPIC PROFILE (e.g. cosmic-scale words
       for COSMOS, perceptual words for MIND, transformation words for CHEMISTRY, etc.)
+      BUT friendliness always comes first — never sacrifice warmth for category style.
+
+    HUMAN TRANSLATION STEP (run this BEFORE writing any clip):
+    Ask yourself: 'What does this topic feel like in daily life?'
+    Topic: 'Why entropy always increases'
+    Human Translation: 'Why your room gets messy but never cleans itself'
+    Topic: 'Why friction creates heat'
+    Human Translation: 'Why rubbing your hands makes them warm'
+    Topic: 'Why time moves slower near gravity'
+    Human Translation: 'Why time moves faster for your head than your feet'
+    This human translation MUST appear somewhere in Clip 1 or Clip 2.
+    If the human translation is not in the script — the script is INVALID.
 
     SERIES CONTINUITY (when topic has a series prefix):
     If the topic belongs to a named series (e.g. BrainLies, InvisibleUniverse),

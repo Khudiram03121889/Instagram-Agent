@@ -1,19 +1,17 @@
-[COSMOS][SERIES:InvisibleUniverse] Why the future affects the past at quantum scale
-[COSMOS][SERIES:InvisibleUniverse] Why friction creates heat at the atomic level
-[COSMOS][SERIES:InvisibleUniverse] Why entropy always increases
-[BIOLOGY][SERIES:LifeCode] Why your body replaces itself every few years
-[BIOLOGY][SERIES:LifeCode] Why sleep is when your brain cleans itself
-[BIOLOGY][SERIES:LifeCode] Why your gut makes more serotonin than your brain
-[BIOLOGY][SERIES:LifeCode] Why DNA is nature oldest archive
-[BIOLOGY][SERIES:LifeCode] Why viruses are not quite alive
-[PHYSICS] Why time moves slower near gravity
-[CHEMISTRY] Why water is the strangest molecule
-[CHEMISTRY] Why fire is a chemical conversation
-[CHEMISTRY] Why rust is iron returning to its origin
-[CHEMISTRY] Why salt dissolves so perfectly in water
-[EARTH] Why the ocean drives our weather
-[EARTH] Why soil is the most complex ecosystem on Earth
-[EARTH] Why mountains are slowly moving
+[COSMOS][SERIES:InvisibleUniverse] Why your room always gets messy but never cleans itself
+[BIOLOGY][SERIES:LifeCode] Why you are not the same person you were 7 years ago
+[BIOLOGY][SERIES:LifeCode] Why you feel foggy and dull when you do not sleep enough
+[BIOLOGY][SERIES:LifeCode] Why your stomach actually controls your mood
+[BIOLOGY][SERIES:LifeCode] Why your body carries instructions older than dinosaurs
+[BIOLOGY][SERIES:LifeCode] Why a virus is stranger than anything alive or dead
+[PHYSICS] Why time moves faster for your head than for your feet
+[CHEMISTRY] Why water is the weirdest thing you drink every day
+[CHEMISTRY] What is actually happening when a candle burns
+[CHEMISTRY] Why metal slowly disappears when you leave it in rain
+[CHEMISTRY] Why salt completely disappears when you stir it in water
+[EARTH] Why the sea is the reason it rains in your city
+[EARTH] Why the dirt under your feet is more alive than you think
+[EARTH] Why the ground beneath you is silently moving right now
 [EARTH] Why coral reefs are the forests of the ocean
-[BIOLOGY] Why the human eye cannot see most of reality
-[BIOLOGY] Why you don't see the world as it is
+[BIOLOGY] How much of the world your eyes are hiding from you
+[BIOLOGY] Why what you see right now is already one second old

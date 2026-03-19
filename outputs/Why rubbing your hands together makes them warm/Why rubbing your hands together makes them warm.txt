@@ -1,0 +1,177 @@
+--- SCRIPT ---
+Clip 1: You rub your hands together when the chill bites deep, seeking warmth.
+Clip 2: To understand that simple friction, why does it create heat between your palms?
+Clip 3: Because of this particle collision, microscopic motion transforms into warmth.
+Clip 4: That energy conversion isn't lost; it radiates outward as gentle heat.
+Clip 5: And this isn't just theory, it's a fundamental energy exchange at play.
+
+--- PROMPTS ---
+[
+  {
+    "clip_label": "CLIP 1",
+    "voice_text": "You rub your hands together when the chill bites deep, seeking warmth.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A vast, impossibly deep void of indigo and black. Glimmering, bioluminescent particle fields drift slowly, like cosmic dust motes in an unseen current. The viewer is positioned as if drifting through this expanse, observing the scene from afar.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 2",
+    "voice_text": "To understand that simple friction, why does it create heat between your palms?",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "The camera drifts closer to a concentrated field of swirling cosmic particles, mimicking the idea of approaching hands. The bioluminescence intensifies slightly, drawing the viewer's focus inward towards the core of the particle field.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 3",
+    "voice_text": "Because of this particle collision, microscopic motion transforms into warmth.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "A tighter shot within the particle field. Individual, glowing particles are seen colliding with increasing frequency, like microscopic celestial bodies. Each impact generates a brief, warm amber flare, visually representing the transformation of motion into energy.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 4",
+    "voice_text": "That energy conversion isn't lost; it radiates outward as gentle heat.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "The perspective shifts to show the aftermath of the particle collisions. The warm amber flares expand outwards from the collision points, creating subtle, luminous waves that ripple through the surrounding indigo particles, visualizing the outward radiation of heat.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 5",
+    "voice_text": "And this isn't just theory, it's a fundamental energy exchange at play.",
+    "voice": {
+      "gender": "male",
+      "tone": "calm, documentary",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "David Attenborough measured calm"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
+      "volume": 0.1
+    },
+    "visual": "The camera pulls back slightly, revealing a single, softly glowing point of amber light amidst the vast, dark void, representing the fundamental energy exchange. The bioluminescent particles around it subtly pulse, suggesting the universal nature of this principle, hinting at more unseen forces within the cosmos.",
+    "video_style": "deep-space cinematic, ultra-dark void background with soft bioluminescent particle fields, slow orbital drift, IMAX-grade depth",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  }
+]
+
+--- CAPTION ---
+The universe hums with energy exchange.
+Save this if it made you think differently.
+#CosmicEnergy #EnergyExchange #PhysicsInMotion #ScienceFacts #InvisibleUniverse
+
+--- EDITING INSTRUCTIONS (VN APP) ---
+SECTION A — IMPORT & TIMELINE SETUP
+1. Open VN and tap "New Project".
+2. Select the 5 generated video clips from your library.
+3. Tap "Import".
+4. Confirm the project is set to a 9:16 aspect ratio.
+5. Verify that Clip 1 is on the primary timeline track, followed sequentially by Clip 2, Clip 3, Clip 4, and Clip 5.
+6. Recognize that each imported clip contains pre-mixed video and audio, so no separate audio syncing is required.
+
+SECTION B — CLIP TIMING & PAUSES
+1. For Clip 1 (Hook), keep the full duration. Add a 1.5-second pause after it.
+2. For Clip 2 (Curiosity), keep the full duration. Add a 1.0-second pause after it.
+3. For Clip 3 (Reason), keep the full duration. Add a 1.0-second pause after it.
+4. For Clip 4 (Meaning), keep the full duration. Add a 2.0-second pause after it.
+5. For Clip 5 (Anchor), keep the full duration. Add a 1.5-second pause after it.
+6. To create each pause, tap on the timeline after the clip ends, select "Split," then tap the newly created empty space and select "Delete." Alternatively, tap the empty space and select "Black" to insert a black frame for the duration of the pause.
+
+SECTION C — AUDIO WORKFLOW
+1. Since video and audio are pre-combined in each clip, no audio manipulation is needed for the narrator or ambient sounds within the clips. The volume levels will be consistent across the stitched clips.
+2. Tap "Music" in the bottom toolbar.
+3. Tap "Music Library".
+4. Search for "space ambient" or "cosmic drone" and select a track.
+5. Tap the "+" icon to add the selected music track to your project's audio layer.
+6. Tap on the music track layer in the timeline to select it.
+7. Tap "Volume" and set the volume to 8%.
+8. Tap "Fade" and set the fade-in duration to 1.0 second.
+9. Tap "Fade" again and set the fade-out duration to 2.0 seconds.
+
+SECTION D — COLOR GRADE
+1. Tap on Clip 1 in the timeline.
+2. Tap "Filter" in the bottom toolbar.
+3. Select the "Moody" filter.
+4. Set the filter intensity to 65%.
+5. Tap "Apply to All" to apply this filter to all 5 clips simultaneously.
+6. Tap "Adjust" within the Filter menu.
+7. Set Color Temperature to "Cooler" by moving the slider left.
+8. Set Brightness to -5%.
+9. Set Contrast to +5%.
+
+SECTION E — TRANSITIONS BETWEEN CLIPS
+1. Tap the small white square icon between Clip 1 and Clip 2 on the timeline.
+2. Select "Dissolve" from the transition options.
+3. Set the transition duration to 0.3 seconds.
+4. Tap the white square icon between Clip 2 and Clip 3.
+5. Select "Dissolve" and set the duration to 0.3 seconds.
+6. Tap the white square icon between Clip 3 and Clip 4.
+7. Select "Dissolve" and set the duration to 0.3 seconds.
+8. Tap the white square icon between Clip 4 and Clip 5.
+9. Select "Dissolve" and set the duration to 0.3 seconds.
+
+SECTION F — CAPTION OVERLAY (OPTIONAL)
+1. No text overlay is needed for this reel.
+
+SECTION G — FINAL EXPORT SETTINGS
+1. Tap the export icon (usually an arrow pointing up or out of a box) in the top right corner.
+2. Select "Custom".
+3. Set Resolution to 1080 x 1920.
+4. Set Frame Rate to 30 fps.
+5. Set Quality to "High".
+6. Ensure the Format is set to MP4.
+7. Tap "Export".

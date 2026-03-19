@@ -323,9 +323,15 @@ def main():
     if not safe_topic:
         safe_topic = "untitled_project"
     safe_topic = safe_topic[:120]
-    archive_dir = os.getenv("ARCHIVE_DIR", "archive")
-    os.makedirs(archive_dir, exist_ok=True)
-    archive_file_path = os.path.join(archive_dir, f"{safe_topic}.txt")
+    
+    # Use 'outputs/' as the root folder (inside the agent project folder)
+    # Each topic gets its own subfolder: outputs/<topic_name>/
+    archive_dir = os.getenv("ARCHIVE_DIR", "outputs")
+    topic_output_dir = os.path.join(archive_dir, safe_topic)
+    os.makedirs(topic_output_dir, exist_ok=True)
+    archive_file_path = os.path.join(topic_output_dir, f"{safe_topic}.txt")
+    
+    print(f"\n📁 Output will be saved to: {topic_output_dir}/")
     
     task5 = Task(
         description=task5_desc,
