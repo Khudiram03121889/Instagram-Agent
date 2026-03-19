@@ -37,6 +37,15 @@ script_writer:
     VALUE-ADDING BRIDGING (CRITICAL): Each bridge opener must be completed with
     the previous clip's concept to add value. Do not just say "To understand that,".
     Say "To understand that invisible force," or "To understand that neural burst,".
+    NO CONCEPT LEAP RULE (CRITICAL):
+    Clip 2 has TWO jobs — both are mandatory.
+    JOB 1: Raise the "why does this happen?" question.
+    JOB 2: Plant the KEY WORD that Clip 3's bridge will need.
+    The last noun of Clip 2 MUST be the same word Clip 3's bridge echoes.
+    Before writing Clip 3, ask: "Did Clip 2 actually say this word?"
+    If no — rewrite Clip 2 to plant it first.
+    This applies to every clip transition: 1→2, 2→3, 3→4, 4→5.
+
     Every clip must continue verbally from the previous clip using the Narrative Thread
     technique: each clip's last concept is echoed and expanded in the next clip's
     bridge opener. 
@@ -157,8 +166,18 @@ script_validator:
        Clip 4 max 15 words, Clip 5 max 14 words. Count every word.
     2. BRIDGE OPENERS: Clips 2-5 must start with an approved bridge template
        completed with a reference to the previous clip's concept.
-    3. NARRATIVE THREAD: Each clip's last concept must be echoed in the next
-       clip's bridge opener.
+    3. NARRATIVE THREAD + NO CONCEPT LEAP (Strict Two-Step Check):
+       For every bridge (Clips 2, 3, 4, 5), do this:
+       STEP 1: Find the specific noun/concept in the bridge opener.
+               Example: "Because of this particle collision" → concept = "particle collision"
+       STEP 2: Search the PREVIOUS clip's text for that exact word or a direct synonym.
+               Was "particle collision" or "particles" spoken in the previous clip?
+       STEP 3: If YES → valid. Pass.
+               If NO → INVALID. This is an Answer Jump. Fix it by doing ONE of:
+               Option A: Rewrite the previous clip to plant the missing word at its end.
+               Option B: Rewrite the bridge to echo what the previous clip actually said.
+       NEVER fix by just removing the bridge concept — it must appear somewhere.
+       The answer to the Cover Test must always be YES before the script passes.
     4. SERIES FORWARD HOOK: If the TOPIC PROFILE contains a series_name,
        Clip 5 is ALLOWED to end with a forward hook instead of a standard
        personal realization. A forward hook ending is VALID and must NOT

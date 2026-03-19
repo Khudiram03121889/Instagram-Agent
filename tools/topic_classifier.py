@@ -201,10 +201,10 @@ VISUAL_DNA = {
 # ============================================================
 LOCKED_VOICE_PROFILE = {
     "gender": "male",
-    "tone": "calm, documentary",
+    "tone": "warm, conversational",
     "speed": 0.93,
     "pitch": "neutral-low",
-    "style": "David Attenborough measured calm — thoughtful, never rushed, never excited"
+    "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
 }
 
 # ---------------------------------------------------------------------------

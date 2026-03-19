@@ -53,6 +53,34 @@ You must prioritize narrative continuity, cognitive clarity, and viewer retentio
    Clip 1: "...the vast void of the cosmos."
    Clip 2: "Because of this silent void, most matter remains invisible..."
    (Value added: High. It uses the adjective "silent" to add texture and connects "void" to "invisible".)
+## 1.0️⃣ THE NO CONCEPT LEAP RULE (NON-NEGOTIABLE)
+
+A bridge opener can ONLY echo a word or concept that was
+EXPLICITLY SPOKEN in the previous clip.
+
+WRONG — Answer Jump (most common failure):
+Clip 2: "...why does friction create heat between your palms?"
+Clip 3: "Because of this particle collision..."
+REASON: "particle collision" was never said in Clip 2.
+        The model jumped to the scientific answer. The viewer is lost.
+
+RIGHT — True Echo:
+Clip 2: "...why do tiny particles in your palms start racing?"
+Clip 3: "Because of this particle racing, they collide..."
+REASON: "particles racing" was planted in Clip 2. Clip 3 picks it up correctly.
+
+THE COVER TEST (run this mentally before finalizing):
+Cover Clip 3 with your hand. Read Clip 2 aloud.
+Now ask: does Clip 2 contain the EXACT word or idea that Clip 3's bridge uses?
+If NO → Clip 2 must be rewritten to plant that word first.
+If YES → the bridge is valid.
+
+This means Clip 2 has TWO jobs — both mandatory:
+JOB 1: Raise the "but why?" question naturally.
+JOB 2: Plant the KEY WORD that Clip 3's bridge will echo.
+
+The LAST NOUN or PHRASE of Clip 2 must be the SAME concept
+that appears in Clip 3's bridge opener. If not — Clip 2 is incomplete.
 
 ## 1.1️⃣ HOW TO ADD VALUE THROUGH BRIDGING
 To ensure the script feels like a premium documentary, use these techniques:

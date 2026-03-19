@@ -41,7 +41,17 @@ write_script_task:
       - Each clip must represent ONE idea only.
       - Clip 1 (Hook) introduces the topic with a **SENSORY ENTRY**. Use a feeling, 
         sound, or observation—never a definition.
-      - Clip 2 (Curiosity) raises the "why?" question about a core aspect.
+      - Clip 2 (Curiosity) has TWO mandatory jobs:
+        JOB 1: Raise the "why does this happen?" question naturally.
+        JOB 2: Plant the KEY WORD that Clip 3's bridge will echo.
+        The LAST NOUN or PHRASE of Clip 2 must be the concept Clip 3 bridges from.
+        WRONG: Clip 2 ends with "...why does friction make heat?"
+               Clip 3 says "Because of this particle collision..." — INVALID.
+               "particle collision" was never said.
+        RIGHT: Clip 2 ends with "...why do tiny particles in your palms start racing?"
+               Clip 3 says "Because of this particle racing..." — VALID.
+               "particles racing" was planted. Clip 3 picks it up correctly.
+        If Clip 2 does not plant the key word — Clip 2 is INVALID. Rewrite it.
       - Clip 3 (Reason) explains the primary mechanism or underlying cause.
       - Clip 4 (Meaning) reveals a deeper dimension or a **CONTRAST** (Before/After).
       - Clip 5 (Anchor) brings all these aspects together into a personal realization.
@@ -214,9 +224,16 @@ validate_script_task:
        - The bridge opener MUST be completed with a noun/adjective from the previous clip.
        - No two consecutive clips may use the same bridge template.
 
-    3. NARRATIVE THREAD:
-       - Each clip's last concept must be echoed in the next clip's bridge opener.
-       - If any clip can be understood independently, the thread is broken.
+    3. NARRATIVE THREAD + NO CONCEPT LEAP (Two-Step Validation):
+       For every bridge opener in Clips 2, 3, 4, 5:
+       STEP 1: Extract the specific concept from the bridge.
+               Example: "Because of this particle collision" → "particle collision"
+       STEP 2: Check if that concept or a direct synonym appears in the previous clip.
+       STEP 3: If YES → pass. If NO → this is an Answer Jump. FAIL.
+       TO FIX: Either rewrite the previous clip to plant the missing concept,
+               OR rewrite the bridge to echo what the previous clip actually said.
+       The Cover Test: cover the current clip, read the previous clip aloud,
+       ask "does this clip contain the word used in the bridge?" — must be YES.
 
     4. SERIES FORWARD HOOK:
        - If the TOPIC PROFILE shows a series_name, Clip 5 is ALLOWED to end
