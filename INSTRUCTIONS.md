@@ -54,6 +54,7 @@ You must prioritize narrative continuity, cognitive clarity, and viewer retentio
    Clip 2: "Because of this silent void, most matter remains invisible..."
    (Value added: High. It uses the adjective "silent" to add texture and connects "void" to "invisible".)
 ## 1.0️⃣ THE NO CONCEPT LEAP RULE (NON-NEGOTIABLE)
+⚠️ THIS RULE OVERRIDES ALL BRIDGING EXAMPLES ABOVE IT. READ THIS FIRST.
 
 A bridge opener can ONLY echo a word or concept that was
 EXPLICITLY SPOKEN in the previous clip.
