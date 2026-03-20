@@ -314,7 +314,8 @@ Every JSON prompt must include:
 "background_audio": {
   "generate_with_video": true,
   "type": "ambient sci-fi",
-  "volume": 0.12
+  "volume": 0.12,
+  "sfx_layers": "<from topic profile sfx_layers>"
 }
 
 This ensures audio continuity when clips are stitched.
@@ -371,7 +372,8 @@ Each clip must be output in this exact structure:
   "background_audio": {
     "generate_with_video": true,
     "type": "ambient sci-fi",
-    "volume": 0.12
+    "volume": 0.12,
+    "sfx_layers": "<from topic profile sfx_layers>"
   },
   "voice_text": "<exact spoken script for this clip>",
   "visual": "<clear, simple visual description>"
@@ -465,8 +467,9 @@ The caption must increase:
    **Avoid:**
    - “mind-blowing”
    - “you won’t believe”
-   - emojis
    - hashtags inside sentences
+   
+   (Emojis are ALLOWED and encouraged when they add warmth — use 1-2 max)
 
 ## 2️⃣ CAPTION STRUCTURE (CHOOSE ONE ONLY)
 The caption must follow one of these formats:

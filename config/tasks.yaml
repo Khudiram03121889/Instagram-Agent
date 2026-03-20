@@ -1,5 +1,11 @@
 write_script_task:
   description: >
+    BANNED WORDS — ABSOLUTE HARD STOP. NEVER USE THESE IN ANY CLIP:
+    vast, void, adrift, cosmic whisper, ignites, default network,
+    phenomenon, resonance, visceral, akin, cerebral, imperceptible,
+    immense, transcendent, ethereal, undulating
+    If you find yourself about to write any of these — stop and rewrite that sentence.
+
     Write a 30-40 second Instagram Reel script about the topic: {topic}.
   
       {topic_profile}
@@ -53,7 +59,18 @@ write_script_task:
                "particles racing" was planted. Clip 3 picks it up correctly.
         If Clip 2 does not plant the key word — Clip 2 is INVALID. Rewrite it.
       - Clip 3 (Reason) explains the primary mechanism or underlying cause.
-      - Clip 4 (Meaning) reveals a deeper dimension or a **CONTRAST** (Before/After).
+      - Clip 4 (Meaning) reveals a deeper dimension.
+
+      CLIP 4 CONTRAST RULE (mandatory — this is your most important clip):
+      Clip 4 must NOT continue the explanation from Clip 3.
+      It must flip to show ONE of:
+      - What would happen WITHOUT this phenomenon (consequence)
+      - How this breaks your expectation (reality vs intuition)  
+      - The macro scale of what you just explained at micro level
+      Wrong: "So entropy means energy spreads from order to disorder."
+      Right: "Without this, your coffee would stay hot forever and stars would never die."
+      If Clip 4 sounds like Clip 3 continued — it is wrong. Rewrite it.
+
       - Clip 5 (Anchor) brings all these aspects together into a personal realization.
       - Clips 2, 3, 4, and 5 MUST begin with a bridge opener TEMPLATE that you MUST
         complete using the previous clip's concept.
@@ -279,17 +296,12 @@ format_json_task:
     You MUST follow the rules in INSTRUCTIONS.md AND the TOPIC PROFILE above.
     The TOPIC PROFILE is the SINGLE SOURCE OF TRUTH for all visual and audio choices.
 
-    HARD REQUIREMENTS:
-
-    VISUAL (MANDATORY — NO CLICHÉS):
-    - video_style MUST come from the TOPIC PROFILE's "video_style" field.
-    - FORBIDDEN: Glowing brains, people walking, literal diagrams.
-    - REQUIRED: CINEMATIC METAPHORS (fireflies, heavy silk, ancient libraries).
-
     VISUAL-SCRIPT SYNC RULE (CRITICAL — ADD THIS):
-    Before writing each visual description, read the voice_text for that clip.
-    Ask: "What is the narrator literally talking about in this clip?"
-    The visual MUST reference that concept — not just the category's default aesthetic.
+    BEFORE WRITING EACH VISUAL, DO THIS FIRST:
+    1. Read the voice_text for this clip
+    2. Ask: what real-world thing or experience is the narrator describing?
+    3. The visual must show THAT THING in the style of the category DNA
+    The DNA sets the aesthetic. The voice_text sets the subject. Both must appear.
     
     Clip 1 says "Your room gets messy" → visual should show
     something that feels like disorder or scattered objects — not deep space.
@@ -301,7 +313,14 @@ format_json_task:
     RIGHT visual: "A cinematic macro shot of scattered glowing particles — 
     like tiny stars drifting apart from a central cluster, slowly 
     losing their formation, evoking the feeling of a room falling into disorder."
-    
+
+    HARD REQUIREMENTS:
+
+    VISUAL (MANDATORY — NO CLICHÉS):
+    - video_style MUST come from the TOPIC PROFILE's "video_style" field.
+    - FORBIDDEN: Glowing brains, people walking, literal diagrams.
+    - REQUIRED: CINEMATIC METAPHORS (fireflies, heavy silk, ancient libraries).
+
     The category visual DNA sets the STYLE. The script sets the SUBJECT.
     Both must be present in every visual description.
 
@@ -347,7 +366,8 @@ format_json_task:
         "background_audio": {
           "generate_with_video": true,
           "type": "<from topic profile audio_type>",
-          "volume": <from topic profile audio_volume>
+          "volume": <from topic profile audio_volume>,
+          "sfx_layers": "<from topic profile sfx_layers>"
         },
         "visual": "<rich, topic-specific scene description>",
         "video_style": "<from topic profile video_style>",
@@ -400,7 +420,7 @@ generate_caption_task:
     - Tone: Calm, Curious, Reflective — and category-appropriate.
     - Follow one of the formats: Quiet Insight, Gentle Curiosity, or Personal Anchor.
     - Use exactly 4-5 relevant science hashtags (match to the category, not just generic).
-    - NO emojis.
+    - Emojis are ALLOWED and encouraged when they add warmth — use 1-2 max.
 
     OUTPUT FORMAT:
     <Caption Text>

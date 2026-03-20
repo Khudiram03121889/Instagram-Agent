@@ -76,7 +76,8 @@ VISUAL_DNA = {
             "brain", "mind", "perception", "perceive", "memory", "memories",
             "conscious", "consciousness", "think", "thought", "feel", "sense",
             "see", "reality", "edit", "fill", "predict", "illusion", "neuron",
-            "cortex", "experience", "aware", "attention"
+            "cortex", "experience", "aware", "attention", "emotion", "stress",
+            "anxiety", "mood", "dull", "foggy"
         ],
     },
     "PHYSICS": {
@@ -131,7 +132,8 @@ VISUAL_DNA = {
             "life", "organism", "bacteria", "virus", "body", "blood", "heart",
             "nerve", "protein", "mitochondria", "atp", "photosynthesis",
             "grow", "divide", "reproduce", "species", "adapt", "survival",
-            "sleep", "breath", "breathe", "immune", "skin"
+            "sleep", "breath", "breathe", "immune", "skin", "digest", "gut",
+            "foggy", "tired", "hormone", "stomach", "mood"
         ],
     },
     "CHEMISTRY": {
@@ -294,9 +296,9 @@ def classify_topic(topic: str, category_override: str = None) -> dict:
                     continue
                 break
     
-    # If no keyword matched at all, fall back to COSMOS (safe default for abstract science)
+    # If no keyword matched at all, fall back to BIOLOGY (since most human-experience topics are biology-overtoned)
     if best_score == 0:
-        best_category = "COSMOS"
+        best_category = "BIOLOGY"
 
     dna = VISUAL_DNA[best_category]
 

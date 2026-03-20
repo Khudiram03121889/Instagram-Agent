@@ -342,17 +342,47 @@ def main():
         output_file=archive_file_path
     )
 
-    # --- Create Crew ---
-    crew = Crew(
-        agents=[script_writer, script_validator, prompt_engineer, browser_operator, caption_writer, editing_advisor, archivist],
-        tasks=[task1, task_validate, task2, task3, task4, task_editing, task5],
+    BANNED = ["vast", "void", "adrift", "ignites", "default network",
+              "phenomenon", "resonance", "cosmic whisper", "immense",
+              "ethereal", "cerebral", "imperceptible", "visceral"]
+    
+    def check_banned_words(script_text):
+        found = [w for w in BANNED if w.lower() in script_text.lower()]
+        if found:
+            print(f"⚠️ BANNED WORDS FOUND: {found}")
+            return False
+        return True
+
+    # --- Phase 1: Script Generation & Validation with Retry ---
+    max_retries = 3
+    for attempt in range(max_retries):
+        crew1 = Crew(
+            agents=[script_writer, script_validator],
+            tasks=[task1, task_validate],
+            verbose=True,
+            process=Process.sequential
+        )
+        crew1.kickoff()
+        
+        output_text = task_validate.output.raw_output if getattr(task_validate, 'output', None) else ""
+        if check_banned_words(output_text):
+            print("✅ Banned words check passed.")
+            break
+        else:
+            print(f"❌ Retrying script generation due to banned words... ({attempt+1}/{max_retries})")
+            task1.description += "\n\nCRITICAL RETRY WARNING: You used BANNED WORDS in the previous attempt. DO NOT USE: vast, void, adrift, ignites, default network, phenomenon, resonance, cosmic whisper, immense, ethereal, cerebral, imperceptible, visceral."
+
+    # --- Phase 2: Video Prompts, Generation, Caption, Editing, Archive ---
+    crew2 = Crew(
+        agents=[prompt_engineer, browser_operator, caption_writer, editing_advisor, archivist],
+        tasks=[task2, task3, task4, task_editing, task5],
         verbose=True,
         process=Process.sequential
     )
 
     # --- Kickoff ---
     try:
-        result = crew.kickoff()
+        result = crew2.kickoff()
         
         print("\n\n########################")
         print("## CREW EXECUTION ENDED ##")
