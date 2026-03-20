@@ -353,36 +353,25 @@ def main():
             return False
         return True
 
-    # --- Phase 1: Script Generation & Validation with Retry ---
-    max_retries = 3
-    for attempt in range(max_retries):
-        crew1 = Crew(
-            agents=[script_writer, script_validator],
-            tasks=[task1, task_validate],
-            verbose=True,
-            process=Process.sequential
-        )
-        crew1.kickoff()
-        
-        output_text = task_validate.output.raw_output if getattr(task_validate, 'output', None) else ""
-        if check_banned_words(output_text):
-            print("✅ Banned words check passed.")
-            break
-        else:
-            print(f"❌ Retrying script generation due to banned words... ({attempt+1}/{max_retries})")
-            task1.description += "\n\nCRITICAL RETRY WARNING: You used BANNED WORDS in the previous attempt. DO NOT USE: vast, void, adrift, ignites, default network, phenomenon, resonance, cosmic whisper, immense, ethereal, cerebral, imperceptible, visceral."
-
-    # --- Phase 2: Video Prompts, Generation, Caption, Editing, Archive ---
-    crew2 = Crew(
-        agents=[prompt_engineer, browser_operator, caption_writer, editing_advisor, archivist],
-        tasks=[task2, task3, task4, task_editing, task5],
+    # --- Create Single Crew ---
+    crew = Crew(
+        agents=[script_writer, script_validator, prompt_engineer, browser_operator, caption_writer, editing_advisor, archivist],
+        tasks=[task1, task_validate, task2, task3, task4, task_editing, task5],
         verbose=True,
         process=Process.sequential
     )
 
     # --- Kickoff ---
     try:
-        result = crew2.kickoff()
+        for attempt in range(3):
+            result = crew.kickoff()
+            output_text = task_validate.output.raw if getattr(task_validate, 'output', None) and hasattr(task_validate.output, 'raw') else ""
+            if check_banned_words(output_text):
+                print("✅ Banned words check passed.")
+                break
+            else:
+                print(f"❌ Banned words found. Retry {attempt+1}/3...")
+                task1.description += f"\n\nCRITICAL RETRY {attempt+1}: You used BANNED WORDS. NEVER USE: vast, void, adrift, ignites, default network, phenomenon, resonance, cosmic whisper, immense, ethereal, cerebral, imperceptible, visceral."
         
         print("\n\n########################")
         print("## CREW EXECUTION ENDED ##")

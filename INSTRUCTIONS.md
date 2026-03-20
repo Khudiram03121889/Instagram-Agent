@@ -230,10 +230,9 @@ If any answer is “no”, revise.
 
 ## 9️⃣ STYLE REFERENCE (IMPORTANT)
 Your scripts should feel similar to:
-- Calm science documentaries
-- Thoughtful explainers
-- Not classroom lectures
-- Not social-media hype
+- A curious friend explaining something fascinating at a chai break — warm, simple, personal.
+- NOT a documentary.
+- NOT a classroom lecture.
 
 ## 10️⃣ ABSOLUTE PROHIBITIONS
 You must NEVER:
