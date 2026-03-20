@@ -425,6 +425,29 @@ archive_content_task:
        "--- EDITING INSTRUCTIONS (VN APP) ---"
 
     Your final answer MUST be the perfectly formatted document containing all four sections.
+    
+    CRITICAL FORMAT RULE FOR SCRIPT SECTION:
+    The script MUST be formatted with clip labels exactly like this:
+    --- SCRIPT ---
+    Title: <title>
+    
+    Clip 1:
+    <text>
+    
+    Clip 2:
+    <text>
+    
+    Clip 3:
+    <text>
+    
+    Clip 4:
+    <text>
+    
+    Clip 5:
+    <text>
+    
+    If the script received does not have clip labels, add them based on line order.
+    Never output raw unlabelled lines for the script section.
   expected_output: >
     A single completely formatted text document containing all four sections perfectly assembled.
   agent: archivist

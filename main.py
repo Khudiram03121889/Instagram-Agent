@@ -74,7 +74,7 @@ def main():
     
     # Initialize LLM
     my_llm = LLM(
-        model="gemini/gemini-2.5-flash-lite",
+        model="gemini/gemini-2.5-flash",
         api_key=os.getenv("GEMINI_API_KEY"),
         temperature=0.7
     )
@@ -266,7 +266,8 @@ def main():
 
     # Task 1.5: Script Validation
     task_validate = Task(
-        description=tasks_config['validate_script_task']['description'],
+        description=tasks_config['validate_script_task']['description'] + 
+        f"\n\nTOPIC PROFILE FOR THIS SCRIPT:\n{topic_profile_str}",
         expected_output=tasks_config['validate_script_task']['expected_output'],
         agent=script_validator,
         context=[task1]
