@@ -211,6 +211,24 @@ validate_script_task:
 
     CHECK EVERY CLIP FOR:
 
+    BEFORE OUTPUTTING THE SCRIPT, do this mechanical check line by line:
+    
+    Line 1: Read Clip 2's first 3 words. Are they from this list?
+    "To understand that", "Because of this", "So what's happening",
+    "That's why", "And this isn't just", "What makes this", 
+    "And if you think", "In other words", "The reason this", "Which means"
+    If NOT → FAIL. Rewrite Clip 2 to start with an approved template.
+    
+    Line 2: Read Clip 3's first 3 words. Same check.
+    Line 3: Read Clip 4's first 3 words. Same check.
+    Line 4: Read Clip 5's first 3 words. Same check. Also check Clip 5
+    starts with a bridge opener, not a direct noun or pronoun.
+    
+    Line 5: Check if SERIES CONTEXT shows a series_name.
+    If yes → Clip 5 MUST end with a forward hook, not a personal realization.
+    Forward hooks always point forward. "Your room is..." is NOT a forward hook.
+    A forward hook sounds like: "The universe keeps even darker secrets than this."
+
     1. WORD COUNT (PER-CLIP LIMITS):
        - Clip 1 (Hook):     max 14 words
        - Clip 2 (Curiosity): max 13 words
@@ -267,6 +285,26 @@ format_json_task:
     - video_style MUST come from the TOPIC PROFILE's "video_style" field.
     - FORBIDDEN: Glowing brains, people walking, literal diagrams.
     - REQUIRED: CINEMATIC METAPHORS (fireflies, heavy silk, ancient libraries).
+
+    VISUAL-SCRIPT SYNC RULE (CRITICAL — ADD THIS):
+    Before writing each visual description, read the voice_text for that clip.
+    Ask: "What is the narrator literally talking about in this clip?"
+    The visual MUST reference that concept — not just the category's default aesthetic.
+    
+    Clip 1 says "Your room gets messy" → visual should show
+    something that feels like disorder or scattered objects — not deep space.
+    Use the cinematic metaphor style of the category but ANCHOR IT to the script.
+    
+    Example:
+    voice_text: "Your room gets messy all on its own, doesn't it?"
+    WRONG visual: "A wide atmospheric shot of a deep-space void..."
+    RIGHT visual: "A cinematic macro shot of scattered glowing particles — 
+    like tiny stars drifting apart from a central cluster, slowly 
+    losing their formation, evoking the feeling of a room falling into disorder."
+    
+    The category visual DNA sets the STYLE. The script sets the SUBJECT.
+    Both must be present in every visual description.
+
     - Clip 1 (Hook) visual: wide, atmospheric, establishes the cinematic world.
     - Clip 2 (Curiosity) visual: slightly tighter, a visual "lean-in" suggesting the question.
     - Clip 3 (Reason) visual: closer, shows the process or mechanism.
