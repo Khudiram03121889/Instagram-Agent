@@ -1,385 +1,177 @@
 write_script_task:
   description: >
-    BANNED WORDS — ABSOLUTE HARD STOP. NEVER USE THESE IN ANY CLIP:
-    vast, void, adrift, cosmic whisper, ignites, default network,
-    phenomenon, resonance, visceral, akin, cerebral, imperceptible,
-    immense, transcendent, ethereal, undulating
-    If you find yourself about to write any of these — stop and rewrite that sentence.
+    Write a 5-clip Instagram Reel script about: {topic}
 
-    Write a 30-40 second Instagram Reel script about the topic: {topic}.
-  
-      {topic_profile}
-  
-      You MUST follow the worldview, writing discipline, and structural framework
-      defined in INSTRUCTIONS.md. Treat it as non-negotiable law.
-      You MUST ALSO honour the TOPIC PROFILE above — your language, tone, and visual
-      awareness must reflect the cinematic category provided.
-  
-      YOUR GOAL: Provide a COMPREHENSIVE SYNTHESIS of the topic. Do not just focus
-      on one narrow fact. Instead, use the 5-clip sequence to bridge between the
-      most significant dimensions of the topic (e.g., its scale, its mechanism,
-      its impact, and its mystery). The script should feel like a complete "mini-world"
-      exploration of {topic}.
-  
-      THE STORY RULE:
-      These 5 clips are ONE SINGLE STORY, not 5 separate facts.
-      Think of it like a 40-second mini-movie with a beginning, middle, and end.
-      Clip 1 — Opens the story from a real human experience or feeling.
-      Clip 2 — Raises the question: 'But why does this happen?'
-      Clip 3 — Gives the simple scientific reason in plain English.
-      Clip 4 — Shows the surprising or meaningful side of that reason.
-      Clip 5 — Brings it back to the viewer personally. Makes it real for them.
+    {topic_profile}
 
-      STORY TEST (run this before finalizing the script):
-      If someone watches only Clip 3 out of context — do they feel lost?
-      If yes — the story is connected. Good.
-      If no — the clips are too independent. Rewrite the bridges.
+    TIMING CHOREOGRAPHY (HARD RULES):
+    - Exactly 5 clips, each designed for 8 seconds.
+    - Each clip must have exactly 2 short sentences.
+    - Sentence 1 must be 7-9 words.
+    - Sentence 2 must be 7-9 words.
+    - Total words per clip must be 15-17 (target 16).
+    - Maximum 1 comma per clip.
+    - Use simple common English that a 14-year-old can follow in one listen.
 
-      LANGUAGE TEST (run this before finalizing):
-      Read the script aloud. Does it sound like a real person talking?
-      If it sounds like reading a textbook — it is wrong. Rewrite.
-      Target: A 14-year-old listening should understand every single word.
+    STRUCTURE (ONE STORY):
+    - Clip 1: Hook from a daily-life moment.
+    - Clip 2: Curiosity + why-question.
+    - Clip 3: Simple reason/mechanism.
+    - Clip 4: Contrast/payoff (expectation vs reality).
+    - Clip 5: Personal anchor insight.
 
-      HARD REQUIREMENTS:
-  
-      STRUCTURE:
-      - Write exactly 5 clips.
-      - Each clip must represent ONE idea only.
-      - Clip 1 (Hook) introduces the topic with a **SENSORY ENTRY**. Use a feeling, 
-        sound, or observation—never a definition.
-      - Clip 2 (Curiosity) has TWO mandatory jobs:
-        JOB 1: Raise the "why does this happen?" question naturally.
-        JOB 2: Plant the KEY WORD that Clip 3's bridge will echo.
-        The LAST NOUN or PHRASE of Clip 2 must be the concept Clip 3 bridges from.
-        WRONG: Clip 2 ends with "...why does friction make heat?"
-               Clip 3 says "Because of this particle collision..." — INVALID.
-               "particle collision" was never said.
-        RIGHT: Clip 2 ends with "...why do tiny particles in your palms start racing?"
-               Clip 3 says "Because of this particle racing..." — VALID.
-               "particles racing" was planted. Clip 3 picks it up correctly.
-        If Clip 2 does not plant the key word — Clip 2 is INVALID. Rewrite it.
-      - Clip 3 (Reason) explains the primary mechanism or underlying cause.
-      - Clip 4 (Meaning) reveals a deeper dimension.
+    CONTINUITY RULES:
+    - Clips 2-5 must start with approved bridge openers.
+    - Every clip must connect to the previous clip with a clear echoed concept.
+    - Never start any clip as an isolated fact.
 
-      CLIP 4 CONTRAST RULE (mandatory — this is your most important clip):
-      Clip 4 must NOT continue the explanation from Clip 3.
-      It must flip to show ONE of:
-      - What would happen WITHOUT this phenomenon (consequence)
-      - How this breaks your expectation (reality vs intuition)  
-      - The macro scale of what you just explained at micro level
-      Wrong: "So entropy means energy spreads from order to disorder."
-      Right: "Without this, your coffee would stay hot forever and stars would never die."
-      If Clip 4 sounds like Clip 3 continued — it is wrong. Rewrite it.
+    LANGUAGE RULES:
+    - Avoid jargon and documentary words.
+    - Keep tone warm, conversational, and clear.
+    - Use everyday phrasing, not technical lecture style.
+    - Avoid vague lines like "change everything", "works like a map", or "clues may be hiding".
+    - Every clip must include one concrete, visualizable statement.
+    - Clip 5 must end with a clear personal takeaway, not a vague teaser.
 
-      - Clip 5 (Anchor) brings all these aspects together into a personal realization.
-      - Clips 2, 3, 4, and 5 MUST begin with a bridge opener TEMPLATE that you MUST
-        complete using the previous clip's concept.
-
-      WORD COUNT & COMPRESSION (STRICT — PER-CLIP LIMITS):
-      - Clip 1 (Hook):      max 14 words (~9 seconds)
-      - Clip 2 (Curiosity):  max 13 words (~8 seconds)
-      - Clip 3 (Reason):     max 13 words (~8 seconds)
-      - Clip 4 (Meaning):    max 15 words (~10 seconds)
-      - Clip 5 (Anchor):     max 14 words (~9 seconds)
-      - Total reel: ~44 seconds.
-      - Delete filler words (the, a, and). Use action verbs and adjective stacking.
-      - If a script isn't poetic and compressed, it is INVALID.
-
-    - Allowed bridge templates:
-      "To understand that [concept],", "Because of this [process],",
-      "So what's happening is [interaction],", "That's why [result],",
-      "And this isn't just theory, it's [application],",
-      "What makes this [concept] interesting is,",
-      "And if you think about it, [implication],",
-      "In other words, [simplification],",
-      "The reason this [phenomenon] matters is,",
-      "Which means [outcome],".
-    - For clips 2-5, the bridge opener MUST be the first words spoken and MUST
-      be completed with a noun or adjective that refers back to the previous clip.
-    - Do not repeat the same bridge template in back-to-back clips.
-    - Each clip must verbally connect to the previous clip and continue the same thought.
-
-    NARRATIVE THREAD (CRITICAL):
-    - Each clip's last word or concept must be echoed and expanded in the next
-      clip's bridge opener. This creates a verbal handshake between clips.
-    - **BAD Bridging (Mechanical):**
-      Clip 1: "...the speed of light."
-      Clip 2: "To understand that, we must look at..."
-      (REASON: "That" is too generic and adds no value.)
-    - **GOOD Bridging (Value-Adding):**
-      Clip 1: "...the speed of light."
-      Clip 2: "To understand that cosmic speed limit, we must look at..."
-      (REASON: It defines the speed as a "limit" and bridges the thought.)
-    - If any clip can be understood independently without the previous clip,
-      the script is INVALID.
-    - If any bridge opener is used without the echoing concept, the script is INVALID.
-
-    TIMING (CRITICAL — PER-CLIP LIMITS):
-    - Assume a calm narration speed of ~2 words per second.
-    - Clip 1: max 14 words (~9 seconds).
-    - Clip 2: max 13 words (~8 seconds).
-    - Clip 3: max 13 words (~8 seconds).
-    - Clip 4: max 15 words (~10 seconds).
-    - Clip 5: max 14 words (~9 seconds).
-    - If any clip exceeds its per-clip limit, the script is INVALID and must be revised.
-    - Total reel is 5 clips = ~44 seconds.
-
-    STYLE:
-    - Tone must be warm, curious, and friendly — like a 22-year-old explaining to a friend.
-    - NOT documentary-like. NOT a BBC narrator. A curious person at a chai break.
-    - Avoid fact-dumps, lists, or compressed explanations.
-    - Prefer short spoken sentences over long ones.
-    - Use 'you', 'your', 'we', 'think about it', 'here is the thing', 'actually'.
-    - LANGUAGE MUST MATCH THE CATEGORY in the TOPIC PROFILE (e.g. cosmic-scale words
-      for COSMOS, perceptual words for MIND, transformation words for CHEMISTRY, etc.)
-      BUT friendliness always comes first — never sacrifice warmth for category style.
-
-    HUMAN TRANSLATION STEP (run this BEFORE writing any clip):
-    Ask yourself: 'What does this topic feel like in daily life?'
-    Topic: 'Why entropy always increases'
-    Human Translation: 'Why your room gets messy but never cleans itself'
-    Topic: 'Why friction creates heat'
-    Human Translation: 'Why rubbing your hands makes them warm'
-    Topic: 'Why time moves slower near gravity'
-    Human Translation: 'Why time moves faster for your head than your feet'
-    This human translation MUST appear somewhere in Clip 1 or Clip 2.
-    If the human translation is not in the script — the script is INVALID.
-
-    SERIES CONTINUITY (when topic has a series prefix):
-    If the topic belongs to a named series (e.g. BrainLies, InvisibleUniverse),
-    write the script so it feels like one episode of a larger story.
-    Clip 5 (Anchor) must end with a subtle forward hook — a statement
-    that makes the viewer curious about the next episode.
-
-    Examples of forward hooks in Clip 5:
-    "And this is just one way your brain rewrites reality."
-    "The universe hides even stranger things than this."
-    "Your body does something even more unexpected while you sleep."
-
-    Never say "next video" or "part 2". Plant the curiosity naturally.
-    The viewer should feel like they are in the middle of a larger journey.
-
-    SERIES AWARENESS (READ THE TOPIC PROFILE SERIES CONTEXT BLOCK):
-    - If SERIES CONTEXT shows a series_name, this reel is one episode
-      in a larger series. The viewer may have watched previous episodes.
-    - Clip 5 MUST end with a forward hook that plants curiosity about
-      what comes next in the series. See examples below.
-    - If SERIES CONTEXT shows "standalone topic", ignore this rule entirely.
-    
-    FORWARD HOOK EXAMPLES BY CATEGORY:
-    MIND series:
-      "And this is just one way your brain rewrites your reality."
-      "Your brain hides something even stranger than this."
-    COSMOS series:
-      "The universe keeps even darker secrets than this."
-      "And this is only one layer of what space conceals."
-    BIOLOGY series:
-      "Your body runs processes far stranger than this one."
-      "And while you read this, something similar is happening inside you."
-    PHYSICS series:
-      "Time behaves even more strangely at smaller scales."
-      "And this is only where the strangeness begins."
-
-    FLOW:
-    - The script must follow this 5-clip cognitive sequence:
-      Hook -> Curiosity -> Reason -> Meaning -> Personal Anchor.
-    - If any clip can be understood independently without the previous clip,
-      the script is INVALID.
-
-    ENDING:
-    - For STANDALONE topics: Clip 5 must end with a personal realization
-      or quiet insight that connects the science back to the viewer.
-    - For SERIES topics: Clip 5 must end with a forward hook as described
-      in the SERIES AWARENESS block above. Do NOT add a personal realization
-      on top — the forward hook IS the ending for series episodes.
-    - Regardless of topic type, Clip 5 must always begin with a bridge opener.
-
-    OUTPUT FORMAT (STRICT - NO DEVIATION):
-    Title: <short, clear title>
+    OUTPUT FORMAT (STRICT):
+    Title: <short title>
 
     Clip 1:
-    <spoken script>
+    <text>
 
     Clip 2:
-    <spoken script>
+    <text>
 
     Clip 3:
-    <spoken script>
+    <text>
 
     Clip 4:
-    <spoken script>
+    <text>
 
     Clip 5:
-    <spoken script>
-
-    The script must be revised until all timing and continuity rules are satisfied.
+    <text>
   expected_output: >
-    A 5-clip reel script where Clip 1 is under 14 words, Clips 2-3 under 13 words,
-    Clip 4 under 15 words, and Clip 5 under 14 words. Clips 2-5 start with approved
-    bridge openers, each clip's last concept is echoed in the next clip's opener
-    (Narrative Thread), and the format is exactly as requested with no extra text.
-    Language style must match the topic category.
+    A 5-clip script that follows exact timing choreography:
+    every clip has 15-17 words, exactly 2 sentences (7-9 words each),
+    and bridge continuity from clip to clip.
   agent: script_writer
 
 validate_script_task:
   description: >
-    You are the Script Quality Validator. You receive a 5-clip reel script from
-    the Script Writer and your ONLY job is to validate it against the strict rules.
+    Validate the 5-clip script and rewrite ONLY failing clips.
 
-    CHECK EVERY CLIP FOR:
+    HARD CHECKS PER CLIP:
+    1) Word count must be 15-17.
+    2) Exactly 2 sentences.
+    3) Each sentence must be 7-9 words.
+    4) Max 1 comma.
+    5) Clips 2-5 must start with an approved bridge opener.
+    6) Bridge concept in each clip must appear in the previous clip.
 
-    BEFORE OUTPUTTING THE SCRIPT, do this mechanical check line by line:
-    
-    Line 1: Read Clip 2's first 3 words. Are they from this list?
-    "To understand that", "Because of this", "So what's happening",
-    "That's why", "And this isn't just", "What makes this", 
-    "And if you think", "In other words", "The reason this", "Which means"
-    If NOT → FAIL. Rewrite Clip 2 to start with an approved template.
-    
-    Line 2: Read Clip 3's first 3 words. Same check.
-    Line 3: Read Clip 4's first 3 words. Same check.
-    Line 4: Read Clip 5's first 3 words. Same check. Also check Clip 5
-    starts with a bridge opener, not a direct noun or pronoun.
-    
-    Line 5: Check if SERIES CONTEXT shows a series_name.
-    If yes → Clip 5 MUST end with a forward hook, not a personal realization.
-    Forward hooks always point forward. "Your room is..." is NOT a forward hook.
-    A forward hook sounds like: "The universe keeps even darker secrets than this."
-
-    1. WORD COUNT (PER-CLIP LIMITS):
-       - Clip 1 (Hook):     max 14 words
-       - Clip 2 (Curiosity): max 13 words
-       - Clip 3 (Reason):    max 13 words
-       - Clip 4 (Meaning):   max 15 words
-       - Clip 5 (Anchor):    max 14 words
-       - Count EVERY word including articles and bridge openers.
-
-    2. BRIDGE OPENERS (Clips 2-5):
-       - Each clip MUST start with one of the approved bridge templates.
-       - The bridge opener MUST be completed with a noun/adjective from the previous clip.
-       - No two consecutive clips may use the same bridge template.
-
-    3. NARRATIVE THREAD + NO CONCEPT LEAP (Two-Step Validation):
-       For every bridge opener in Clips 2, 3, 4, 5:
-       STEP 1: Extract the specific concept from the bridge.
-               Example: "Because of this particle collision" → "particle collision"
-       STEP 2: Check if that concept or a direct synonym appears in the previous clip.
-       STEP 3: If YES → pass. If NO → this is an Answer Jump. FAIL.
-       TO FIX: Either rewrite the previous clip to plant the missing concept,
-               OR rewrite the bridge to echo what the previous clip actually said.
-       The Cover Test: cover the current clip, read the previous clip aloud,
-       ask "does this clip contain the word used in the bridge?" — must be YES.
-
-    4. SERIES FORWARD HOOK:
-       - If the TOPIC PROFILE shows a series_name, Clip 5 is ALLOWED to end
-         with a forward hook instead of a standard personal realization.
-       - Do NOT flag or rewrite a forward hook ending in a series episode.
-       - If SERIES CONTEXT shows standalone, enforce standard ending rules.
+    APPROVED BRIDGE STARTS:
+    - To understand that
+    - Because of this
+    - So what's happening is
+    - That's why
+    - And this isn't just theory, it's
+    - What makes this
+    - And if you think about it,
+    - In other words,
+    - The reason this
+    - Which means
 
     RULES:
-    - If ALL clips pass → output the script EXACTLY as received, unchanged.
-    - If any clip FAILS → rewrite ONLY that clip. Do not touch passing clips.
-    - After rewriting, verify the fix passes all checks before outputting.
-    - Output in the same format as the original script.
+    - If all clips pass, return script unchanged.
+    - If any clip fails, rewrite ONLY failing clip(s).
+    - Preserve passing clips exactly as they are.
+    - Keep language simple and easy to understand.
+    - Return ONLY the final corrected script. No analysis. No checklist. No commentary.
+
+    OUTPUT FORMAT (STRICT):
+    Title: <short title>
+
+    Clip 1:
+    <text>
+
+    Clip 2:
+    <text>
+
+    Clip 3:
+    <text>
+
+    Clip 4:
+    <text>
+
+    Clip 5:
+    <text>
   expected_output: >
-    A validated 5-clip script that passes all word count, bridge opener, and
-    narrative thread checks. Format identical to the original script.
+    A validated 5-clip script that passes all timing and continuity checks.
+    Only failing clips may be rewritten.
   agent: script_validator
 
 format_json_task:
   description: >
-    Convert the previously generated Instagram Reel script into video-generation
-    JSON prompts.
+    Convert the validated reel script into a single JSON list with 5 clip objects.
 
     {topic_profile}
 
-    You MUST follow the rules in INSTRUCTIONS.md AND the TOPIC PROFILE above.
-    The TOPIC PROFILE is the SINGLE SOURCE OF TRUTH for all visual and audio choices.
+    HARD JSON CONTRACT (EVERY CLIP):
+    - Keep voice_text exactly as script text (no rewriting).
+    - Keep one identical voice object for all clips.
+    - Keep one identical background_audio object for all clips.
+    - background_audio MUST use keys: type, volume, sfx_layers, generate_with_video.
+    - Use topic profile video_style and audio_type exactly.
 
-    VISUAL-SCRIPT SYNC RULE (CRITICAL — ADD THIS):
-    BEFORE WRITING EACH VISUAL, DO THIS FIRST:
-    1. Read the voice_text for this clip
-    2. Ask: what real-world thing or experience is the narrator describing?
-    3. The visual must show THAT THING in the style of the category DNA
-    The DNA sets the aesthetic. The voice_text sets the subject. Both must appear.
-    
-    Clip 1 says "Your room gets messy" → visual should show
-    something that feels like disorder or scattered objects — not deep space.
-    Use the cinematic metaphor style of the category but ANCHOR IT to the script.
-    
-    Example:
-    voice_text: "Your room gets messy all on its own, doesn't it?"
-    WRONG visual: "A wide atmospheric shot of a deep-space void..."
-    RIGHT visual: "A cinematic macro shot of scattered glowing particles — 
-    like tiny stars drifting apart from a central cluster, slowly 
-    losing their formation, evoking the feeling of a room falling into disorder."
+    REQUIRED TIMING FIELDS:
+    - word_target: 16
+    - estimated_sec: numeric value between 7.6 and 8.2
+    - beat_map: {
+        "hook_frame": "0.0-1.2",
+        "mechanism_action": "1.2-5.2",
+        "payoff": "5.2-7.4",
+        "settle": "7.4-8.0"
+      }
+    - motion_intensity: "fast_structured"
 
-    HARD REQUIREMENTS:
-
-    VISUAL (MANDATORY — NO CLICHÉS):
-    - video_style MUST come from the TOPIC PROFILE's "video_style" field.
-    - FORBIDDEN: Glowing brains, people walking, literal diagrams.
-    - REQUIRED: CINEMATIC METAPHORS (fireflies, heavy silk, ancient libraries).
-
-    The category visual DNA sets the STYLE. The script sets the SUBJECT.
-    Both must be present in every visual description.
-
-    - Clip 1 (Hook) visual: wide, atmospheric, establishes the cinematic world.
-    - Clip 2 (Curiosity) visual: slightly tighter, a visual "lean-in" suggesting the question.
-    - Clip 3 (Reason) visual: closer, shows the process or mechanism.
-    - Clip 4 (Meaning) visual: **CONTRAST/BEFORE-AFTER**. Show the impact.
-    - Clip 5 (Anchor) visual: intimate, calm, viewer is part of the scene.
-
-    VOICE (LOCKED — NON-NEGOTIABLE):
-    - The "voice" object MUST match the TOPIC PROFILE's "voice_profile" EXACTLY.
-    - EVERY SINGLE CLIP must have the IDENTICAL "voice" object.
-    - NEVER change gender, tone, or speed between clips.
-    - One narrator tells the full story. Clip-to-clip voice changes destroy
-      the continuity of the stitched video.
-    - The voice settings from the TOPIC PROFILE override everything else.
-
-    AUDIO (LOCKED — NON-NEGOTIABLE):
-    - "background_audio.type" MUST come from the TOPIC PROFILE's "audio_type" field.
-      BANNED: "ambient sci-fi" — never use this generic fallback.
-    - "background_audio.volume" MUST come from the TOPIC PROFILE's "audio_volume" field.
-    - EVERY SINGLE CLIP must have the IDENTICAL "background_audio" object.
-    - Changing audio between clips breaks immersion when the video is stitched.
-
-    STRUCTURE:
-    - Return a SINGLE JSON LIST containing one object per clip.
-    - Each clip object MUST match the REQUIRED JSON STRUCTURE.
-    - Label each clip: "clip_label": "CLIP 1", "CLIP 2", etc.
-    - "voice_text" must match the script verbatim including bridge openers.
-    - Do not add, remove, or rewrite any words.
+    VISUAL-SCRIPT SYNC RULE:
+    - Visual must directly show what voice_text describes.
+    - Avoid abstract metaphor visuals.
+    - Use literal educational visuals with fast, clear motion.
 
     OUTPUT FORMAT (STRICT):
-    Return ONLY a valid JSON list. No markdown backticks. No commentary.
+    Return ONLY valid JSON list. No markdown fences. No commentary.
+
+    REQUIRED SHAPE:
     [
       {
         "clip_label": "CLIP 1",
-        "voice_text": "<exact clip text>",
-        "voice": {
-          "gender": "<from topic profile>",
-          "tone": "<from topic profile>",
-          "speed": <from topic profile>
+        "voice_text": "...",
+        "word_target": 16,
+        "estimated_sec": 7.9,
+        "beat_map": {
+          "hook_frame": "0.0-1.2",
+          "mechanism_action": "1.2-5.2",
+          "payoff": "5.2-7.4",
+          "settle": "7.4-8.0"
         },
+        "motion_intensity": "fast_structured",
+        "voice": {...},
         "background_audio": {
           "generate_with_video": true,
           "type": "<from topic profile audio_type>",
           "volume": <from topic profile audio_volume>,
           "sfx_layers": "<from topic profile sfx_layers>"
         },
-        "visual": "<rich, topic-specific scene description>",
-        "video_style": "<from topic profile video_style>",
+        "visual": "...",
+        "video_style": "...",
         "orientation": "portrait",
         "aspect_ratio": "9:16"
-      },
-      ...
+      }
     ]
   expected_output: >
-    A JSON list where every clip uses the topic profile's video_style, audio_type,
-    and identical voice settings. No clip may use a generic default style.
-    Voice and audio objects must be byte-for-byte identical across all clips.
+    A valid JSON list with 5 clips that includes the timing choreography fields
+    (word_target, estimated_sec, beat_map, motion_intensity) and preserves
+    strict voice/audio continuity across all clips.
   agent: prompt_engineer
 
 generate_video_task:
