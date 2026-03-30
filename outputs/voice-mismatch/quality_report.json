@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-03-30T14:35:10.431753Z",
+  "project_name": "voice-mismatch",
+  "status": "failed",
+  "error": "Clip 2: voice object differs from clip 1."
+}

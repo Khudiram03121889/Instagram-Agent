@@ -1,0 +1,157 @@
+[
+  {
+    "clip_label": "CLIP 1",
+    "voice_text": "You scratch a cut and skin starts closing. Inside, old instructions quietly tell cells what follows.",
+    "word_target": 16,
+    "estimated_sec": 7.9,
+    "beat_map": {
+      "hook_frame": "0.0-1.2",
+      "mechanism_action": "1.2-5.2",
+      "payoff": "5.2-7.4",
+      "settle": "7.4-8.0"
+    },
+    "motion_intensity": "fast_structured",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal.",
+      "delivery": "Warm, wondering"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "Portrait realistic high-quality microscopic imaging and accurate 3D educational model sequence. Hook frame shows a fingertip scratching a small fresh cut on human skin. Mechanism action cuts immediately beneath the skin surface: epithelial cells at the wound edge detect damage, migrate inward, and begin sealing the gap; nearby cells divide in clear organized layers; signaling molecules pulse between cells. Payoff reveals the wound opening visibly narrowing as a labeled cellular repair sequence proceeds step by step, showing that internal instructions guide what happens next. Settle on a nearly closed skin surface with active cells still moving underneath.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 2",
+    "voice_text": "Because of this, those instructions seem new today. Life kept reusing what already worked well.",
+    "word_target": 16,
+    "estimated_sec": 8.0,
+    "beat_map": {
+      "hook_frame": "0.0-1.2",
+      "mechanism_action": "1.2-5.2",
+      "payoff": "5.2-7.4",
+      "settle": "7.4-8.0"
+    },
+    "motion_intensity": "fast_structured",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal.",
+      "delivery": "Warm, wondering"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "Start with the same wound-repair cell behavior from Clip 1 so continuity feels seamless. Hook frame shows modern human cells closing tissue, looking active and current. Mechanism action expands into a fast educational timeline of different organisms and cell types across deep time—single-celled eukaryote, simple multicellular organism, fish embryo, mammal tissue—each using similar cell division, adhesion, and repair behaviors. Payoff highlights repeated conserved cellular machinery, with matching proteins and membrane actions reused again and again. Settle on a side-by-side comparison of similar repair steps across organisms to show life kept reusing what worked.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 3",
+    "voice_text": "So what's happening is old solutions kept staying. Cells still follow steps shaped before dinosaurs walked.",
+    "word_target": 16,
+    "estimated_sec": 7.8,
+    "beat_map": {
+      "hook_frame": "0.0-1.2",
+      "mechanism_action": "1.2-5.2",
+      "payoff": "5.2-7.4",
+      "settle": "7.4-8.0"
+    },
+    "motion_intensity": "fast_structured",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal.",
+      "delivery": "Warm, wondering"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "Hook frame opens on a precise 3D cell process already in motion: DNA transcription and protein production inside a living cell. Mechanism action moves through a deep-time educational sequence before dinosaurs: ancient early multicellular organisms in prehistoric seas, then zoom into their cells performing the same core steps seen in modern cells—DNA copied, proteins folded, membranes signaling, cells dividing in ordered phases. Payoff cuts to a modern human cell repeating the identical sequence, with visual matching of each step to show old solutions remained in use. Settle on a brief silhouette of pre-dinosaur life fading behind the modern cell.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 4",
+    "voice_text": "That's why many core moves still feel familiar. Your cells share ancient tricks with countless organisms.",
+    "word_target": 16,
+    "estimated_sec": 8.1,
+    "beat_map": {
+      "hook_frame": "0.0-1.2",
+      "mechanism_action": "1.2-5.2",
+      "payoff": "5.2-7.4",
+      "settle": "7.4-8.0"
+    },
+    "motion_intensity": "fast_structured",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal.",
+      "delivery": "Warm, wondering"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "Hook frame shows a human cell dividing cleanly in microscopic detail. Mechanism action rapidly builds a grid of accurate organisms—yeast, plant root tip, insect embryo, fish embryo, and human tissue—each shown performing the same core cellular moves: DNA replication, spindle formation, chromosome separation, membrane transport, and protein folding. Payoff emphasizes the shared ancient tricks by synchronizing these organisms doing matching steps at the same moment. Settle on the human cell centered among the others, visually linked by conserved cellular machinery.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 5",
+    "voice_text": "Which means your body carries ancient living history. And those old instructions still hide deeper stories.",
+    "word_target": 16,
+    "estimated_sec": 7.9,
+    "beat_map": {
+      "hook_frame": "0.0-1.2",
+      "mechanism_action": "1.2-5.2",
+      "payoff": "5.2-7.4",
+      "settle": "7.4-8.0"
+    },
+    "motion_intensity": "fast_structured",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal.",
+      "delivery": "Warm, wondering"
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "Hook frame begins inside living human tissue, then pulls back to show layers of cells working together in an organ. Mechanism action traces from tissue to single cell to nucleus to DNA, then overlays a deep-time lineage of ancient organisms connected to the same genetic and cellular machinery, making the body appear as preserved living history. Payoff reveals specific hidden detail still inside the instructions—DNA regions activating proteins, regulatory switches turning on and off, and molecular complexes opening another level of information. Settle on a close-up of DNA and chromatin still active and partially unexplored, ending with a subtle sense that more biological secrets remain to be uncovered in the LifeCode series.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  }
+]

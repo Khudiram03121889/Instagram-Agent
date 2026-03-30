@@ -1,16 +1,15 @@
-[BIOLOGY][SERIES:LifeCode] Why you are not the same person you were 7 years ago
-[BIOLOGY][SERIES:LifeCode] Why you feel foggy and dull when you do not sleep enough
-[BIOLOGY][SERIES:LifeCode] Why your stomach actually controls your mood
-[BIOLOGY][SERIES:LifeCode] Why your body carries instructions older than dinosaurs
-[BIOLOGY][SERIES:LifeCode] Why a virus is stranger than anything alive or dead
-[PHYSICS] Why time moves faster for your head than for your feet
-[CHEMISTRY] Why water is the weirdest thing you drink every day
-[CHEMISTRY] What is actually happening when a candle burns
-[CHEMISTRY] Why metal slowly disappears when you leave it in rain
-[CHEMISTRY] Why salt completely disappears when you stir it in water
-[EARTH] Why the sea is the reason it rains in your city
-[EARTH] Why the dirt under your feet is more alive than you think
-[EARTH] Why the ground beneath you is silently moving right now
-[EARTH] Why coral reefs are the forests of the ocean
-[BIOLOGY] How much of the world your eyes are hiding from you
-[BIOLOGY] Why what you see right now is already one second old
+[PHYSICS] Why metal feels colder than wood in the same room
+[PHYSICS] Why rubbing your hands makes them warm
+[PHYSICS] Why ice feels slippery under your feet
+[CHEMISTRY] Why onions make your eyes burn
+[CHEMISTRY] Why soap can remove oil but water cannot
+[CHEMISTRY] What actually happens when sugar disappears in tea
+[BIOLOGY] Why your fingers wrinkle in water
+[BIOLOGY] Why you feel sleepy after a heavy meal
+[BIOLOGY] Why your nose blocks one side at a time
+[MIND] Why you forget a name seconds after hearing it
+[MIND] Why a song gets stuck in your head
+[MIND] Why boredom feels so uncomfortable
+[EARTH] Why the sky turns orange at sunset
+[EARTH] Why the air smells different before rain
+[EARTH] Why lightning comes before thunder reaches you

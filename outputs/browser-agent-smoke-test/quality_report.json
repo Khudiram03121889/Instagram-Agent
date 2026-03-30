@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-27T18:24:13.093272Z",
+  "project_name": "browser-agent-smoke-test",
+  "status": "passed",
+  "clip_count": 5,
+  "checks": {
+    "word_count_range": "15-17",
+    "estimated_sec_range": "7.6-8.2",
+    "implied_wps_range": "1.95-2.1",
+    "motion_intensity": "fast_structured",
+    "beat_map": {
+      "hook_frame": "0.0-1.2",
+      "mechanism_action": "1.2-5.2",
+      "payoff": "5.2-7.4",
+      "settle": "7.4-8.0"
+    }
+  },
+  "clip_metrics": [
+    {
+      "clip": 1,
+      "word_count": 16,
+      "estimated_sec": 7.9,
+      "implied_wps": 2.025,
+      "overlap_count": 4
+    },
+    {
+      "clip": 2,
+      "word_count": 15,
+      "estimated_sec": 7.69,
+      "implied_wps": 1.951,
+      "overlap_count": 2
+    },
+    {
+      "clip": 3,
+      "word_count": 16,
+      "estimated_sec": 7.8,
+      "implied_wps": 2.051,
+      "overlap_count": 6
+    },
+    {
+      "clip": 4,
+      "word_count": 15,
+      "estimated_sec": 7.69,
+      "implied_wps": 1.951,
+      "overlap_count": 3
+    },
+    {
+      "clip": 5,
+      "word_count": 17,
+      "estimated_sec": 8.1,
+      "implied_wps": 2.099,
+      "overlap_count": 3
+    }
+  ]
+}

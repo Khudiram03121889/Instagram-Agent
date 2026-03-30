@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-03-30T14:35:10.438690Z",
+  "project_name": "missing-sync-terms",
+  "status": "failed",
+  "error": "Clip 1: missing required keys: sync_terms"
+}

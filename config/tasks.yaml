@@ -1,37 +1,79 @@
-write_script_task:
+build_story_blueprint_task:
   description: >
-    Write a 5-clip Instagram Reel script about: {topic}
+    Build a clarity-first story blueprint for this Instagram Reel topic:
+    {topic}
 
     {topic_profile}
 
-    TIMING CHOREOGRAPHY (HARD RULES):
-    - Exactly 5 clips, each designed for 8 seconds.
-    - Each clip must have exactly 2 short sentences.
-    - Sentence 1 must be 7-9 words.
-    - Sentence 2 must be 7-9 words.
-    - Total words per clip must be 15-17 (target 16).
-    - Maximum 1 comma per clip.
-    - Use simple common English that a 14-year-old can follow in one listen.
+    PIPELINE GOAL:
+    - Viewer understanding comes first.
+    - The explanation must feel smooth, connected, and easy to follow.
+    - Default to 5 clips.
+    - Use 6 clips only if 5 would feel too compressed.
+    - If the topic still feels crowded in 6 clips, narrow the topic angle.
 
-    STRUCTURE (ONE STORY):
-    - Clip 1: Hook from a daily-life moment.
-    - Clip 2: Curiosity + why-question.
-    - Clip 3: Simple reason/mechanism.
-    - Clip 4: Contrast/payoff (expectation vs reality).
-    - Clip 5: Personal anchor insight.
+    REQUIRED TOP-LEVEL FIELDS:
+    - topic_angle
+    - clip_count
+    - clips
 
-    CONTINUITY RULES:
-    - Clips 2-5 must start with approved bridge openers.
-    - Every clip must connect to the previous clip with a clear echoed concept.
-    - Never start any clip as an isolated fact.
+    REQUIRED PER-CLIP FIELDS:
+    - clip_number
+    - clip_role
+    - core_idea
+    - bridge_from_previous
+    - next_clip_seed
+    - viewer_takeaway
+    - visual_anchor_terms
 
-    LANGUAGE RULES:
-    - Avoid jargon and documentary words.
-    - Keep tone warm, conversational, and clear.
-    - Use everyday phrasing, not technical lecture style.
-    - Avoid vague lines like "change everything", "works like a map", or "clues may be hiding".
-    - Every clip must include one concrete, visualizable statement.
-    - Clip 5 must end with a clear personal takeaway, not a vague teaser.
+    ROLE ORDER RULE:
+    - 5-clip mode:
+      1 Hook
+      2 Question
+      3 Mechanism
+      4 Contrast/Payoff
+      5 Personal Takeaway
+    - 6-clip mode:
+      1 Hook
+      2 Question
+      3 Mechanism Part 1
+      4 Mechanism Part 2
+      5 Contrast/Payoff
+      6 Personal Takeaway
+
+    VISUAL ANCHOR RULE:
+    - visual_anchor_terms must contain 2-4 literal nouns or actions.
+    - No abstract metaphor anchors.
+    - They must be easy to show on screen.
+
+    OUTPUT FORMAT (STRICT):
+    Return ONLY valid JSON. No markdown fences. No commentary.
+  expected_output: >
+    A valid JSON story blueprint with a narrowed topic angle when needed and
+    5 or 6 ordered clips ready for script writing.
+  agent: story_blueprint_designer
+
+write_script_task:
+  description: >
+    Write a clarity-first Instagram Reel script about: {topic}
+
+    {topic_profile}
+
+    WRITING GOAL:
+    - Make the topic easy to understand in one listen.
+    - Follow the approved story blueprint exactly.
+    - Keep the sequence smooth and connected.
+
+    SCRIPT RULES:
+    - Use the blueprint's clip count and role order exactly.
+    - Each clip explains one idea only.
+    - Each clip should sound spoken, not compressed or slogan-like.
+    - Use 1 to 3 short sentences per clip.
+    - Clips 2+ must continue the planted concept from the previous clip.
+    - Use simple common English that a 14-year-old can follow.
+    - Avoid jargon unless you explain it immediately in plain English.
+    - Avoid vague lines, mystery-box phrasing, and poetic filler.
+    - End with a clear personal takeaway.
 
     OUTPUT FORMAT (STRICT):
     Title: <short title>
@@ -42,49 +84,29 @@ write_script_task:
     Clip 2:
     <text>
 
-    Clip 3:
-    <text>
-
-    Clip 4:
-    <text>
-
-    Clip 5:
-    <text>
+    Continue the same format until the final clip in the blueprint.
   expected_output: >
-    A 5-clip script that follows exact timing choreography:
-    every clip has 15-17 words, exactly 2 sentences (7-9 words each),
-    and bridge continuity from clip to clip.
+    A smooth, connected reel script that follows the approved blueprint and is
+    easy to understand in one listen.
   agent: script_writer
 
 validate_script_task:
   description: >
-    Validate the 5-clip script and rewrite ONLY failing clips.
+    Validate the reel script against the approved blueprint and rewrite ONLY failing clips.
 
-    HARD CHECKS PER CLIP:
-    1) Word count must be 15-17.
-    2) Exactly 2 sentences.
-    3) Each sentence must be 7-9 words.
-    4) Max 1 comma.
-    5) Clips 2-5 must start with an approved bridge opener.
-    6) Bridge concept in each clip must appear in the previous clip.
-
-    APPROVED BRIDGE STARTS:
-    - To understand that
-    - Because of this
-    - So what's happening is
-    - That's why
-    - And this isn't just theory, it's
-    - What makes this
-    - And if you think about it,
-    - In other words,
-    - The reason this
-    - Which means
+    VALIDATION GOALS:
+    1) Keep the blueprint clip count and role order.
+    2) Make sure each clip explains one idea clearly.
+    3) Make sure clips 2+ continue the planted concept from the previous clip.
+    4) Remove vague, boring, poetic, or over-compressed lines.
+    5) Ensure the contrast/payoff clip creates a real reveal or contrast.
+    6) Ensure the final clip ends with a direct takeaway, not a teaser.
 
     RULES:
-    - If all clips pass, return script unchanged.
-    - If any clip fails, rewrite ONLY failing clip(s).
+    - If all clips pass, return the script unchanged.
+    - If any clip fails, rewrite ONLY the failing clip(s).
     - Preserve passing clips exactly as they are.
-    - Keep language simple and easy to understand.
+    - Keep the language simple, spoken, and easy to visualize.
     - Return ONLY the final corrected script. No analysis. No checklist. No commentary.
 
     OUTPUT FORMAT (STRICT):
@@ -96,22 +118,15 @@ validate_script_task:
     Clip 2:
     <text>
 
-    Clip 3:
-    <text>
-
-    Clip 4:
-    <text>
-
-    Clip 5:
-    <text>
+    Continue the same format until the final clip in the script.
   expected_output: >
-    A validated 5-clip script that passes all timing and continuity checks.
+    A validated reel script that passes clarity, continuity, and takeaway checks.
     Only failing clips may be rewritten.
   agent: script_validator
 
 format_json_task:
   description: >
-    Convert the validated reel script into a single JSON list with 5 clip objects.
+    Convert the validated reel script into a single JSON list with 5 or 6 clip objects.
 
     {topic_profile}
 
@@ -119,24 +134,17 @@ format_json_task:
     - Keep voice_text exactly as script text (no rewriting).
     - Keep one identical voice object for all clips.
     - Keep one identical background_audio object for all clips.
-    - background_audio MUST use keys: type, volume, sfx_layers, generate_with_video.
+    - background_audio MUST use keys: generate_with_video, type, volume, sfx_layers.
     - Use topic profile video_style and audio_type exactly.
-
-    REQUIRED TIMING FIELDS:
-    - word_target: 16
-    - estimated_sec: numeric value between 7.6 and 8.2
-    - beat_map: {
-        "hook_frame": "0.0-1.2",
-        "mechanism_action": "1.2-5.2",
-        "payoff": "5.2-7.4",
-        "settle": "7.4-8.0"
-      }
-    - motion_intensity: "fast_structured"
+    - Add clip_role from the approved blueprint.
+    - Add sync_terms from the approved blueprint and narration concepts.
+    - Add visual_goal that states what the viewer should understand from this clip.
+    - The visual must stay inside the script's established concept. Do not invent new ideas.
 
     VISUAL-SCRIPT SYNC RULE:
     - Visual must directly show what voice_text describes.
-    - Avoid abstract metaphor visuals.
-    - Use literal educational visuals with fast, clear motion.
+    - Avoid abstract metaphors.
+    - Use literal educational visuals with readable motion and continuity.
 
     OUTPUT FORMAT (STRICT):
     Return ONLY valid JSON list. No markdown fences. No commentary.
@@ -145,16 +153,10 @@ format_json_task:
     [
       {
         "clip_label": "CLIP 1",
+        "clip_role": "Hook",
         "voice_text": "...",
-        "word_target": 16,
-        "estimated_sec": 7.9,
-        "beat_map": {
-          "hook_frame": "0.0-1.2",
-          "mechanism_action": "1.2-5.2",
-          "payoff": "5.2-7.4",
-          "settle": "7.4-8.0"
-        },
-        "motion_intensity": "fast_structured",
+        "sync_terms": ["..."],
+        "visual_goal": "...",
         "voice": {...},
         "background_audio": {
           "generate_with_video": true,
@@ -169,9 +171,8 @@ format_json_task:
       }
     ]
   expected_output: >
-    A valid JSON list with 5 clips that includes the timing choreography fields
-    (word_target, estimated_sec, beat_map, motion_intensity) and preserves
-    strict voice/audio continuity across all clips.
+    A valid JSON list with 5 or 6 clips that preserves strict voice/audio
+    continuity and adds clip_role, sync_terms, and visual_goal for each clip.
   agent: prompt_engineer
 
 generate_video_task:
@@ -186,18 +187,20 @@ generate_video_task:
        - json_content: The exact JSON string output from the previous task.
        - url: Use the TARGET URL provided below.
        - project_name: Use the PROJECT NAME provided below.
+       - dry_run: Use the DRY RUN value provided below.
 
-    CRITICAL: You must EXECUTE the tool, not describe it.
-    The tool will open a browser, click buttons, and generate videos.
+    CRITICAL:
+    - You must EXECUTE the tool, not describe it.
+    - The tool will validate sync locally before it launches Flow.
+    - If the tool fails, return the tool output exactly.
   expected_output: >
     The actual output from executing the Video Generation Browser Tool,
-    showing confirmation that videos were generated for each clip.
+    showing validation status or generation confirmation for each clip.
   agent: browser_operator
 
 generate_caption_task:
   description: >
-    Write a caption for the Instagram Reel based on the script provided by the
-    Script Validator.
+    Write a caption for the Instagram Reel based on the validated script.
 
     {topic_profile}
 
@@ -209,10 +212,10 @@ generate_caption_task:
     HARD REQUIREMENTS:
     - Do NOT explain the science again.
     - Max 2-4 short lines.
-    - Tone: Calm, Curious, Reflective — and category-appropriate.
+    - Tone: Calm, Curious, Reflective - and category-appropriate.
     - Follow one of the formats: Quiet Insight, Gentle Curiosity, or Personal Anchor.
-    - Use exactly 4-5 relevant science hashtags (match to the category, not just generic).
-    - Emojis are ALLOWED and encouraged when they add warmth — use 1-2 max.
+    - Use exactly 4-5 relevant science hashtags.
+    - Emojis are ALLOWED and encouraged when they add warmth - use 1-2 max.
 
     OUTPUT FORMAT:
     <Caption Text>
@@ -237,29 +240,13 @@ archive_content_task:
        "--- EDITING INSTRUCTIONS (VN APP) ---"
 
     Your final answer MUST be the perfectly formatted document containing all four sections.
-    
+
     CRITICAL FORMAT RULE FOR SCRIPT SECTION:
-    The script MUST be formatted with clip labels exactly like this:
-    --- SCRIPT ---
-    Title: <title>
-    
-    Clip 1:
-    <text>
-    
-    Clip 2:
-    <text>
-    
-    Clip 3:
-    <text>
-    
-    Clip 4:
-    <text>
-    
-    Clip 5:
-    <text>
-    
-    If the script received does not have clip labels, add them based on line order.
-    Never output raw unlabelled lines for the script section.
+    - Keep the title line.
+    - Preserve every clip label in order.
+    - Support either 5 or 6 clips.
+    - If the script received does not have clip labels, add them sequentially based on line order.
+    - Never output raw unlabelled lines for the script section.
   expected_output: >
     A single completely formatted text document containing all four sections perfectly assembled.
   agent: archivist
@@ -271,100 +258,44 @@ generate_editing_task:
     {topic_profile}
 
     You have access to:
-    - The validated 5-clip script (from the Script Validator)
-    - The generated JSON Prompts (from the Prompt Engineer)
-    - The topic profile above (for category-specific filter and audio choices)
+    - The validated reel script (5 or 6 clips)
+    - The generated JSON prompts
+    - The topic profile above
 
-    First, ANALYZE the generated JSON prompts to understand how the video and audio were created. Because the clips were generated with `generate_with_video: true`, recognize that the video and audio are intrinsically combined into a single file by the Veo model.
+    First, analyze the JSON prompts to understand how the video and audio were created.
+    Because the clips were generated with `generate_with_video: true`, recognize that
+    the video and audio are intrinsically combined into a single file by the Veo model.
 
-    YOUR OUTPUT must be a numbered checklist with EXACTLY these sections
-    in this order. Do not skip any section. Do not add extra sections.
+    YOUR OUTPUT must contain EXACTLY these sections in this order:
+    SECTION A - IMPORT & TIMELINE SETUP
+    SECTION B - CLIP TIMING & PAUSES
+    SECTION C - AUDIO WORKFLOW
+    SECTION D - COLOR GRADE
+    SECTION E - TRANSITIONS BETWEEN CLIPS
+    SECTION F - CAPTION OVERLAY (OPTIONAL)
+    SECTION G - FINAL EXPORT SETTINGS
 
-    ═══════════════════════════════════════
-    SECTION A — IMPORT & TIMELINE SETUP
-    ═══════════════════════════════════════
-    Give exact steps for:
-    - How to create a new project in VN at 9:16 ratio
-    - Import order of the 5 clips (Clip 1 first, Clip 5 last)
-    - Timeline arrangement confirmation. Explicitly state that since video and audio are pre-combined, no audio syncing is needed.
-
-    ═══════════════════════════════════════
-    SECTION B — CLIP TIMING & PAUSES
-    ═══════════════════════════════════════
-    For each of the 5 clips, specify:
-    - The clip's role (Hook / Curiosity / Reason / Meaning / Anchor)
-    - Whether to trim or keep full duration
-    - Exact pause to add AFTER each clip (in seconds):
-        After Clip 1: 1.5 seconds
-        After Clip 2: 1.0 second
-        After Clip 3: 1.0 second
-        After Clip 4: 2.0 seconds  ← longest pause, idea must land
-        After Clip 5: 1.5 seconds
-    - How to add a freeze frame or black frame in VN for the pause
-
-    ═══════════════════════════════════════
-    SECTION C — AUDIO WORKFLOW
-    ═══════════════════════════════════════
-    Based on your analysis of the JSON prompts, give exact steps for:
-    - How to manage the audio considering the video and audio are already mixed into one file.
-    - DO NOT instruct the editor to extract audio, sync audio to video, or deal with narrator/ambient tracks separately.
-    - Keep instructions minimal here regarding the primary audio (e.g., normalizing the clip volume level across the 5 clips if needed).
-    - How to add ONE separate background music track in VN that spans all 5 clips
-      Use the topic's CATEGORY and the CATEGORY-SPECIFIC BACKGROUND MUSIC GUIDE
-      from your backstory to select the correct music search term in VN
-    - How to set the background music track volume to exactly 8%
-    - How to add a 1-second fade-in at the start of the music track
-    - How to add a 2-second fade-out at the end of the music track
-
-    ═══════════════════════════════════════
-    SECTION D — COLOR GRADE
-    ═══════════════════════════════════════
-    Give exact steps for:
-    - Which VN filter to apply (use the CATEGORY from the topic profile
-      to pick from the CATEGORY-SPECIFIC FILTER GUIDE in your backstory)
-    - Exact filter intensity percentage
-    - How to apply the SAME filter to all 5 clips simultaneously in VN
-      (use VN's "Apply to All" feature)
-    - Color temperature direction (warmer or cooler)
-    - Brightness and contrast adjustments if needed (give exact values)
-
-    ═══════════════════════════════════════
-    SECTION E — TRANSITIONS BETWEEN CLIPS
-    ═══════════════════════════════════════
-    Give exact steps for:
-    - Which VN transition to use between each clip pair
-    - Duration of each transition (in frames or seconds)
-    - Rule: transitions must be SUBTLE — never flashy
-    - Recommended: "Dissolve" or "Fade" at 0.3 seconds maximum
-
-    ═══════════════════════════════════════
-    SECTION F — CAPTION OVERLAY (OPTIONAL)
-    ═══════════════════════════════════════
-    Based on the script, specify:
-    - Whether to add any on-screen text
-    - If yes: which clip, what text, what font style in VN,
-      what position (bottom center), what duration
-    - If no: state clearly "No text overlay needed for this reel"
-
-    ═══════════════════════════════════════
-    SECTION G — FINAL EXPORT SETTINGS
-    ═══════════════════════════════════════
-    Give exact VN export settings for Instagram:
-    - Resolution: 1080 x 1920 (9:16)
-    - Frame rate: 30fps
-    - Quality: Highest available in VN
-    - File format: MP4
-    - How to find these settings in VN before exporting
+    SECTION RULES:
+    - Support either 5 or 6 clips.
+    - In SECTION B, list the clips in order and use their clip_role from the JSON.
+    - Keep each generated clip at full duration unless the JSON clearly demands a trim.
+    - Add pauses by role:
+      Hook -> 1.5 seconds after the clip
+      Question -> 1.0 second after the clip
+      Mechanism / Mechanism Part 1 / Mechanism Part 2 -> 1.0 second after the clip
+      Contrast/Payoff -> 2.0 seconds after the clip
+      Personal Takeaway -> 1.5 seconds after the clip
+    - Explain how to add each pause in VN using a freeze frame or black frame.
+    - In SECTION C, do NOT instruct the editor to extract, sync, or separately manage narrator audio.
+    - Add one separate VN background music track across the whole reel at 8% volume with 1-second fade-in and 2-second fade-out.
+    - In SECTION E, keep transitions subtle. Recommended: Dissolve or Fade at 0.3 seconds maximum.
 
     OUTPUT FORMAT (MANDATORY):
-    Output plain text only. No JSON. No markdown headers.
-    Use the section headers exactly as shown above.
-    Number every instruction within each section starting from 1.
-    Be specific. Be short per step. One action per numbered point.
-
+    - Output plain text only.
+    - Use the section headers exactly as shown above.
+    - Number every instruction within each section starting from 1.
+    - Be specific. Be short per step. One action per numbered point.
   expected_output: >
-    A complete 7-section editing checklist specific to VN app and the
-    topic's science category. Every instruction is numbered, actionable,
-    and specific to VN. No vague suggestions. Total output should be
-    readable in under 2 minutes and executable in under 20 minutes.
+    A complete 7-section editing checklist specific to VN app, the topic's science
+    category, and the reel's clip count. Every instruction is numbered and actionable.
   agent: editing_advisor

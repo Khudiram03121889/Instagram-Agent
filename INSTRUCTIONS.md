@@ -135,12 +135,12 @@ To stay under the 15-word limit while maintaining a "premium" feel:
 3. **Adjective Stacking:** Use "Cold, silent void" instead of "The void is cold and silent."
 4. **Bridge Integration:** The bridge MUST be part of the first sentence's flow, not a separate introductory clause.
 
-## 2.2️⃣ VISUAL METAPHOR RULE (FOR PROMPT ENGINEER)
-❌ FORBIDDEN: Visual clichés (glowing brains, people walking, simple diagrams).
-✅ REQUIRED: Cinematic metaphors. 
-*   Instead of "Neurons firing," use "A field of gold fireflies pulsing in a dark forest."
-*   Instead of "Gravity pulling," use "A heavy silk sheet bending under a lead weight."
-*   Instead of "DNA," use "An ancient, glowing library where books write themselves."
+## 2.2️⃣ DIRECT EDUCATIONAL VISUALS (FOR PROMPT ENGINEER)
+❌ FORBIDDEN: Abstract cinematic metaphors (fireflies for neurons, silk for gravity, libraries for DNA).
+✅ REQUIRED: Direct, explicit, high-quality educational visuals.
+*   Instead of "A field of gold fireflies," use "A clear, realistic 3D visualization of neurons firing and transmitting signals."
+*   Instead of "A heavy silk sheet," use "A highly accurate physical demonstration or model of gravity."
+*   Instead of "An ancient library," use "A cinematic macro shot of a structured DNA double helix."
 
 ## 3️⃣ LANGUAGE & TONE RULES
 
@@ -326,16 +326,16 @@ This ensures audio continuity when clips are stitched.
 - Assume each clip ≈ 6–8 seconds naturally
 
 **B. Visual Design**
-- Visuals must support the spoken idea
+- Visuals must LITERALLY support the explicit spoken scientific idea
 - Prefer:
-  - contrasts (slow vs fast)
-  - simple motion
-  - minimal symbolism
+  - clear demonstrating action
+  - realistic or high-quality educational 3D models
+  - direct physical contrasts
 - Avoid:
+  - abstract cinematic metaphors (e.g., fireflies, silk)
   - people walking without meaning
-  - overly abstract effects
-  - diagrams, equations, labels
-- If a clip cannot be visualized simply, choose the least distracting visual
+  - confusingly dense equations (keep visuals clean and easy to grasp)
+- Simple illustrations, clean models, or text-free animations are ACCEPTABLE and ENCOURAGED if they are the best way to explain the concept.
 
 **C. Continuity**
 - Assume clips will be stitched in order

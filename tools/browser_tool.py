@@ -2,7 +2,7 @@ import os
 import time
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Type, List, Optional
 from pydantic import BaseModel, Field
 from crewai.tools import BaseTool
@@ -17,44 +17,28 @@ class VideoGenInput(BaseModel):
     dry_run: bool = Field(False, description="Validate prompts locally but skip browser launch and Flow credit usage.")
 
 
-TARGET_WORD_COUNT = 16
-MIN_WORD_COUNT = 15
-MAX_WORD_COUNT = 17
-MIN_ESTIMATED_SEC = 7.6
-MAX_ESTIMATED_SEC = 8.2
-MIN_WPS = 1.95
-MAX_WPS = 2.10
-EXPECTED_MOTION_INTENSITY = "fast_structured"
-EXPECTED_BEAT_MAP = {
-    "hook_frame": "0.0-1.2",
-    "mechanism_action": "1.2-5.2",
-    "payoff": "5.2-7.4",
-    "settle": "7.4-8.0",
+MIN_CLIP_COUNT = 5
+MAX_CLIP_COUNT = 6
+MIN_WORD_COUNT = 8
+MAX_WORD_COUNT = 42
+MAX_SENTENCE_COUNT = 3
+EXPECTED_CLIP_ROLE_SEQUENCES = {
+    5: ["Hook", "Question", "Mechanism", "Contrast/Payoff", "Personal Takeaway"],
+    6: [
+        "Hook",
+        "Question",
+        "Mechanism Part 1",
+        "Mechanism Part 2",
+        "Contrast/Payoff",
+        "Personal Takeaway",
+    ],
 }
-ALLOWED_BRIDGE_PREFIXES = [
-    "to understand that",
-    "because of this",
-    "so what's happening is",
-    "that's why",
-    "and this isn't just theory, it's",
-    "what makes this",
-    "and if you think about it,",
-    "in other words,",
-    "the reason this",
-    "which means",
-]
-REFERENTIAL_BRIDGE_PREFIXES = {
-    "to understand that",
-    "because of this",
-    "so what's happening is",
-    "that's why",
-    "and this isn't just theory, it's",
-    "what makes this",
-    "and if you think about it,",
-    "in other words,",
-    "the reason this",
-    "which means",
-}
+REQUIRED_BACKGROUND_AUDIO_KEYS = (
+    "generate_with_video",
+    "type",
+    "volume",
+    "sfx_layers",
+)
 STOPWORDS = {
     "a", "an", "and", "are", "as", "at", "be", "because", "by", "for", "from",
     "has", "have", "how", "if", "in", "into", "is", "it", "its", "of", "on",
@@ -108,6 +92,18 @@ ERROR_STATE_KEYWORDS = (
     "not enough credits",
     "out of credits",
 )
+SETTINGS_MENU_SELECTORS = [
+    "button[aria-haspopup='menu']",
+    "button[id*='radix']",
+]
+MODEL_CONTROL_SELECTORS = [
+    "button[role='combobox']:has-text('Veo')",
+    "select:has-text('Veo')",
+]
+MODEL_OPTION_SELECTORS = [
+    "[role='option']:has-text('Veo 3.1 - Fast')",
+    "option:has-text('Veo 3.1 - Fast')",
+]
 
 
 def _safe_slug(value: str) -> str:
@@ -132,36 +128,19 @@ def _important_tokens(text: str, min_len: int = 4) -> List[str]:
     return [t for t in tokens if len(t) >= min_len and t not in STOPWORDS]
 
 
-def _extract_bridge_concept_tokens(clip_text: str) -> List[str]:
-    text = clip_text.strip().lower()
-    for prefix in ALLOWED_BRIDGE_PREFIXES:
-        if text.startswith(prefix):
-            concept_part = text[len(prefix):].strip()
-            if "," in concept_part:
-                concept_part = concept_part.split(",", 1)[0].strip()
-            concept_tokens = _important_tokens(concept_part, min_len=3)
-            if concept_tokens:
-                return concept_tokens
-            # Fallback: if bridge opener is followed by punctuation and then a concept,
-            # use early tokens from the remaining line as the bridge concept.
-            trailing_tokens = _important_tokens(text[len(prefix):], min_len=3)
-            return trailing_tokens[:3]
+def _normalize_string_list(value) -> List[str]:
+    if isinstance(value, list):
+        return [_normalize_space(str(item)) for item in value if _normalize_space(str(item))]
+    if isinstance(value, str):
+        split_values = re.split(r"[,\n]", value)
+        return [_normalize_space(item) for item in split_values if _normalize_space(item)]
     return []
 
 
-def _matched_bridge_prefix(clip_text: str) -> str:
-    text = clip_text.strip().lower()
-    for prefix in ALLOWED_BRIDGE_PREFIXES:
-        if text.startswith(prefix):
-            return prefix
-    return ""
-
-
-def _check_visual_overlap(voice_text: str, visual: str) -> tuple[bool, str, int]:
-    voice_tokens = set(_important_tokens(voice_text))
-    visual_tokens = set(_important_tokens(visual))
+def _check_visual_overlap(voice_text: str, visual: str, visual_goal: str = "") -> tuple[bool, str, int]:
+    voice_tokens = set(_important_tokens(voice_text, min_len=3))
+    visual_tokens = set(_important_tokens(f"{visual_goal} {visual}", min_len=3))
     overlap = voice_tokens.intersection(visual_tokens)
-    # Keep threshold adaptive so sparse voice text is not over-penalized.
     required_overlap = 1 if len(voice_tokens) <= 4 else 2
     if len(overlap) < required_overlap:
         return False, (
@@ -170,7 +149,7 @@ def _check_visual_overlap(voice_text: str, visual: str) -> tuple[bool, str, int]
     return True, "ok", len(overlap)
 
 
-def _check_voice_timing(voice_text: str, estimated_sec: float, clip_number: int) -> List[str]:
+def _check_voice_density(voice_text: str, clip_number: int) -> List[str]:
     errors = []
     words = _word_count(voice_text)
     if words < MIN_WORD_COUNT or words > MAX_WORD_COUNT:
@@ -179,92 +158,66 @@ def _check_voice_timing(voice_text: str, estimated_sec: float, clip_number: int)
         )
 
     sentence_counts = _sentence_word_counts(voice_text)
-    if len(sentence_counts) != 2:
-        errors.append(f"Clip {clip_number}: must have exactly 2 sentences, found {len(sentence_counts)}.")
-    else:
-        for idx, sentence_words in enumerate(sentence_counts, start=1):
-            if sentence_words < 7 or sentence_words > 9:
-                errors.append(
-                    f"Clip {clip_number}: sentence {idx} has {sentence_words} words (required 7-9)."
-                )
-
-    comma_count = voice_text.count(",")
-    if comma_count > 1:
-        errors.append(f"Clip {clip_number}: has {comma_count} commas (max 1).")
-
-    if estimated_sec < MIN_ESTIMATED_SEC or estimated_sec > MAX_ESTIMATED_SEC:
+    if not sentence_counts:
+        errors.append(f"Clip {clip_number}: must contain at least one sentence.")
+    elif len(sentence_counts) > MAX_SENTENCE_COUNT:
         errors.append(
-            f"Clip {clip_number}: estimated_sec {estimated_sec} is outside {MIN_ESTIMATED_SEC}-{MAX_ESTIMATED_SEC}."
+            f"Clip {clip_number}: has {len(sentence_counts)} sentences (max {MAX_SENTENCE_COUNT})."
         )
 
-    if estimated_sec > 0:
-        implied_wps = words / estimated_sec
-        if implied_wps < MIN_WPS or implied_wps > MAX_WPS:
-            errors.append(
-                f"Clip {clip_number}: implied speech speed {implied_wps:.2f} wps is outside {MIN_WPS}-{MAX_WPS}."
-            )
-    else:
-        errors.append(f"Clip {clip_number}: estimated_sec must be > 0.")
-
     return errors
 
 
-def _normalize_timing_metadata(word_count: int, estimated_sec: float) -> float:
-    # Use clip metadata as a hint, but keep final value inside target window
-    # to avoid wasting retries for tiny arithmetic drift from the LLM.
-    sec = estimated_sec if estimated_sec > 0 else (word_count / 2.0)
-    sec = max(MIN_ESTIMATED_SEC, min(MAX_ESTIMATED_SEC, sec))
-
-    implied_wps = word_count / sec if sec > 0 else 0
-    if implied_wps < MIN_WPS:
-        sec = min(MAX_ESTIMATED_SEC, word_count / MIN_WPS)
-    elif implied_wps > MAX_WPS:
-        sec = max(MIN_ESTIMATED_SEC, word_count / MAX_WPS)
-
-    return round(sec, 2)
-
-
-def _check_bridge_continuity(items: List[dict]) -> List[str]:
+def _check_sync_terms(voice_text: str, visual: str, visual_goal: str, sync_terms: List[str], clip_number: int) -> List[str]:
     errors = []
-    if len(items) < 2:
+    if len(sync_terms) < 2:
+        errors.append(f"Clip {clip_number}: sync_terms must include at least 2 items.")
         return errors
 
-    for idx in range(1, len(items)):
-        clip_number = idx + 1
-        current_text = str(items[idx].get("voice_text", "")).strip().lower()
-        previous_text = str(items[idx - 1].get("voice_text", "")).strip().lower()
+    combined_visual = f"{visual_goal} {visual}"
+    voice_tokens = set(_important_tokens(voice_text, min_len=3))
+    visual_tokens = set(_important_tokens(combined_visual, min_len=3))
 
-        matched_prefix = _matched_bridge_prefix(current_text)
-        if not matched_prefix:
-            errors.append(
-                f"Clip {clip_number}: does not start with an approved bridge opener."
-            )
-            continue
+    matched_visual_terms = 0
+    matched_voice_terms = 0
+    for term in sync_terms:
+        term_tokens = set(_important_tokens(term, min_len=3))
+        if term_tokens.intersection(visual_tokens):
+            matched_visual_terms += 1
+        if term_tokens.intersection(voice_tokens):
+            matched_voice_terms += 1
 
-        concept_tokens = _extract_bridge_concept_tokens(current_text)
-        if not concept_tokens:
-            errors.append(
-                f"Clip {clip_number}: bridge opener missing a concrete concept token."
-            )
-            continue
-
-        if not any(token in previous_text for token in concept_tokens):
-            # Secondary fallback: require at least one meaningful token overlap
-            # between previous and current clip text.
-            previous_tokens = set(_important_tokens(previous_text, min_len=3))
-            current_tokens = set(_important_tokens(current_text, min_len=3))
-            if previous_tokens.intersection(current_tokens):
-                continue
-            # Documentary bridge phrases like "To understand that" or
-            # "Because of this" are explicitly referential even when the
-            # next clip pivots to a new explanatory noun phrase.
-            if matched_prefix in REFERENTIAL_BRIDGE_PREFIXES and len(concept_tokens) >= 2:
-                continue
-            errors.append(
-                f"Clip {clip_number}: bridge concept does not echo previous clip content."
-            )
-
+    required_visual_matches = max(1, min(2, len(sync_terms)))
+    if matched_visual_terms < required_visual_matches:
+        errors.append(
+            f"Clip {clip_number}: sync_terms are not grounded strongly enough in the visual plan."
+        )
+    if matched_voice_terms == 0:
+        errors.append(
+            f"Clip {clip_number}: sync_terms do not connect back to the narration."
+        )
     return errors
+
+
+def _check_clip_role_sequence(items: List[dict]) -> List[str]:
+    errors = []
+    expected_roles = EXPECTED_CLIP_ROLE_SEQUENCES.get(len(items))
+    if not expected_roles:
+        return [f"Expected {MIN_CLIP_COUNT}-{MAX_CLIP_COUNT} clips, received {len(items)}."]
+
+    for idx, expected_role in enumerate(expected_roles, start=1):
+        actual_role = _normalize_space(str(items[idx - 1].get("clip_role", "")))
+        if actual_role != expected_role:
+            errors.append(
+                f"Clip {idx}: clip_role must be '{expected_role}', found '{actual_role}'."
+            )
+    return errors
+
+
+def _adjacent_continuity_overlap(previous_text: str, current_text: str) -> int:
+    previous_tokens = set(_important_tokens(previous_text, min_len=3))
+    current_tokens = set(_important_tokens(current_text, min_len=3))
+    return len(previous_tokens.intersection(current_tokens))
 
 
 def _check_consistency(items: List[dict]) -> List[str]:
@@ -528,35 +481,142 @@ def _capture_browser_artifacts(page, project_name: str, artifact_name: str) -> s
     return ", ".join(saved_paths)
 
 
+def _utc_timestamp() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _ensure_flow_editor_ready(page):
+    try:
+        prompt_box, prompt_selector = _find_first_visible(
+            page,
+            PROMPT_BOX_SELECTORS,
+            timeout_ms=8000,
+            label="prompt box",
+        )
+        return prompt_box, prompt_selector, "existing_editor"
+    except Exception:
+        new_project_btn, selector_used = _find_first_enabled(
+            page,
+            NEW_PROJECT_SELECTORS,
+            timeout_ms=20000,
+            label="New project button",
+        )
+        new_project_btn.click()
+        page.wait_for_timeout(2500)
+        prompt_box, prompt_selector = _find_first_visible(
+            page,
+            PROMPT_BOX_SELECTORS,
+            timeout_ms=20000,
+            label="prompt box",
+        )
+        return prompt_box, prompt_selector, f"new_project:{selector_used}"
+
+
+def _locator_is_selected(locator) -> bool:
+    try:
+        return (
+            locator.get_attribute("aria-selected") == "true"
+            or locator.get_attribute("data-state") == "active"
+            or locator.get_attribute("aria-pressed") == "true"
+        )
+    except Exception:
+        return False
+
+
+def _ensure_selected(locator, label: str, page=None, timeout_ms: int = 1000) -> None:
+    if not locator.is_visible():
+        raise RuntimeError(f"Could not verify {label}: control is not visible.")
+    if _locator_is_selected(locator):
+        return
+    locator.click()
+    if page is not None:
+        page.wait_for_timeout(timeout_ms)
+    if not _locator_is_selected(locator):
+        raise RuntimeError(f"Could not verify {label}: control did not become active.")
+
+
+def _verify_flow_settings(page) -> None:
+    settings_btn = None
+    last_error = None
+    for selector in SETTINGS_MENU_SELECTORS:
+        candidate = page.locator(selector).last
+        try:
+            if candidate.count() > 0 and candidate.is_visible():
+                settings_btn = candidate
+                break
+        except Exception as exc:
+            last_error = exc
+    if settings_btn is None:
+        detail = f" Last error: {last_error}" if last_error else ""
+        raise RuntimeError(f"Could not locate Flow settings menu.{detail}")
+
+    if settings_btn.get_attribute("data-state") != "open":
+        settings_btn.click()
+        page.wait_for_timeout(1200)
+
+    try:
+        video_tab = page.locator(
+            "button[role='tab']:has-text('Video'), button[id$='-trigger-VIDEO']"
+        ).first
+        portrait_tab = page.locator(
+            "button[role='tab'][id*='-trigger-PORTRAIT'], button[role='tab']:has-text('Portrait')"
+        ).first
+        x2_tab = page.locator("button[role='tab']:has-text('x2')").first
+
+        _ensure_selected(video_tab, "Video mode", page=page)
+        _ensure_selected(portrait_tab, "Portrait mode", page=page)
+        _ensure_selected(x2_tab, "x2 duration", page=page)
+
+        model_control = None
+        for selector in MODEL_CONTROL_SELECTORS:
+            candidate = page.locator(selector).first
+            try:
+                if candidate.count() > 0 and candidate.is_visible():
+                    model_control = candidate
+                    break
+            except Exception:
+                continue
+        if model_control is None:
+            raise RuntimeError("Could not locate the Flow model selector.")
+
+        model_text = _normalize_space(_read_locator_text(model_control))
+        if "Veo 3.1 - Fast" not in model_text:
+            model_control.click()
+            page.wait_for_timeout(1000)
+            selected = False
+            for selector in MODEL_OPTION_SELECTORS:
+                option = page.locator(selector).first
+                try:
+                    if option.count() > 0 and option.is_visible():
+                        option.click()
+                        selected = True
+                        break
+                except Exception:
+                    continue
+            if not selected:
+                raise RuntimeError("Could not locate the 'Veo 3.1 - Fast' model option.")
+            page.wait_for_timeout(1000)
+            model_text = _normalize_space(_read_locator_text(model_control))
+            if "Veo 3.1 - Fast" not in model_text:
+                raise RuntimeError("Model selector did not confirm 'Veo 3.1 - Fast'.")
+    finally:
+        try:
+            page.keyboard.press("Escape")
+            page.wait_for_timeout(500)
+        except Exception:
+            pass
+
+
 def _build_cinematic_prompt(item: dict, clip_number: int = 1) -> str:
-    """
-    Builds a rich, Veo-native cinematic prompt adapted for 8-second Science Documentary clips.
-
-    Conscious Adaptation for Science (5-Clip System):
-    - Clip 1 (Hook)      => HYPNOTIC ENTRY (Slow Push In). Viewer enters the microscopic/cosmic world.
-    - Clip 2 (Curiosity)  => LEAN-IN (Gentle Dolly Forward). Visual invitation to look closer.
-    - Clip 3 (Reason)     => SCIENTIFIC OBSERVATION (Lateral Tracking). Watching the process unfold.
-    - Clip 4 (Meaning)    => CONTEXT REVEAL (Slow Pull Back). Seeing the bigger picture/system.
-    - Clip 5 (Anchor)     => HUMAN CONNECTION (Static/Breathe). Grounding the concept in reality.
-
-    AUDIO-FIRST DESIGN (V3):
-    Veo 3.1 prioritizes elements that appear early in the prompt. The narrator
-    dialogue MUST be the first element to ensure audio generation is triggered.
-
-    Key rules for reliable audio on Veo 3.1 Fast:
-    1. Dialogue first, using colon format (not quotation marks)
-    2. Total prompt under ~120 words
-    3. Never say "No music" or "No audio" — use positive framing only
-    4. Explicit ambient SFX request reinforces audio generation
-    """
-    # Extract required fields
+    """Build a compact Flow prompt that keeps narration and visuals tightly synced."""
     video_style = str(item.get("video_style", "cinematic documentary")).strip()
     visual = str(item.get("visual", "")).strip()
     voice_text = str(item.get("voice_text", "")).strip()
+    clip_role = str(item.get("clip_role", "Clip")).strip()
+    visual_goal = str(item.get("visual_goal", "")).strip()
+    sync_terms = _normalize_string_list(item.get("sync_terms", []))
     voice = item.get("voice", {})
     audio = item.get("background_audio", {})
-    beat_map = item.get("beat_map", EXPECTED_BEAT_MAP)
-    motion_intensity = str(item.get("motion_intensity", EXPECTED_MOTION_INTENSITY)).strip()
 
     audio_type = audio.get("type")
     if not audio_type:
@@ -567,32 +627,18 @@ def _build_cinematic_prompt(item: dict, clip_number: int = 1) -> str:
 
     narrator_tone = str(voice.get("tone", "warm, conversational")).strip()
     narrator_gender = str(voice.get("gender", "male")).strip()
-    narrator_speed = voice.get("speed", 0.93)
     sfx_layers = audio.get("sfx_layers", audio_type)
-
-    timing_choreography = (
-        f"8-second structured pacing. "
-        f"Beat 1 ({beat_map.get('hook_frame')}): literal hook frame. "
-        f"Beat 2 ({beat_map.get('mechanism_action')}): mechanism action with fast clarity. "
-        f"Beat 3 ({beat_map.get('payoff')}): payoff or contrast. "
-        f"Settle ({beat_map.get('settle')}): clean handoff."
-    )
-
-    camera = (
-        "Fast structured camera language with controlled motion, "
-        "clear subject tracking, and no chaotic cut spam."
-    )
+    sync_terms_text = ", ".join(sync_terms)
 
     prompt = (
         f"A {narrator_tone.lower()} {narrator_gender.lower()} narrator says: {voice_text}. "
-        f"Keep narration pacing near speed {narrator_speed}. "
-        f"{timing_choreography} "
-        f"Motion intensity: {motion_intensity}. "
-        f"{camera} "
+        f"Clip role: {clip_role}. "
+        f"Viewer takeaway for this shot: {visual_goal}. "
+        f"Must visibly include: {sync_terms_text}. "
         f"Visual requirement: {visual}. "
         f"Style: {video_style}. "
         f"Ambient sound bed: {sfx_layers}. "
-        f"Portrait 9:16. Preserve continuity with previous and next clips."
+        "Portrait 9:16. Keep the visual literal, educational, and continuous with adjacent clips."
     )
 
     return prompt
@@ -618,6 +664,9 @@ class VideoGenerationTool(BaseTool):
         if json_content:
             try:
                 required_keys = [
+                    "clip_role",
+                    "sync_terms",
+                    "visual_goal",
                     "orientation",
                     "aspect_ratio",
                     "video_style",
@@ -639,8 +688,6 @@ class VideoGenerationTool(BaseTool):
                     # or if brackets weren't found (though expected for a list)
                     data = json.loads(content.replace("```json", "").replace("```", ""))
 
-                required_keys.extend(["word_target", "estimated_sec", "beat_map", "motion_intensity"])
-
                 def normalize_item(item: dict, clip_number: int = 1) -> dict:
                     missing = [k for k in required_keys if k not in item]
                     if missing:
@@ -650,32 +697,9 @@ class VideoGenerationTool(BaseTool):
                     if not voice_text:
                         raise ValueError(f"Clip {clip_number}: 'voice_text' is empty.")
 
-                    word_count = _word_count(voice_text)
-
-                    try:
-                        estimated_sec_raw = float(item["estimated_sec"])
-                    except Exception:
-                        estimated_sec_raw = word_count / 2.0
-
-                    try:
-                        word_target = int(item["word_target"])
-                    except Exception:
-                        word_target = TARGET_WORD_COUNT
-
-                    if word_target != TARGET_WORD_COUNT:
-                        print(
-                            f"   WARN Clip {clip_number}: word_target corrected from "
-                            f"{word_target} to {TARGET_WORD_COUNT}."
-                        )
-                        word_target = TARGET_WORD_COUNT
-
-                    estimated_sec = _normalize_timing_metadata(word_count, estimated_sec_raw)
-
-                    motion_intensity = str(item["motion_intensity"]).strip().lower()
-                    if motion_intensity != EXPECTED_MOTION_INTENSITY:
-                        raise ValueError(
-                            f"Clip {clip_number}: motion_intensity must be '{EXPECTED_MOTION_INTENSITY}'."
-                        )
+                    density_errors = _check_voice_density(voice_text, clip_number)
+                    if density_errors:
+                        raise ValueError(" | ".join(density_errors))
 
                     background_audio = item.get("background_audio", {})
                     if not isinstance(background_audio, dict):
@@ -686,93 +710,104 @@ class VideoGenerationTool(BaseTool):
                         background_audio["volume"] = background_audio["audio_volume"]
                     if isinstance(background_audio.get("sfx_layers"), list):
                         background_audio["sfx_layers"] = ", ".join(str(x) for x in background_audio["sfx_layers"])
-                    if "type" not in background_audio:
-                        raise ValueError(f"Clip {clip_number}: background_audio.type is required.")
-                    if "volume" not in background_audio:
-                        raise ValueError(f"Clip {clip_number}: background_audio.volume is required.")
-
-                    beat_map = item.get("beat_map")
-                    if not isinstance(beat_map, dict):
-                        raise ValueError(f"Clip {clip_number}: beat_map must be an object.")
-                    for beat_key, expected_range in EXPECTED_BEAT_MAP.items():
-                        if str(beat_map.get(beat_key, "")).strip() != expected_range:
-                            raise ValueError(
-                                f"Clip {clip_number}: beat_map.{beat_key} must be '{expected_range}'."
-                            )
+                    missing_audio_keys = [
+                        key for key in REQUIRED_BACKGROUND_AUDIO_KEYS if key not in background_audio
+                    ]
+                    if missing_audio_keys:
+                        raise ValueError(
+                            f"Clip {clip_number}: background_audio missing keys: {', '.join(missing_audio_keys)}."
+                        )
+                    if background_audio.get("generate_with_video") is not True:
+                        raise ValueError(
+                            f"Clip {clip_number}: background_audio.generate_with_video must be true."
+                        )
 
                     if str(item["orientation"]).strip().lower() != "portrait":
                         raise ValueError(f"Clip {clip_number}: orientation must be 'portrait'.")
                     if str(item["aspect_ratio"]).strip() != "9:16":
                         raise ValueError(f"Clip {clip_number}: aspect_ratio must be '9:16'.")
 
-                    timing_errors = _check_voice_timing(voice_text, estimated_sec, clip_number)
-                    if timing_errors:
-                        raise ValueError(" | ".join(timing_errors))
+                    clip_role = _normalize_space(str(item["clip_role"]))
+                    if not clip_role:
+                        raise ValueError(f"Clip {clip_number}: clip_role is empty.")
+
+                    sync_terms = _normalize_string_list(item.get("sync_terms"))
+                    visual_goal = _normalize_space(str(item.get("visual_goal", "")))
+                    if not visual_goal:
+                        raise ValueError(f"Clip {clip_number}: visual_goal is empty.")
 
                     overlap_ok, overlap_msg, overlap_count = _check_visual_overlap(
                         voice_text,
                         str(item["visual"]),
+                        visual_goal,
                     )
                     if not overlap_ok:
                         raise ValueError(f"Clip {clip_number}: {overlap_msg}.")
 
+                    sync_errors = _check_sync_terms(
+                        voice_text,
+                        str(item["visual"]),
+                        visual_goal,
+                        sync_terms,
+                        clip_number,
+                    )
+                    if sync_errors:
+                        raise ValueError(" | ".join(sync_errors))
+
                     normalized = {
+                        "clip_role": clip_role,
                         "voice_text": voice_text,
+                        "sync_terms": sync_terms,
+                        "visual_goal": visual_goal,
                         "voice": item["voice"],
                         "background_audio": background_audio,
                         "visual": item["visual"],
                         "orientation": item["orientation"],
                         "aspect_ratio": item["aspect_ratio"],
                         "video_style": item["video_style"],
-                        "word_target": word_target,
-                        "estimated_sec": estimated_sec,
-                        "beat_map": beat_map,
-                        "motion_intensity": motion_intensity,
                         "_overlap_count": overlap_count,
                     }
                     if "clip_label" in item:
                         normalized["clip_label"] = item["clip_label"]
-                    if "clip" in item:
-                        normalized["clip"] = item["clip"]
+                    else:
+                        normalized["clip_label"] = f"CLIP {clip_number}"
 
                     return normalized
 
                 def normalize_all_items(raw_items: List[dict]) -> List[dict]:
-                    if len(raw_items) != 5:
-                        raise ValueError(f"Expected exactly 5 clips, received {len(raw_items)}.")
-
-                    if bridge_errors := _check_bridge_continuity(raw_items):
-                        raise ValueError(" | ".join(bridge_errors))
-
-                    if consistency_errors := _check_consistency(raw_items):
-                        raise ValueError(" | ".join(consistency_errors))
+                    if len(raw_items) < MIN_CLIP_COUNT or len(raw_items) > MAX_CLIP_COUNT:
+                        raise ValueError(
+                            f"Expected {MIN_CLIP_COUNT}-{MAX_CLIP_COUNT} clips, received {len(raw_items)}."
+                        )
+                    if role_errors := _check_clip_role_sequence(raw_items):
+                        raise ValueError(" | ".join(role_errors))
 
                     normalized_items = []
                     for idx, clip in enumerate(raw_items, start=1):
                         if not isinstance(clip, dict):
                             raise ValueError(f"Clip {idx}: each list item must be an object.")
                         normalized_items.append(normalize_item(clip, idx))
+                    if consistency_errors := _check_consistency(normalized_items):
+                        raise ValueError(" | ".join(consistency_errors))
                     return normalized_items
 
                 normalized_items = []
                 if isinstance(data, list):
                     normalized_items = normalize_all_items(data)
-                elif isinstance(data, dict):
-                    normalized_items = [normalize_item(data, 1)]
                 else:
-                    raise ValueError("json_content must decode to an object or list.")
+                    raise ValueError("json_content must decode to a list of 5 or 6 clip objects.")
 
                 quality_report = {
-                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "timestamp": _utc_timestamp(),
                     "project_name": project_name or "untitled_project",
                     "status": "passed",
                     "clip_count": len(normalized_items),
                     "checks": {
+                        "clip_count_range": f"{MIN_CLIP_COUNT}-{MAX_CLIP_COUNT}",
                         "word_count_range": f"{MIN_WORD_COUNT}-{MAX_WORD_COUNT}",
-                        "estimated_sec_range": f"{MIN_ESTIMATED_SEC}-{MAX_ESTIMATED_SEC}",
-                        "implied_wps_range": f"{MIN_WPS}-{MAX_WPS}",
-                        "motion_intensity": EXPECTED_MOTION_INTENSITY,
-                        "beat_map": EXPECTED_BEAT_MAP,
+                        "max_sentences": MAX_SENTENCE_COUNT,
+                        "required_fields": list(required_keys),
+                        "flow_settings_target": "Video / Portrait / x2 / Veo 3.1 - Fast",
                     },
                     "clip_metrics": [],
                 }
@@ -783,20 +818,28 @@ class VideoGenerationTool(BaseTool):
                     final_prompts.append(nl_prompt)
 
                     words = _word_count(normalized_item["voice_text"])
-                    est_sec = float(normalized_item["estimated_sec"])
+                    sentence_count = len(_sentence_word_counts(normalized_item["voice_text"]))
+                    continuity_overlap = 0
+                    if clip_index > 1:
+                        continuity_overlap = _adjacent_continuity_overlap(
+                            normalized_items[clip_index - 2]["voice_text"],
+                            normalized_item["voice_text"],
+                        )
                     quality_report["clip_metrics"].append({
                         "clip": clip_index,
+                        "clip_role": normalized_item["clip_role"],
                         "word_count": words,
-                        "estimated_sec": est_sec,
-                        "implied_wps": round(words / est_sec, 3) if est_sec else None,
+                        "sentence_count": sentence_count,
                         "overlap_count": normalized_item.get("_overlap_count", 0),
+                        "sync_term_count": len(normalized_item["sync_terms"]),
+                        "continuity_overlap": continuity_overlap,
                     })
 
                 _write_quality_report(project_name or "untitled_project", quality_report)
                 print(f"OK Extracted {len(final_prompts)} prompts from JSON content.")
             except Exception as e:
                 failure_report = {
-                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "timestamp": _utc_timestamp(),
                     "project_name": project_name or "untitled_project",
                     "status": "failed",
                     "error": str(e),
@@ -854,113 +897,26 @@ class VideoGenerationTool(BaseTool):
                 page.goto(url, timeout=120000, wait_until="domcontentloaded")
                 page.wait_for_timeout(5000)
                 
-                # Check if we are actually logged in (simple check)
-                if "sign in" in page.title().lower():
+                # Check if we are actually logged in.
+                body_text = _body_text(page).lower()
+                if "sign in" in page.title().lower() or "sign in" in body_text or "login" in body_text:
                      return "❌ Error: It seems you are not logged in. Please run 'python setup_auth.py' again."
 
                 # --- STEP 1: Ensure the editor is ready ---
                 print("🔎 Checking whether the Flow editor is already open...")
-                try:
-                    prompt_box, _ = _find_first_visible(
-                        page,
-                        PROMPT_BOX_SELECTORS,
-                        timeout_ms=8000,
-                        label="prompt box"
-                    )
+                prompt_box, prompt_selector, editor_source = _ensure_flow_editor_ready(page)
+                if editor_source == "existing_editor":
                     print("✅ Prompt box is already available")
-                except Exception:
+                else:
                     print("🆕 Prompt box not visible yet, opening a new project...")
-                    new_project_btn, selector_used = _find_first_enabled(
-                        page,
-                        NEW_PROJECT_SELECTORS,
-                        timeout_ms=20000,
-                        label="New project button"
-                    )
-                    new_project_btn.click()
+                    selector_used = editor_source.split("new_project:", 1)[1]
                     print(f"✅ Clicked 'New project' via selector: {selector_used}")
-                    page.wait_for_timeout(2500)
-                    prompt_box, _ = _find_first_visible(
-                        page,
-                        PROMPT_BOX_SELECTORS,
-                        timeout_ms=20000,
-                        label="prompt box"
-                    )
+                print(f"✅ Flow editor ready via prompt box selector: {prompt_selector}")
 
                 # --- STEP 1.5 & 1.6: Verify Mode and Settings via Settings Menu ---
                 print("\n⚙️ Verifying generation settings...")
-                try:
-                    # Look for the settings pill in the prompt bar (e.g. Video | x2)
-                    settings_btn = page.locator("button[aria-haspopup='menu']").last
-                    try:
-                        settings_btn.wait_for(state="visible", timeout=8000)
-                    except:
-                        # Fallback if there's only one or different selectors
-                        settings_btn = page.locator("button[id*='radix']").filter(has_text="x2").first
-                        settings_btn.wait_for(state="visible", timeout=8000)
-
-                    settings_state = settings_btn.get_attribute("data-state")
-                    if settings_state != "open":
-                        settings_btn.click()
-                        print("   📋 Opened settings menu")
-                        time.sleep(2)
-                    else:
-                        print("   📋 Settings menu already open")
-
-                    # --- Check Video Tab is Selected ---
-                    video_tab = page.locator("button[role='tab']:has-text('Video'), button[id$='-trigger-VIDEO']").first
-                    if video_tab.is_visible():
-                        is_selected = video_tab.get_attribute("aria-selected") == "true" or video_tab.get_attribute("data-state") == "active"
-                        if not is_selected:
-                            print("   ⚠️ Switching to Video tab...")
-                            video_tab.click()
-                            time.sleep(1)
-                        else:
-                            print("   ✅ Video tab selected")
-                            
-                    # --- Set Portrait (all Instagram reels are portrait 9:16) ---
-                    orientation = "portrait"
-                    orientation_btn = page.locator("button[role='tab'][id*='-trigger-PORTRAIT'], button[role='tab']:has-text('Portrait')").first
-                        
-                    if orientation_btn.is_visible():
-                        is_active = orientation_btn.get_attribute("aria-selected") == "true" or orientation_btn.get_attribute("data-state") == "active" or orientation_btn.get_attribute("aria-pressed") == "true"
-                        if not is_active:
-                            orientation_btn.click()
-                            time.sleep(1)
-                            print(f"   ✅ Set to '{orientation}'")
-                        else:
-                            print(f"   ✅ '{orientation}' mode already selected")
-
-                    # --- Check Duration (x2) ---
-                    x2_btn = page.locator("button[role='tab']:has-text('x2')").first
-                    if x2_btn.is_visible():
-                        is_active = x2_btn.get_attribute("aria-selected") == "true" or x2_btn.get_attribute("data-state") == "active"
-                        if not is_active:
-                            x2_btn.click()
-                            time.sleep(1)
-                            print("   ✅ Set to x2")
-                        else:
-                            print("   ✅ x2 already selected")
-                            
-                    # --- Check Model (Veo 3.1 - Fast) ---
-                    try:
-                        model_dropdown = page.locator("button[role='combobox']:has-text('Veo'), select:has-text('Veo')").first
-                        if model_dropdown.is_visible():
-                            model_val = model_dropdown.inner_text().strip()
-                            if "3.1 - Fast" not in model_val:
-                                model_dropdown.click()
-                                time.sleep(1)
-                                page.locator("[role='option']:has-text('Veo 3.1 - Fast')").first.click()
-                                print("   ✅ Set model to Veo 3.1 - Fast")
-                    except Exception as e:
-                        print(f"   ⚠️ Could not set model: {e}")
-
-                    # Close settings panel (click outside or press Esc)
-                    page.keyboard.press("Escape")
-                    time.sleep(1)
-
-                except Exception as e:
-                    print(f"   ⚠️ Could not open/verify settings menu: {e}")
-                    print("   Proceeding with prompt entry anyway...")
+                _verify_flow_settings(page)
+                print("   ✅ Flow settings verified: Video / Portrait / x2 / Veo 3.1 - Fast")
 
                 # --- STEP 2: Process Prompts ---
                 for i, prompt in enumerate(final_prompts):
@@ -1098,7 +1054,12 @@ class VideoGenerationTool(BaseTool):
                         print(f"   ⚠️ Could not rename project: {e}")
 
             except Exception as e:
-                msg = f"❌ Error during automation: {e}"
+                artifact_paths = _capture_browser_artifacts(
+                    page,
+                    project_name or "untitled_project",
+                    "flow_setup_failed"
+                )
+                msg = f"❌ Error during automation: {e}. Debug artifacts: {artifact_paths}"
                 print(msg)
 
                 results.append(msg)

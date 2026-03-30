@@ -31,16 +31,16 @@ VISUAL_DNA = {
         "category": "COSMOS",
         "cinematic_reference": "Interstellar, Cosmos: A Spacetime Odyssey",
         "video_style": (
-            "deep-space cinematic, ultra-dark void background with soft "
-            "bioluminescent particle fields, slow orbital drift, IMAX-grade depth"
+            "high-quality educational 3D representation, realistic astronomical "
+            "scales, clear demonstration of cosmic mechanics"
         ),
         "color_palette": (
             "deep indigo and midnight black with cold blue highlights, "
-            "occasional warm amber nebula glow"
+            "accurate stellar phenomena representations"
         ),
         "motion_language": (
-            "imperceptibly slow drift — particles and structures move as if "
-            "pulled by gravity, never rushed"
+            "physically accurate motion — demonstrating orbits, gravity, "
+            "and cosmic expansion clearly"
         ),
         "audio_type": "deep space resonance drone — low sub-bass hum with crystalline overtones",
         "audio_volume": 0.10,
@@ -57,16 +57,16 @@ VISUAL_DNA = {
         "category": "MIND",
         "cinematic_reference": "Her (visual warmth), Inside Out (neural imagery)",
         "video_style": (
-            "soft neural-glow cinematic, warm amber and rose neuron networks "
-            "pulsing gently against deep darkness, macro-close-up depth-of-field"
+            "realistic anatomical or highly accurate neural modeling, "
+            "clear demonstration of biological pathways and brain structures"
         ),
         "color_palette": (
-            "warm amber, soft rose, muted gold — connective tissue of thought "
-            "rendered as gentle glowing threads"
+            "accurate clinical imaging colors, warm connective tissue "
+            "tones demonstrating areas of activity"
         ),
         "motion_language": (
-            "slow rhythmic pulse — neural bursts that travel like gentle ripples "
-            "across still water, organic and breathing"
+            "clear visualization of signal transmission — accurate pulse speeds "
+            "and pathway activations"
         ),
         "audio_type": "warm neural ambient — soft sine-wave tones with gentle rhythmic pulse",
         "audio_volume": 0.08,
@@ -84,17 +84,16 @@ VISUAL_DNA = {
         "category": "PHYSICS",
         "cinematic_reference": "The Theory of Everything, Tenet (abstract time visuals)",
         "video_style": (
-            "abstract geometric cinematic, precise clean lines and symmetric "
-            "forms on dark slate, slow Newtonian motion contrasted with "
-            "quantum probability clouds — mathematical beauty made visible"
+            "accurate physical simulation, clear real-world demonstration "
+            "or high-quality 3D physics modeling, precise representation of forces"
         ),
         "color_palette": (
-            "cold platinum and deep slate gray with electric-blue light traces, "
-            "occasional sharp white geometric forms"
+            "high-contrast experimental setup colors, clear distinct marking "
+            "of different physical forces or objects"
         ),
         "motion_language": (
-            "deliberate and precise — objects move with Newtonian clarity, "
-            "then dissolve into probability at the quantum scale"
+            "deliberate and demonstrating — objects move to explicitly show "
+            "friction, gravity, momentum, or quantum uncertainty"
         ),
         "audio_type": "minimal resonant tones — single pure frequencies that decay slowly into silence",
         "audio_volume": 0.09,
@@ -111,17 +110,16 @@ VISUAL_DNA = {
         "category": "BIOLOGY",
         "cinematic_reference": "Planet Earth II (macro nature), Inner Life of the Cell",
         "video_style": (
-            "microscopic life cinematic, warm earth-tone environments with "
-            "organic forms — cells, membranes, branching structures — rendered "
-            "in lush macro depth-of-field with natural golden-hour lighting"
+            "realistic high-quality microscopic imaging or accurate 3D educational "
+            "models of organisms, cells, and DNA"
         ),
         "color_palette": (
-            "warm olive greens, earthy terracottas, deep moss — the palette "
-            "of living things, breathing and warm"
+            "natural cellular tones, clear high-contrast stains for distinguishing "
+            "different organelles and biological structures"
         ),
         "motion_language": (
-            "organic and growth-like — slow unfurling, pulsing, dividing; "
-            "nothing is mechanical, everything breathes"
+            "accurate biological processes — demonstrating real cellular division, "
+            "protein folding, or organism behavior"
         ),
         "audio_type": "biophilic ambient — soft forest drone with distant rustling underscore",
         "audio_volume": 0.09,
@@ -140,17 +138,16 @@ VISUAL_DNA = {
         "category": "CHEMISTRY",
         "cinematic_reference": "Breaking Bad (lab aesthetics), Shots of Science series",
         "video_style": (
-            "crystalline precision cinematic, studio-clean white and transparent "
-            "glass environments — molecular structures float and bond in "
-            "slow-motion, fluid diffusion captured at macro scale"
+            "realistic molecular modeling, clear laboratory demonstrations, "
+            "accurate structural visualizations of bonds and reactions"
         ),
         "color_palette": (
-            "clinical white and transparent glass with saturated accent colors "
-            "wherever reactions occur — electric cyan, vivid crimson, molten gold"
+            "clear elemental color-coding, visible phase changes, "
+            "accurate representation of chemical solutions"
         ),
         "motion_language": (
-            "precise and reactive — slow diffusion builds to a crystalline snap, "
-            "bonds form and break with elegant clarity"
+            "precise demonstrating motion — showing the exact physical steps "
+            "of molecular bonding or chemical reactions"
         ),
         "audio_type": "crystalline resonance — glass harmonic tones with subtle chemical fizz undertone",
         "audio_volume": 0.10,
@@ -168,17 +165,16 @@ VISUAL_DNA = {
         "category": "EARTH",
         "cinematic_reference": "Planet Earth (BBC), Home (Yann Arthus-Bertrand)",
         "video_style": (
-            "epic aerial nature cinematic, sweeping ultra-wide landscapes "
-            "transitioning from macro geological detail to planetary overview — "
-            "slow time-lapse that makes geological or climate forces visible"
+            "high-quality documentary-style real-world footage or accurate 3D "
+            "global/geological modeling showing climate and planetary forces"
         ),
         "color_palette": (
-            "rich cerulean ocean blues, warm desert ochres, deep forest greens "
-            "against cloud-white — the full living palette of the planet"
+            "accurate natural planetary colors, realistic representations "
+            "of atmospheric and geological layers"
         ),
         "motion_language": (
-            "vast and slow — erosion, weather, ocean currents, cloud formation; "
-            "forces that work across centuries compressed into seconds"
+            "demonstrative physical forces — clear visualization of tectonic shifts, "
+            "erosion, or ocean currents"
         ),
         "audio_type": "deep earth ambient — wind, resonant geological hum, distant ocean beneath silence",
         "audio_volume": 0.11,

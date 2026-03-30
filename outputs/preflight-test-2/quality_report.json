@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-03-26T16:09:02.089452Z",
+  "project_name": "preflight-test-2",
+  "status": "failed",
+  "error": "Clip 5: bridge concept does not echo previous clip content."
+}

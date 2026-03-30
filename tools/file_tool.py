@@ -1,8 +1,8 @@
 import os
 from typing import Type
 
-from crewai.tools import BaseTool
-from pydantic import BaseModel, Field
+from crewai.tools import BaseTool  # type: ignore[import-untyped]
+from pydantic import BaseModel, Field  # type: ignore[import-untyped]
 
 
 class FileArchiverInput(BaseModel):
@@ -32,10 +32,10 @@ class FileArchiverTool(BaseTool):
         except Exception as e:
             return f"Error creating directory '{base_dir}': {e}"
 
-        safe_filename = "".join(c for c in topic if c.isalnum() or c in (" ", "-", "_")).strip()
+        safe_filename: str = "".join(c for c in topic if c.isalnum() or c in (" ", "-", "_")).strip()
         if not safe_filename:
             safe_filename = "untitled_project"
-        safe_filename = safe_filename[:120]
+        safe_filename = safe_filename[0:120]
 
         file_path = os.path.join(base_dir, f"{safe_filename}.txt")
         try:

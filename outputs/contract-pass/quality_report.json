@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-03-30T14:35:10.428914Z",
+  "project_name": "contract-pass",
+  "status": "passed",
+  "clip_count": 5,
+  "checks": {
+    "clip_count_range": "5-6",
+    "word_count_range": "8-42",
+    "max_sentences": 3,
+    "required_fields": [
+      "clip_role",
+      "sync_terms",
+      "visual_goal",
+      "orientation",
+      "aspect_ratio",
+      "video_style",
+      "voice",
+      "background_audio",
+      "voice_text",
+      "visual"
+    ],
+    "flow_settings_target": "Video / Portrait / x2 / Veo 3.1 - Fast"
+  },
+  "clip_metrics": [
+    {
+      "clip": 1,
+      "clip_role": "Hook",
+      "word_count": 15,
+      "sentence_count": 2,
+      "overlap_count": 5,
+      "sync_term_count": 2,
+      "continuity_overlap": 0
+    },
+    {
+      "clip": 2,
+      "clip_role": "Question",
+      "word_count": 16,
+      "sentence_count": 2,
+      "overlap_count": 2,
+      "sync_term_count": 2,
+      "continuity_overlap": 1
+    },
+    {
+      "clip": 3,
+      "clip_role": "Mechanism",
+      "word_count": 14,
+      "sentence_count": 2,
+      "overlap_count": 7,
+      "sync_term_count": 2,
+      "continuity_overlap": 3
+    },
+    {
+      "clip": 4,
+      "clip_role": "Contrast/Payoff",
+      "word_count": 15,
+      "sentence_count": 2,
+      "overlap_count": 7,
+      "sync_term_count": 2,
+      "continuity_overlap": 3
+    },
+    {
+      "clip": 5,
+      "clip_role": "Personal Takeaway",
+      "word_count": 15,
+      "sentence_count": 2,
+      "overlap_count": 6,
+      "sync_term_count": 2,
+      "continuity_overlap": 2
+    }
+  ]
+}

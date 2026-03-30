@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-03-30T14:35:10.439717Z",
+  "project_name": "wrong-clip-count",
+  "status": "failed",
+  "error": "Expected 5-6 clips, received 4."
+}
