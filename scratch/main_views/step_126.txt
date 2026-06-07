@@ -1,0 +1,59 @@
+Created At: 2026-06-04T17:24:13Z
+Completed At: 2026-06-04T17:24:13Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 1511
+Total Bytes: 55993
+Showing lines 670 to 720
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+670: 
+671: def check_login(url: str) -> bool:
+672:     auth_file = "auth.json"
+673:     if not os.path.exists(auth_file):
+674:         print(f"⚠️ '{auth_file}' not found.")
+675:         return False
+676: 
+677:     print("   Launching browser for login check...")
+678:     try:
+679:         with sync_playwright() as playwright:
+680:             browser = playwright.chromium.launch(headless=True)
+681:             try:
+682:                 context = browser.new_context(storage_state=auth_file)
+683:                 page = context.new_page()
+684:                 page.goto(url, timeout=90000, wait_until="domcontentloaded")
+685:                 page.wait_for_timeout(4000)
+686: 
+687:                 title = page.title().lower()
+688:                 if "sign in" in title or "login" in title:
+689:                     print(f"   ⚠️ Page title is '{page.title()}' - indicates not logged in.")
+690:                     return False
+691: 
+692:                 print(f"   ✅ Login verified (Page Title: {page.title()})")
+693:                 return True
+694:             except Exception as error:
+695:                 print(f"   ⚠️ Login check failed: {error}")
+696:                 return False
+697:             finally:
+698:                 browser.close()
+699:     except Exception as error:
+700:         print(f"   ⚠️ Playwright error: {error}")
+701:         return False
+702: 
+703: 
+704: def main() -> None:
+705:     args = parse_cli_args()
+706:     print("## Instagram Agent Crew Initialization ##")
+707: 
+708:     agents_config = load_config("config/agents.yaml")
+709:     tasks_config = load_config("config/tasks.yaml")
+710: 
+711:     api_key = os.getenv("OPENAI_API_KEY")
+712:     if not api_key:
+713:         print("❌ OPENAI_API_KEY not found.")
+714:         print("   Add OPENAI_API_KEY to .env before running this pipeline.")
+715:         return
+716: 
+717:     cost_mode = get_env_str("COST_MODE", "balanced_saver").lower()
+718:     script_model = get_env_str("OPENAI_MODEL_SCRIPT", "gpt-5.4")
+719:     support_model = get_env_str("OPENAI_MODEL_SUPPORT", "gpt-5.4-mini")
+720:     script_model_fallback = get_env_str(
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

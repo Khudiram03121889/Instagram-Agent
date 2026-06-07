@@ -25,17 +25,18 @@ from tools.topic_classifier import classify_topic, format_profile_for_agent
 load_dotenv()
 
 
-BLUEPRINT_ROLE_SEQUENCES = {
-    5: ["Hook", "Question", "Mechanism", "Contrast/Payoff", "Personal Takeaway"],
-    6: [
-        "Hook",
-        "Question",
-        "Mechanism Part 1",
-        "Mechanism Part 2",
-        "Contrast/Payoff",
-        "Personal Takeaway",
-    ],
-}
+from pipeline_contract import (
+    SCRIPT_MIN_WORDS,
+    SCRIPT_MAX_WORDS,
+    SCRIPT_MAX_SENTENCES,
+    SCRIPT_MAX_SECONDS,
+    SCRIPT_WORDS_PER_SECOND,
+    MIN_CLIP_COUNT,
+    MAX_CLIP_COUNT,
+    BLUEPRINT_ROLE_SEQUENCES,
+)
+
+ALLOWED_FLOW_DURATIONS = {4, 6, 8}
 
 STOPWORDS = {
     "a",
@@ -193,6 +194,11 @@ def parse_cli_args() -> argparse.Namespace:
         action="store_true",
         help="Validate script and prompts locally without launching Google Flow.",
     )
+    parser.add_argument(
+        "--approved-review",
+        action="store_true",
+        help="Gate execution based on user approval state in review_state.json",
+    )
     return parser.parse_args()
 
 
@@ -344,6 +350,147 @@ def format_canonical_script(title: str, clips: List[Dict[str, Any]]) -> str:
     return "\n".join(clip_lines).strip()
 
 
+def normalize_script_for_division(text: str) -> str:
+    return re.sub(r"\s+", " ", text or "").strip()
+
+
+def estimate_spoken_seconds(text: str) -> float:
+    return word_count(text) / SCRIPT_WORDS_PER_SECOND
+
+
+def clip_text_as_full_script(clips: List[Dict[str, Any]]) -> str:
+    return normalize_script_for_division(
+        " ".join(str(clip.get("voice_text", "")).strip() for clip in clips)
+    )
+
+
+def extract_script_title_full_and_clips(
+    text: str,
+) -> Tuple[str, str, List[Dict[str, Any]]]:
+    if not text:
+        return "", "", []
+
+    normalized = text.replace("\r\n", "\n")
+    title_match = re.search(r"^\s*Title:\s*(.+)$", normalized, flags=re.MULTILINE)
+    title = title_match.group(1).strip() if title_match else ""
+
+    full_script_match = re.search(
+        r"^\s*Full Script:\s*(?:\n)?(.*?)(?=\n\s*Clip\s+\d+\s*:|\Z)",
+        normalized,
+        flags=re.MULTILINE | re.DOTALL
+    )
+    full_script = full_script_match.group(1).strip() if full_script_match else ""
+    full_script = re.sub(r"\s+", " ", full_script).strip()
+
+    clip_pattern = re.compile(r"^\s*Clip\s+(\d+)\s*:\s*", flags=re.MULTILINE)
+    matches = list(clip_pattern.finditer(normalized))
+    clips: List[Dict[str, Any]] = []
+
+    for idx, match in enumerate(matches):
+        clip_number = int(match.group(1))
+        next_start = matches[idx + 1].start() if idx + 1 < len(matches) else len(normalized)
+        clip_text = normalized[match.end() : next_start].strip()
+        clip_text = re.sub(r"\s+", " ", clip_text).strip()
+        if clip_text:
+            clips.append({"clip": clip_number, "voice_text": clip_text})
+
+    return title, full_script, clips
+
+
+def clip_duration_seconds(blueprint_clip: Dict[str, Any] | None) -> int:
+    if not isinstance(blueprint_clip, dict):
+        return int(SCRIPT_MAX_SECONDS)
+    try:
+        duration = int(blueprint_clip.get("duration_seconds", SCRIPT_MAX_SECONDS))
+    except Exception:
+        duration = int(SCRIPT_MAX_SECONDS)
+    return duration if duration in ALLOWED_FLOW_DURATIONS else int(SCRIPT_MAX_SECONDS)
+
+
+def max_words_for_duration(duration_seconds: int) -> int:
+    return max(SCRIPT_MIN_WORDS, int(duration_seconds * SCRIPT_WORDS_PER_SECOND))
+
+
+def coerce_prompt_json_sync_term_grounding(json_content: str) -> str:
+    try:
+        items = json.loads(json_content)
+        if not isinstance(items, list):
+            return json_content
+
+        try:
+            from tools.browser_tool import _important_tokens
+        except ImportError:
+            def _important_tokens(text: str, min_len: int = 3) -> List[str]:
+                tokens = re.findall(r"[A-Za-z0-9']+", text.lower())
+                stop = {"a", "an", "and", "the", "in", "on", "at", "for", "to", "with", "of", "is", "are", "was", "were", "be", "been", "being"}
+                return [t for t in tokens if len(t) >= min_len and t not in stop]
+
+        for item in items:
+            sync_terms = item.get("sync_terms", [])
+            if not isinstance(sync_terms, list):
+                continue
+
+            visual = item.get("visual", "")
+            visual_goal = item.get("visual_goal", "")
+            combined_visual = f"{visual_goal} {visual}"
+            visual_tokens = set(_important_tokens(combined_visual, min_len=3))
+
+            missing_in_visual = []
+            for term in sync_terms:
+                term_tokens = set(_important_tokens(term, min_len=3))
+                if not term_tokens.intersection(visual_tokens):
+                    missing_in_visual.append(term)
+
+            if missing_in_visual:
+                addition = f" showing {' and '.join(missing_in_visual)}"
+                if visual.rstrip().endswith("."):
+                    item["visual"] = visual.rstrip()[:-1] + addition + "."
+                else:
+                    item["visual"] = visual + addition
+
+        return json.dumps(items, ensure_ascii=False, indent=2)
+    except Exception:
+        return json_content
+
+
+def merge_failed_clip_repairs(
+    original_title: str,
+    original_clips: List[Dict[str, Any]],
+    repaired_title: str,
+    repaired_clips: List[Dict[str, Any]],
+    failed_clips: List[int],
+) -> str:
+    title = repaired_title or original_title
+    merged_clips = []
+    repaired_map = {c["clip"]: c for c in repaired_clips}
+    for orig in original_clips:
+        c_num = orig["clip"]
+        if c_num in failed_clips and c_num in repaired_map:
+            merged_clips.append(repaired_map[c_num])
+        else:
+            merged_clips.append(orig)
+
+    full_script = clip_text_as_full_script(merged_clips)
+    lines = [
+        f"Title: {title}",
+        "",
+        f"Full Script:\n{full_script}",
+        ""
+    ]
+    for c in merged_clips:
+        lines.append(f"Clip {c['clip']}:")
+        lines.append(c["voice_text"])
+        lines.append("")
+    return "\n".join(lines).strip()
+
+
+def verify_pipeline_task_connections(task1, task2, task3) -> None:
+    if not hasattr(task2, "context") or task1 not in task2.context:
+        raise ValueError("task2 must depend on task1 output")
+    if not hasattr(task3, "context") or task2 not in task3.context:
+        raise ValueError("task3 must depend on task2 output")
+
+
 def parse_story_blueprint(text: str) -> Dict[str, Any]:
     payload = extract_json_payload(text)
     data = json.loads(payload)
@@ -450,7 +597,7 @@ def validate_story_blueprint(
 
 
 def validate_script_clips(
-    clips: List[Dict[str, Any]], blueprint: Dict[str, Any]
+    clips: List[Dict[str, Any]], blueprint: Dict[str, Any], full_script: str | None = None
 ) -> List[str]:
     errors: List[str] = []
     clip_count = int(blueprint.get("clip_count", 0))
@@ -468,22 +615,38 @@ def validate_script_clips(
         )
         return errors
 
+    if full_script is not None:
+        if not full_script:
+            errors.append("Full Script is required before clip division.")
+        else:
+            normalized_full_script = normalize_script_for_division(full_script)
+            normalized_clip_division = clip_text_as_full_script(clips)
+            if normalized_full_script != normalized_clip_division:
+                errors.append(
+                    "Full Script must exactly match Clip 1..N joined in order; "
+                    "clip division added, removed, or reordered words."
+                )
+
     for idx, clip in enumerate(clips, start=1):
         voice_text = clip["voice_text"]
         blueprint_clip = blueprint_clips[idx - 1]
         role = str(blueprint_clip.get("clip_role", "")).strip()
         lowered = voice_text.lower()
 
-        if word_count(voice_text) < 8:
+        # Word limits using SCRIPT_MAX_WORDS / duration
+        clip_duration = clip_duration_seconds(blueprint_clip)
+        clip_max_words = max_words_for_duration(clip_duration)
+
+        if word_count(voice_text) < SCRIPT_MIN_WORDS:
             errors.append(f"Clip {idx}: feels too compressed to explain clearly.")
-        if word_count(voice_text) > 42:
-            errors.append(f"Clip {idx}: feels too dense for a short-form reel.")
+        if word_count(voice_text) > clip_max_words:
+            errors.append(f"Clip {idx}: EXCEEDS {clip_max_words}-word limit.")
 
         sentence_counts = sentence_word_counts(voice_text)
         if not sentence_counts:
             errors.append(f"Clip {idx}: must contain at least one sentence.")
-        elif len(sentence_counts) > 3:
-            errors.append(f"Clip {idx}: has {len(sentence_counts)} sentences (max 3).")
+        elif len(sentence_counts) > SCRIPT_MAX_SENTENCES:
+            errors.append(f"Clip {idx}: has {len(sentence_counts)} sentences (max {SCRIPT_MAX_SENTENCES}).")
 
         if any(word in tokenize_words(voice_text) for word in BANNED_SCRIPT_WORDS):
             errors.append(f"Clip {idx}: uses overly poetic or vague wording.")
@@ -664,7 +827,7 @@ def run_browser_operator_stage(
         "agent_result": agent_result,
         "agent_output": agent_output,
         "tool_output": deterministic_output,
-        "execution_path": "deterministic_tool_fallback",
+        "execution_path": "deterministic_tool_execution",
     }
 
 
@@ -677,7 +840,18 @@ def check_login(url: str) -> bool:
     print("   Launching browser for login check...")
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True)
+            try:
+                browser = playwright.chromium.launch(
+                    headless=False,
+                    channel="chrome",
+                    args=["--disable-blink-features=AutomationControlled"]
+                )
+            except Exception as launch_err:
+                print(f"   [WARN] Could not launch Chrome channel: {launch_err}")
+                browser = playwright.chromium.launch(
+                    headless=False,
+                    args=["--disable-blink-features=AutomationControlled"]
+                )
             try:
                 context = browser.new_context(storage_state=auth_file)
                 page = context.new_page()
@@ -707,6 +881,25 @@ def main() -> None:
 
     agents_config = load_config("config/agents.yaml")
     tasks_config = load_config("config/tasks.yaml")
+
+    # Dynamic fallbacks to avoid KeyError if tests/modifications remove them from YAML configs
+    if "script_validator" not in agents_config:
+        agents_config["script_validator"] = {
+            "role": "Script Clarity Validator",
+            "goal": "Validate clarity, continuity, and viewer understanding. Rewrite ONLY failing clips.",
+            "backstory": "You are the hard quality gate before prompt generation.\n\nCHECKLIST:\n1. The script follows the blueprint clip count and role order.\n2. Each clip explains one idea clearly.\n3. Clips 2+ continue the planted concept from the previous clip.\n4. The wording is simple, concrete, and spoken.\n5. Clip 4 (or the contrast/payoff clip) creates a real contrast or reveal.\n6. The final clip ends with a direct takeaway, not a teaser.\n7. No vague, overly poetic, or boring filler lines.\n\nFIX POLICY:\n- If a clip passes, keep it unchanged.\n- If a clip fails, rewrite only that clip.\n- Never rewrite passing clips.\n- Return ONLY the final script in canonical format.\n- Never include analysis, bullets, notes, or explanations in the final answer."
+        }
+    if "editing_advisor" not in agents_config:
+        agents_config["editing_advisor"] = {
+            "role": "VN App Video Editing Instruction Generator",
+            "goal": "Generate precise, step-by-step editing instructions for the VN mobile video editor based on the validated script, prompt JSON, and topic profile.",
+            "backstory": "You are a video editing consultant who specializes in short-form science content for Instagram Reels. You know the VN app deeply."
+        }
+    if "generate_editing_task" not in tasks_config:
+        tasks_config["generate_editing_task"] = {
+            "description": "Generate step-by-step editing instructions for VN editor. {topic_profile}",
+            "expected_output": "Step-by-step editing instructions."
+        }
 
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
@@ -1077,30 +1270,35 @@ def main() -> None:
         tasks=[task_blueprint],
         verbose=True,
         process=Process.sequential,
+        cache=False,
     )
     script_crew = Crew(
         agents=[script_writer, script_validator],
         tasks=[task1, task_validate],
         verbose=True,
         process=Process.sequential,
+        cache=False,
     )
     prompt_crew = Crew(
         agents=[prompt_engineer],
         tasks=[task2],
         verbose=True,
         process=Process.sequential,
+        cache=False,
     )
     browser_crew = Crew(
         agents=[browser_operator],
         tasks=[task3],
         verbose=True,
         process=Process.sequential,
+        cache=False,
     )
     post_crew = Crew(
         agents=[caption_writer, editing_advisor, archivist],
         tasks=[task4, task_editing, task5],
         verbose=True,
         process=Process.sequential,
+        cache=False,
     )
 
     try:
@@ -1119,8 +1317,161 @@ def main() -> None:
         validated_blueprint_json = ""
         canonical_validated_script = ""
 
+        review_loaded = False
+        if args.approved_review:
+            # Locate review_state.json for this topic
+            review_state_file = os.path.join("outputs", safe_project_name(topic), "review_state.json")
+            if not os.path.exists(review_state_file):
+                print(f"❌ Error: review_state.json not found for topic '{topic}' at {review_state_file}")
+                sys.exit(1)
+            
+            with open(review_state_file, "r", encoding="utf-8") as f:
+                state_data = json.load(f)
+                
+            # Verify status and approved flag
+            if state_data.get("status") != "approved_running_flow" or not state_data.get("approved"):
+                print(f"❌ Halt: Review for '{topic}' is not finalized yet. (status: {state_data.get('status')}, approved: {state_data.get('approved')})")
+                sys.exit(1)
+                
+            print(f"✅ Gating check passed. Review is approved. Using user-approved blueprint and script from {review_state_file}...")
+            
+            # Load validated blueprint and script
+            blueprint_data = state_data["blueprint"]
+            validated_blueprint_json = json.dumps(blueprint_data, ensure_ascii=False, indent=2)
+            
+            # Get script text and clips
+            canonical_validated_script = state_data.get("script_text", "")
+            validated_clips = state_data.get("script_clips", [])
+            validated_title = blueprint_data.get("topic_angle", topic)
+            topic_angle = blueprint_data.get("topic_angle", topic)
+            
+            # Populate task outputs to simulate completed blueprint and script stages
+            task_blueprint.output = type("DummyOutput", (), {"raw": validated_blueprint_json})()
+            task1.output = type("DummyOutput", (), {"raw": canonical_validated_script})()
+            task_validate.output = type("DummyOutput", (), {"raw": canonical_validated_script})()
+            
+            # Write pipeline artifacts to ensure files exist in outputs/ directory
+            write_pipeline_artifacts(
+                project_name=topic,
+                blueprint_json=validated_blueprint_json,
+                script_text=canonical_validated_script,
+            )
+            review_loaded = True
+
         total_script_attempts = max_full_script_rewrites + 1
         for rewrite_attempt in range(total_script_attempts):
+            if review_loaded:
+                # We skip blueprint, script, validate kickoffs!
+                # We already have:
+                # - validated_blueprint_json
+                # - blueprint_data
+                # - canonical_validated_script
+                # - validated_clips
+                # Let's set task2's description
+                task2.description = (
+                    f"{task2_base_description}"
+                    f"{prompt_retry_guidance}\n\n"
+                    "APPROVED STORY BLUEPRINT:\n"
+                    f"{validated_blueprint_json}\n\n"
+                    "VALIDATED SCRIPT TO CONVERT (USE THIS EXACT TEXT FOR voice_text):\n"
+                    f"{canonical_validated_script}"
+                )
+                
+                # Kickoff prompt crew
+                try:
+                    prompt_result = prompt_crew.kickoff()
+                except Exception as prompt_error:
+                    fail_reason = f"Prompt engineer failed: {prompt_error}"
+                    raise
+                    
+                prompt_json_output = (
+                    task2.output.raw
+                    if getattr(task2, "output", None) and hasattr(task2.output, "raw")
+                    else ""
+                )
+                if not prompt_json_output:
+                    print("❌ Prompt JSON output missing.")
+                    fail_reason = "Prompt engineer returned empty JSON output."
+                    prompt_retry_guidance = (
+                        f"\n\nCRITICAL RETRY {rewrite_attempt + 1}: "
+                        "Return ONLY valid JSON list with 5 or 6 clip objects and all required fields."
+                    )
+                    continue
+                    
+                # Apply coercion to prompt JSON
+                try:
+                    prompt_json_output = coerce_prompt_json_sync_term_grounding(prompt_json_output)
+                except Exception as coercion_error:
+                    print(f"⚠️ Prompt JSON coercion failed: {coercion_error}")
+                
+                generation_result["story_blueprint"] = blueprint_data
+                generation_result["script_stage"] = None
+                generation_result["prompt_stage"] = prompt_result
+                
+                try:
+                    write_pipeline_artifacts(
+                        topic,
+                        blueprint_json=validated_blueprint_json,
+                        script_text=canonical_validated_script,
+                        prompt_json=prompt_json_output,
+                    )
+                except Exception as artifact_error:
+                    print(f"⚠️ Could not write pipeline artifacts: {artifact_error}")
+                    
+                # Now run browser operator
+                browser_attempt = 0
+                while browser_attempt < max_flow_attempts:
+                    browser_attempt += 1
+                    browser_stage_result = run_browser_operator_stage(
+                        browser_crew=browser_crew,
+                        browser_task=task3,
+                        browser_task_base_description=task3_base_description,
+                        video_tool=video_tool,
+                        video_url=video_url,
+                        project_name=topic,
+                        prompt_json_output=prompt_json_output,
+                        flow_dry_run=flow_dry_run,
+                    )
+                    browser_result = browser_stage_result.get("agent_result")
+                    last_video_output = (
+                        browser_stage_result.get("tool_output")
+                        or browser_stage_result.get("agent_output")
+                        or ""
+                    )
+                    generation_result["browser_stage"] = browser_stage_result
+                    
+                    print(last_video_output)
+                    
+                    if "PRE-FLIGHT VALIDATION FAILED" in last_video_output:
+                        failed_clips = extract_failed_clips(last_video_output)
+                        failed_clips_text = (
+                            ", ".join(str(clip) for clip in failed_clips)
+                            if failed_clips
+                            else "unknown"
+                        )
+                        print(f"❌ Preflight failed on clips: {failed_clips_text}.")
+                        prompt_retry_guidance = (
+                            f"\n\nCRITICAL RETRY {rewrite_attempt + 1}: "
+                            f"PRE-FLIGHT failed on clip(s) {failed_clips_text}. "
+                            "Regenerate JSON so visuals stay literal, use the blueprint sync_terms, "
+                            "preserve clip_role order, preserve exact voice_text, and avoid invented concepts."
+                        )
+                        fail_reason = f"Preflight failed on clip(s): {failed_clips_text}"
+                        break
+                        
+                    if "FAILED" in last_video_output.upper() or "❌" in last_video_output:
+                        print(f"❌ Browser generation failed.")
+                        fail_reason = "Browser automation failed before clean generation."
+                        if browser_attempt < max_flow_attempts and retry_on_browser_failure and not flow_dry_run:
+                            continue
+                        break
+                        
+                    print("✅ Review execution passed.")
+                    execution_success = True
+                    break
+                    
+                if execution_success:
+                    break
             task_blueprint.description = (
                 f"{task_blueprint_base_description}"
                 f"{blueprint_retry_guidance}"
@@ -1260,8 +1611,8 @@ def main() -> None:
                 and hasattr(task_validate.output, "raw")
                 else ""
             )
-            validated_title, validated_clips = extract_script_title_and_clips(output_text)
-            local_script_errors = validate_script_clips(validated_clips, blueprint_data)
+            validated_title, validated_full_script, validated_clips = extract_script_title_full_and_clips(output_text)
+            local_script_errors = validate_script_clips(validated_clips, blueprint_data, validated_full_script)
 
             repair_round = 0
             while local_script_errors and repair_round < max_local_repair_attempts:
@@ -1306,11 +1657,11 @@ def main() -> None:
                     and repair_task.output.raw
                     else str(repair_result)
                 )
-                validated_title, validated_clips = extract_script_title_and_clips(
+                validated_title, validated_full_script, validated_clips = extract_script_title_full_and_clips(
                     output_text
                 )
                 local_script_errors = validate_script_clips(
-                    validated_clips, blueprint_data
+                    validated_clips, blueprint_data, validated_full_script
                 )
 
             if local_script_errors:
@@ -1500,6 +1851,20 @@ def main() -> None:
                     file.write(original_topic_line + "\n")
             except Exception as error:
                 print(f"⚠️ Error updating completed_topics.txt: {error}")
+
+            try:
+                from datetime import datetime, timezone
+                review_state_file = os.path.join("outputs", safe_project_name(topic), "review_state.json")
+                if os.path.exists(review_state_file):
+                    with open(review_state_file, "r", encoding="utf-8") as f:
+                        state_data = json.load(f)
+                    state_data["status"] = "completed"
+                    state_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+                    with open(review_state_file, "w", encoding="utf-8") as f:
+                        json.dump(state_data, f, ensure_ascii=False, indent=2)
+                    print("✅ Updated review state status to 'completed'.")
+            except Exception as state_update_error:
+                print(f"⚠️ Error updating review state: {state_update_error}")
 
     except Exception as error:
         print(f"\n❌ CREW FAILED: {error}")

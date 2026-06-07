@@ -1,0 +1,92 @@
+Created At: 2026-06-04T17:29:08Z
+Completed At: 2026-06-04T17:29:08Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 1511
+Total Bytes: 55993
+Showing lines 721 to 820
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+721:         "OPENAI_MODEL_SCRIPT_FALLBACK", "gpt-5.4-mini"
+722:     )
+723:     blueprint_model = get_env_str("OPENAI_MODEL_BLUEPRINT", support_model)
+724:     validator_model = get_env_str("OPENAI_MODEL_VALIDATOR", support_model)
+725:     prompt_model = get_env_str("OPENAI_MODEL_PROMPT", support_model)
+726: 
+727:     if cost_mode == "maximum_savings":
+728:         script_model = script_model_fallback or support_model
+729:         validator_model = support_model
+730:         prompt_model = support_model
+731: 
+732:     script_temperature = get_env_float("OPENAI_TEMPERATURE_SCRIPT", 0.35)
+733:     support_temperature = get_env_float("OPENAI_TEMPERATURE_SUPPORT", 0.2)
+734:     blueprint_temperature = get_env_float(
+735:         "OPENAI_TEMPERATURE_BLUEPRINT", support_temperature
+736:     )
+737:     validator_temperature = get_env_float("OPENAI_TEMPERATURE_VALIDATOR", 0.15)
+738:     prompt_temperature = get_env_float("OPENAI_TEMPERATURE_PROMPT", 0.2)
+739:     script_reasoning = get_env_reasoning("OPENAI_REASONING_SCRIPT", "medium")
+740:     support_reasoning = get_env_reasoning("OPENAI_REASONING_SUPPORT", "low")
+741:     blueprint_reasoning = get_env_reasoning(
+742:         "OPENAI_REASONING_BLUEPRINT", support_reasoning
+743:     )
+744:     validator_reasoning = get_env_reasoning(
+745:         "OPENAI_REASONING_VALIDATOR", support_reasoning
+746:     )
+747:     prompt_reasoning = get_env_reasoning(
+748:         "OPENAI_REASONING_PROMPT", support_reasoning
+749:     )
+750: 
+751:     legacy_max_topic_attempts = get_env_int("MAX_TOPIC_ATTEMPTS", 2, minimum=1)
+75
+<truncated 817 bytes>
+  model=script_model,
+771:         api_key=api_key,
+772:         temperature=script_temperature,
+773:         reasoning_effort=script_reasoning,
+774:     )
+775:     fallback_script_llm = LLM(
+776:         model=script_model_fallback,
+777:         api_key=api_key,
+778:         temperature=script_temperature,
+779:         reasoning_effort=script_reasoning,
+780:     )
+781:     support_llm = LLM(
+782:         model=support_model,
+783:         api_key=api_key,
+784:         temperature=support_temperature,
+785:         reasoning_effort=support_reasoning,
+786:     )
+787:     blueprint_llm = LLM(
+788:         model=blueprint_model,
+789:         api_key=api_key,
+790:         temperature=blueprint_temperature,
+791:         reasoning_effort=blueprint_reasoning,
+792:     )
+793:     validator_llm = LLM(
+794:         model=validator_model,
+795:         api_key=api_key,
+796:         temperature=validator_temperature,
+797:         reasoning_effort=validator_reasoning,
+798:     )
+799:     prompt_llm = LLM(
+800:         model=prompt_model,
+801:         api_key=api_key,
+802:         temperature=prompt_temperature,
+803:         reasoning_effort=prompt_reasoning,
+804:     )
+805: 
+806:     print(
+807:         f"   🤖 Blueprint model: {blueprint_model} "
+808:         f"(reasoning={blueprint_reasoning}, temp={blueprint_temperature})"
+809:     )
+810:     print(
+811:         f"   🤖 Script model: {script_model} "
+812:         f"(reasoning={script_reasoning}, temp={script_temperature})"
+813:     )
+814:     print(
+815:         f"   🤖 Validator model: {validator_model} "
+816:         f"(reasoning={validator_reasoning}, temp={validator_temperature})"
+817:     )
+818:     print(
+819:         f"   🤖 Prompt model: {prompt_model} "
+820:         f"(reasoning={prompt_reasoning}, temp={prompt_temperature})"
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

@@ -1,0 +1,73 @@
+Created At: 2026-06-04T17:21:16Z
+Completed At: 2026-06-04T17:21:16Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 2152
+Total Bytes: 80410
+Showing lines 981 to 1045
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+981: def deterministic_clip_line_from_blueprint(
+982:     clip_role: str,
+983:     clip_core: str,
+984:     previous_seed: str,
+985:     next_seed: str,
+986:     clip_number: int,
+987:     clip_count: int,
+988:     visual_anchor_terms: List[str] | None = None,
+989: ) -> str:
+990:     role = (clip_role or "").strip()
+991:     seed_prev = (previous_seed or "").strip()
+992:     seed_next = (next_seed or "").strip()
+993: 
+994:     text = clip_core
+995: 
+996:     # Keep lexical bridges to satisfy continuity checks if seeds exist.
+997:     if clip_number > 1 and seed_prev and overlap_count(text, seed_prev) == 0:
+998:         hint_prev = bridge_hint_from_seed(seed_prev)
+999:         if hint_prev:
+1000:             text = f"{text} {hint_prev}"
+1001:     if (
+1002:         clip_number < clip_count
+1003:         and role not in {"Contrast/Payoff", "Personal Takeaway"}
+1004:         and seed_next
+1005:         and overlap_count(text, seed_next) == 0
+1006:     ):
+1007:         hint_next = bridge_hint_from_seed(seed_next)
+1008:         if hint_next:
+1009:             text = f"{text} {hint_next}"
+1010: 
+1011:     anchor_terms = [
+1012:         str(term).strip() for term in (visual_anchor_terms or []) if str(term).strip()
+1013:     ]
+1014: 
+1015:     normalized = re.sub(r"\s+", " ", text).strip()
+1016:     while word_count(normalized) > SCRIPT_MAX_WORDS:
+1017:         parts = normalized.split()
+1018:         if len(parts) <= 1:
+1019:             break
+1020:         normalized = " ".join(parts[:-1]).strip()
+1021: 
+1022:     if word_count(normalized) < SCRIPT_MIN_WORDS:
+1023:         core_tokens = tokenize_words(clip_core)
+1024:         token_index = 0
+1025:         while word_count(normalized) < SCRIPT_MIN_WORDS and token_index < len(core_tokens):
+1026:             normalized = f"{normalized} {core_tokens[token_index]}".strip()
+1027:             token_index += 1
+1028: 
+1029:     # Removed anchor appending during salvage
+1030:     # if anchor_terms and list_overlap_count(normalized, anchor_terms) == 0:
+1031:     #     anchor_phrase = anchor_terms[0]
+1032:     #     candidate = f"{normalized} {anchor_phrase}".strip()
+1033:     #     while word_count(candidate) > SCRIPT_MAX_WORDS:
+1034:     #         parts = normalized.split()
+1035:     #         if len(parts) <= 1:
+1036:     #             break
+1037:     #         normalized = " ".join(parts[:-1]).strip()
+1038:     #         candidate = f"{normalized} {anchor_phrase}".strip()
+1039:     #     normalized = candidate
+1040: 
+1041:     if role == "Question" and "?" not in normalized:
+1042:         normalized = normalized.rstrip(".!") + "?"
+1043:     return normalized
+1044: 
+1045: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

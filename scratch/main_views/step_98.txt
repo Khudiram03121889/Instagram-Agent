@@ -1,0 +1,55 @@
+Created At: 2026-06-04T17:22:48Z
+Completed At: 2026-06-04T17:22:48Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 2152
+Total Bytes: 80410
+Showing lines 1194 to 1240
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1194: def check_login(url: str) -> bool:
+1195:     auth_file = "auth.json"
+1196:     chrome_user_data_dir = os.getenv("CHROME_USER_DATA_DIR", "").strip()
+1197:     chrome_profile = os.getenv("CHROME_PROFILE", "Default").strip() or "Default"
+1198: 
+1199:     print("   Launching browser for login check...")
+1200:     try:
+1201:         with sync_playwright() as playwright:
+1202:             browser = None
+1203:             context = None
+1204:             try:
+1205:                 if os.path.exists(auth_file):
+1206:                     print("   Using auth.json session for login check.")
+1207:                     try:
+1208:                         browser = playwright.chromium.launch(headless=True, channel="chrome")
+1209:                     except Exception as launch_err:
+1210:                         print(f"   [WARN] Could not launch Chrome channel: {launch_err}")
+1211:                         print("   [INFO] Falling back to bundled Chromium...")
+1212:                         browser = playwright.chromium.launch(headless=True)
+1213:                     context = browser.new_context(storage_state=auth_file)
+1214:                 elif chrome_user_data_dir and os.path.isdir(chrome_user_data_dir):
+1215:                     print(
+1216:                         f"   Using Chrome profile cookies for login check "
+1217:                         f"({chrome_profile})."
+1218:                     )
+1219:                     try:
+1220:                         context = playwright.chromium.launch_persistent_context(
+1221:                             user_data_dir=chrome_user_data_dir,
+1222:                             headless=True,
+1223:                             channel="chrome",
+1224:                             args=[
+1225:                                 f"--profile-directory={chrome_profile}",
+1226:                                 "--disable-blink-features=AutomationControlled",
+1227:                             ],
+1228:                         )
+1229:                     except Exception as launch_err:
+1230:                         print(f"   [WARN] Could not launch Chrome channel: {launch_err}")
+1231:                         print("   [INFO] Falling back to persistent Chromium (without channel)...")
+1232:                         context = playwright.chromium.launch_persistent_context(
+1233:                             user_data_dir=chrome_user_data_dir,
+1234:                             headless=True,
+1235:                             args=[
+1236:                                 f"--profile-directory={chrome_profile}",
+1237:                                 "--disable-blink-features=AutomationControlled",
+1238:                             ],
+1239:                         )
+1240:                 else:
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

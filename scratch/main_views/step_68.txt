@@ -1,0 +1,58 @@
+Created At: 2026-06-04T17:21:34Z
+Completed At: 2026-06-04T17:21:34Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 2152
+Total Bytes: 80410
+Showing lines 301 to 350
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+301: def get_env_str(name: str, default: str) -> str:
+302:     raw = os.getenv(name)
+303:     return raw.strip() if raw and raw.strip() else default
+304: 
+305: 
+306: def safe_project_name(value: str) -> str:
+307:     safe = "".join(
+308:         c for c in (value or "untitled_project") if c.isalnum() or c in (" ", "-", "_")
+309:     ).strip()
+310:     return safe[:120] or "untitled_project"
+311: 
+312: 
+313: def clip_duration_seconds(blueprint_clip: Dict[str, Any] | None) -> int:
+314:     if not isinstance(blueprint_clip, dict):
+315:         return int(SCRIPT_MAX_SECONDS)
+316:     try:
+317:         duration = int(blueprint_clip.get("duration_seconds", SCRIPT_MAX_SECONDS))
+318:     except Exception:
+319:         duration = int(SCRIPT_MAX_SECONDS)
+320:     return duration if duration in ALLOWED_FLOW_DURATIONS else int(SCRIPT_MAX_SECONDS)
+321: 
+322: 
+323: def max_words_for_duration(duration_seconds: int) -> int:
+324:     return max(SCRIPT_MIN_WORDS, int(duration_seconds * SCRIPT_WORDS_PER_SECOND))
+325: 
+326: 
+327: def extract_json_payload(text: str) -> str:
+328:     if not text:
+329:         raise ValueError("No JSON content found.")
+330:     content = text.strip().replace("```json", "").replace("```", "").strip()
+331:     first_object = content.find("{")
+332:     last_object = content.rfind("}")
+333:     if first_object != -1 and last_object != -1 and last_object > first_object:
+334:         return content[first_object : last_object + 1]
+335:     first_list = content.find("[")
+336:     last_list = content.rfind("]")
+337:     if first_list != -1 and last_list != -1 and last_list > first_list:
+338:         return content[first_list : last_list + 1]
+339:     return content
+340: 
+341: 
+342: def ensure_hard_stop_punctuation(text: str, prefer_question: bool = False) -> str:
+343:     stripped = (text or "").rstrip()
+344:     if not stripped:
+345:         return stripped
+346:     last_char = stripped[-1]
+347:     if last_char in {".", "?", "!"}:
+348:         return stripped
+349:     if last_char in {",", ";", ":"}:
+350:         stripped = stripped[:-1].rstrip()
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

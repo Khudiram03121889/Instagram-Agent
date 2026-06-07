@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-06-06T15:53:59.107727Z",
+  "project_name": "Why do we close our eyes when we sneeze?",
+  "status": "passed",
+  "clip_count": 5,
+  "checks": {
+    "clip_count_range": "5-6",
+    "word_count_range": "8-42",
+    "max_sentences": 3,
+    "required_fields": [
+      "clip_role",
+      "sync_terms",
+      "visual_goal",
+      "orientation",
+      "aspect_ratio",
+      "video_style",
+      "voice",
+      "background_audio",
+      "voice_text",
+      "visual"
+    ],
+    "flow_settings_target": "Video / Portrait / x2 / Veo 3.1 - Fast"
+  },
+  "clip_metrics": [
+    {
+      "clip": 1,
+      "clip_role": "Hook",
+      "word_count": 8,
+      "sentence_count": 1,
+      "overlap_count": 5,
+      "sync_term_count": 2,
+      "continuity_overlap": 0
+    },
+    {
+      "clip": 2,
+      "clip_role": "Question",
+      "word_count": 11,
+      "sentence_count": 1,
+      "overlap_count": 7,
+      "sync_term_count": 3,
+      "continuity_overlap": 0
+    },
+    {
+      "clip": 3,
+      "clip_role": "Mechanism",
+      "word_count": 13,
+      "sentence_count": 1,
+      "overlap_count": 10,
+      "sync_term_count": 4,
+      "continuity_overlap": 2
+    },
+    {
+      "clip": 4,
+      "clip_role": "Contrast/Payoff",
+      "word_count": 11,
+      "sentence_count": 1,
+      "overlap_count": 7,
+      "sync_term_count": 3,
+      "continuity_overlap": 1
+    },
+    {
+      "clip": 5,
+      "clip_role": "Personal Takeaway",
+      "word_count": 8,
+      "sentence_count": 1,
+      "overlap_count": 6,
+      "sync_term_count": 2,
+      "continuity_overlap": 0
+    }
+  ]
+}

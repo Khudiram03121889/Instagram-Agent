@@ -1,6 +1,13 @@
 # Environment & secrets
 .env
 auth.json
+auth.json.bak
+google_cookies.json
+
+# Sensitive debug artifacts
+scratch/check_html_output.txt
+scratch_login_debug.png
+scratch_outputs/
 
 # Logs & runtime data
 daily_log.txt

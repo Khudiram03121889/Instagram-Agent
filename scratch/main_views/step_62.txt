@@ -1,0 +1,49 @@
+Created At: 2026-06-04T17:21:26Z
+Completed At: 2026-06-04T17:21:26Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 2152
+Total Bytes: 80410
+Showing lines 780 to 820
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+780: 
+781:         clip_words = word_count(voice_text)
+782:         if clip_words < SCRIPT_MIN_WORDS:
+783:             errors.append(
+784:                 f"Clip {idx}: feels too short/compressed ({clip_words} words). "
+785:                 f"Target {SCRIPT_MIN_WORDS}-{SCRIPT_MAX_WORDS}."
+786:             )
+787:         if clip_words > clip_max_words:
+788:             errors.append(
+789:                 f"Clip {idx}: EXCEEDS {clip_max_words}-word limit ({clip_words} words). "
+790:                 f"Must be exactly {SCRIPT_MIN_WORDS}-{clip_max_words} words for a {clip_duration}sec audio window."
+791:             )
+792:         estimated_seconds = estimate_spoken_seconds(voice_text)
+793:         if estimated_seconds > clip_duration:
+794:             errors.append(
+795:                 f"Clip {idx}: estimated audio length {estimated_seconds:.1f}s exceeds "
+796:                 f"{clip_duration:.0f}s limit."
+797:             )
+798: 
+799:         sentence_counts = sentence_word_counts(voice_text)
+800:         if not sentence_counts:
+801:             errors.append(f"Clip {idx}: must contain at least one sentence.")
+802:         elif len(sentence_counts) > SCRIPT_MAX_SENTENCES:
+803:             errors.append(
+804:                 f"Clip {idx}: has {len(sentence_counts)} sentences (max {SCRIPT_MAX_SENTENCES})."
+805:             )
+806: 
+807:         if any(word in tokenize_words(voice_text) for word in BANNED_SCRIPT_WORDS):
+808:             errors.append(f"Clip {idx}: uses overly poetic or vague wording.")
+809:         if has_phrase(voice_text, BANNED_SCRIPT_PHRASES):
+810:             errors.append(f"Clip {idx}: contains a banned vague phrase.")
+811:         if has_phrase(voice_text, BORING_FILLER_PHRASES):
+812:             errors.append(
+813:                 f"Clip {idx}: contains generic filler that makes the explanation feel boring."
+814:             )
+815:         if has_phrase(voice_text, BORING_ACADEMIC_TERMS):
+816:             errors.append(
+817:                 f"Clip {idx}: feels too academic/lecture-like. Use conversational, high-interest language."
+818:             )
+819: 
+820:         if (
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

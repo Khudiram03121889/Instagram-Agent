@@ -1,0 +1,330 @@
+{
+  "topic": "Why do we close our eyes when we sneeze?",
+  "status": "approved_running_flow",
+  "created_at": "2026-06-03T17:26:55.669418+00:00",
+  "updated_at": "2026-06-03T17:26:55.669418+00:00",
+  "topic_profile": {
+    "topic": "Why do we close our eyes when we sneeze?",
+    "category": "BIOLOGY",
+    "cinematic_reference": "Planet Earth II (macro nature), Inner Life of the Cell",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "color_palette": "natural cellular tones, clear high-contrast stains for distinguishing different organelles and biological structures",
+    "motion_language": "accurate biological processes — demonstrating real cellular division, protein folding, or organism behavior",
+    "audio_type": "biophilic ambient — soft forest drone with distant rustling underscore",
+    "audio_volume": 0.09,
+    "voice_profile": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 0.93,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
+    },
+    "narrator_delivery": "Warm, wondering",
+    "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+  },
+  "blueprint": {
+    "topic_angle": "We close our eyes during a sneeze because the sneeze reflex is a fast, whole-body nerve burst, and the eye-closing part is a built-in protective reflex that often happens at the same time.",
+    "clip_count": 5,
+    "clips": [
+      {
+        "clip_number": 1,
+        "clip_role": "Hook",
+        "core_idea": "A sneeze is not just air leaving the nose; it is a sudden reflex that can trigger the eyes to shut automatically.",
+        "bridge_from_previous": "Start with the familiar moment everyone has felt: the sneeze is coming.",
+        "next_clip_seed": "If the sneeze is a reflex, what part of the body is actually making the eyes close?",
+        "viewer_takeaway": "The eye-close is part of a bigger automatic body response, not a random habit.",
+        "visual_anchor_terms": [
+          "sneeze burst",
+          "eyelids shut",
+          "face reaction"
+        ],
+        "hook_pattern": "Question + instant visual payoff",
+        "retention_reason": "It opens with a common mystery and shows the exact moment the eyes close, creating immediate recognition.",
+        "visual_premise": "A realistic 3D face model in close-up as a sneeze builds, then the eyelids snap shut at the peak of the reflex.",
+        "camera_plan": "Tight macro frontal shot on the face; quick push-in as the sneeze builds; fast cut to eyelids closing at the peak.",
+        "duration_seconds": 4,
+        "viewer_emotion": "Curious, slightly amused"
+      },
+      {
+        "clip_number": 2,
+        "clip_role": "Question",
+        "core_idea": "The sneeze starts in the brainstem and uses fast nerve signals, so the body reacts before you can control it.",
+        "bridge_from_previous": "That eye shut is not a choice, so the next question is where the command comes from.",
+        "next_clip_seed": "Once the brainstem fires the sneeze reflex, what other muscles get pulled into the response?",
+        "viewer_takeaway": "Sneezing is controlled by a rapid reflex circuit, not conscious decision-making.",
+        "visual_anchor_terms": [
+          "brainstem pulse",
+          "nerve signal",
+          "muscle twitch"
+        ],
+        "hook_pattern": "Mystery question + internal body reveal",
+        "retention_reason": "It shifts from the visible face to the hidden control center, keeping the explanation moving deeper.",
+        "visual_premise": "An accurate 3D cutaway of the head and brainstem with a bright nerve pulse traveling outward to facial muscles.",
+        "camera_plan": "Start on the face, then dissolve into a transparent head cutaway; slow lateral drift through the brainstem and outgoing nerve paths.",
+        "duration_seconds": 6,
+        "viewer_emotion": "Interested, focused"
+      },
+      {
+        "clip_number": 3,
+        "clip_role": "Mechanism",
+        "core_idea": "The sneeze reflex recruits many muscles at once, including the muscles around the eyes, so the eyelids often close as part of the same burst.",
+        "bridge_from_previous": "The brainstem sends the signal, and now we can see how that signal spreads through the body.",
+        "next_clip_seed": "But if the eyes are just along for the ride, why does closing them seem so consistent?",
+        "viewer_takeaway": "The eyes close because the sneeze is a coordinated muscle event, not because the nose directly tells them to.",
+        "visual_anchor_terms": [
+          "muscle burst",
+          "eyelid muscles",
+          "facial contraction"
+        ],
+        "hook_pattern": "Mechanism reveal with layered body action",
+        "retention_reason": "It explains the actual coordination step, which is the key missing piece in the mystery.",
+        "visual_premise": "A high-quality anatomical model showing facial muscles, chest muscles, and eyelid muscles contracting in a synchronized wave.",
+        "camera_plan": "Medium close-up on a transparent facial anatomy model; highlight muscle groups one by one with pulsing overlays; slight zoom on the eye muscles.",
+        "duration_seconds": 8,
+        "viewer_emotion": "Aha, engaged"
+      },
+      {
+        "clip_number": 4,
+        "clip_role": "Contrast/Payoff",
+        "core_idea": "Closing the eyes may help protect them from the pressure and spray of a sneeze, even if it is not the main purpose of the reflex.",
+        "bridge_from_previous": "So the eyes close as part of the reflex, but there may also be a useful side effect.",
+        "next_clip_seed": "That means the real answer is less about one single reason and more about how the body protects itself automatically.",
+        "viewer_takeaway": "Eye closure is likely a protective bonus, not just a weird coincidence.",
+        "visual_anchor_terms": [
+          "spray cloud",
+          "eye shield",
+          "pressure wave"
+        ],
+        "hook_pattern": "Contrast between reflex and protection",
+        "retention_reason": "It resolves the practical why with a clear payoff: the body may be shielding the eyes from the sneeze blast.",
+        "visual_premise": "A realistic 3D sneeze plume moving forward while the eyelids close before the spray reaches the eyes.",
+        "camera_plan": "Side profile macro shot; show the sneeze plume traveling forward; freeze-frame moment as the eyelids shut just before impact.",
+        "duration_seconds": 6,
+        "viewer_emotion": "Relieved, satisfied"
+      },
+      {
+        "clip_number": 5,
+        "clip_role": "Personal Takeaway",
+        "core_idea": "You close your eyes when you sneeze because your nervous system runs a fast reflex package, and eye closure is part of that automatic protection.",
+        "bridge_from_previous": "Put the pieces together: reflex, muscle burst, and protection.",
+        "next_clip_seed": "",
+        "viewer_takeaway": "The simplest answer is: your body is protecting you before you can even think about it.",
+        "visual_anchor_terms": [
+          "reflex package",
+          "automatic protection",
+          "sneeze finish"
+        ],
+        "hook_pattern": "Clean summary payoff",
+        "retention_reason": "It gives a memorable final answer that ties the whole explanation together in one sentence.",
+        "visual_premise": "A calm anatomical face model resets after the sneeze, with the nervous system pulse fading and the eyelids reopening.",
+        "camera_plan": "Slow pullback from the face to a wider head-and-shoulders anatomical view; gentle fade of the nerve pulse; end on the reopened eyes.",
+        "duration_seconds": 4,
+        "viewer_emotion": "Clear, reassured"
+      }
+    ]
+  },
+  "script_text": "Title: Why Eyes Close on Sneezes\n\nFull Script:\nEver noticed your eyes close when you sneeze? That eye shut is a fast brainstem reflex you cannot control. The brainstem signal twitch spreads, triggering eyes to shut in one muscle burst. Closing your eyes protects them from the sneeze pressure wave automatically. This automatic protection reflex package keeps you safe.\n\nClip 1:\nEver noticed your eyes close when you sneeze?\n\nClip 2:\nThat eye shut is a fast brainstem reflex you cannot control.\n\nClip 3:\nThe brainstem signal twitch spreads, triggering eyes to shut in one muscle burst.\n\nClip 4:\nClosing your eyes protects them from the sneeze pressure wave automatically.\n\nClip 5:\nThis automatic protection reflex package keeps you safe.",
+  "script_clips": [
+    {
+      "clip": 1,
+      "voice_text": "Ever noticed your eyes close when you sneeze?"
+    },
+    {
+      "clip": 2,
+      "voice_text": "That eye shut is a fast brainstem reflex you cannot control."
+    },
+    {
+      "clip": 3,
+      "voice_text": "The brainstem signal twitch spreads, triggering eyes to shut in one muscle burst."
+    },
+    {
+      "clip": 4,
+      "voice_text": "Closing your eyes protects them from the sneeze pressure wave automatically."
+    },
+    {
+      "clip": 5,
+      "voice_text": "This automatic protection reflex package keeps you safe."
+    }
+  ],
+  "viral_clarity": {
+    "score": 85,
+    "grade": "strong",
+    "notes": [
+      "Hook may not create a concrete first-two-second curiosity gap."
+    ]
+  },
+  "questions": [
+    {
+      "id": "creative_direction",
+      "question": "What should the agents improve before Flow?",
+      "options": [
+        "Approve as-is",
+        "Make it more surprising",
+        "Make it more relatable",
+        "Make the visuals more cinematic"
+      ]
+    },
+    {
+      "id": "duration_bias",
+      "question": "What pacing should the clip durations prefer?",
+      "options": [
+        "Use agent recommendations",
+        "Shorter and punchier",
+        "More room for mechanism"
+      ]
+    },
+    {
+      "id": "risk",
+      "question": "Viral clarity score is 85/100. Continue?",
+      "options": [
+        "Approve",
+        "Revise script",
+        "Revise visuals"
+      ]
+    }
+  ],
+  "answers": {},
+  "manual_feedback": "",
+  "approved": true,
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "I have successfully generated a new story blueprint and script for you! Please review the clip details below.",
+      "timestamp": "2026-06-03T17:26:55.669418+00:00",
+      "type": "script_review",
+      "data": {
+        "blueprint": {
+          "topic_angle": "We close our eyes during a sneeze because the sneeze reflex is a fast, whole-body nerve burst, and the eye-closing part is a built-in protective reflex that often happens at the same time.",
+          "clip_count": 5,
+          "clips": [
+            {
+              "clip_number": 1,
+              "clip_role": "Hook",
+              "core_idea": "A sneeze is not just air leaving the nose; it is a sudden reflex that can trigger the eyes to shut automatically.",
+              "bridge_from_previous": "Start with the familiar moment everyone has felt: the sneeze is coming.",
+              "next_clip_seed": "If the sneeze is a reflex, what part of the body is actually making the eyes close?",
+              "viewer_takeaway": "The eye-close is part of a bigger automatic body response, not a random habit.",
+              "visual_anchor_terms": [
+                "sneeze burst",
+                "eyelids shut",
+                "face reaction"
+              ],
+              "hook_pattern": "Question + instant visual payoff",
+              "retention_reason": "It opens with a common mystery and shows the exact moment the eyes close, creating immediate recognition.",
+              "visual_premise": "A realistic 3D face model in close-up as a sneeze builds, then the eyelids snap shut at the peak of the reflex.",
+              "camera_plan": "Tight macro frontal shot on the face; quick push-in as the sneeze builds; fast cut to eyelids closing at the peak.",
+              "duration_seconds": 4,
+              "viewer_emotion": "Curious, slightly amused"
+            },
+            {
+              "clip_number": 2,
+              "clip_role": "Question",
+              "core_idea": "The sneeze starts in the brainstem and uses fast nerve signals, so the body reacts before you can control it.",
+              "bridge_from_previous": "That eye shut is not a choice, so the next question is where the command comes from.",
+              "next_clip_seed": "Once the brainstem fires the sneeze reflex, what other muscles get pulled into the response?",
+              "viewer_takeaway": "Sneezing is controlled by a rapid reflex circuit, not conscious decision-making.",
+              "visual_anchor_terms": [
+                "brainstem pulse",
+                "nerve signal",
+                "muscle twitch"
+              ],
+              "hook_pattern": "Mystery question + internal body reveal",
+              "retention_reason": "It shifts from the visible face to the hidden control center, keeping the explanation moving deeper.",
+              "visual_premise": "An accurate 3D cutaway of the head and brainstem with a bright nerve pulse traveling outward to facial muscles.",
+              "camera_plan": "Start on the face, then dissolve into a transparent head cutaway; slow lateral drift through the brainstem and outgoing nerve paths.",
+              "duration_seconds": 6,
+              "viewer_emotion": "Interested, focused"
+            },
+            {
+              "clip_number": 3,
+              "clip_role": "Mechanism",
+              "core_idea": "The sneeze reflex recruits many muscles at once, including the muscles around the eyes, so the eyelids often close as part of the same burst.",
+              "bridge_from_previous": "The brainstem sends the signal, and now we can see how that signal spreads through the body.",
+              "next_clip_seed": "But if the eyes are just along for the ride, why does closing them seem so consistent?",
+              "viewer_takeaway": "The eyes close because the sneeze is a coordinated muscle event, not because the nose directly tells them to.",
+              "visual_anchor_terms": [
+                "muscle burst",
+                "eyelid muscles",
+                "facial contraction"
+              ],
+              "hook_pattern": "Mechanism reveal with layered body action",
+              "retention_reason": "It explains the actual coordination step, which is the key missing piece in the mystery.",
+              "visual_premise": "A high-quality anatomical model showing facial muscles, chest muscles, and eyelid muscles contracting in a synchronized wave.",
+              "camera_plan": "Medium close-up on a transparent facial anatomy model; highlight muscle groups one by one with pulsing overlays; slight zoom on the eye muscles.",
+              "duration_seconds": 8,
+              "viewer_emotion": "Aha, engaged"
+            },
+            {
+              "clip_number": 4,
+              "clip_role": "Contrast/Payoff",
+              "core_idea": "Closing the eyes may help protect them from the pressure and spray of a sneeze, even if it is not the main purpose of the reflex.",
+              "bridge_from_previous": "So the eyes close as part of the reflex, but there may also be a useful side effect.",
+              "next_clip_seed": "That means the real answer is less about one single reason and more about how the body protects itself automatically.",
+              "viewer_takeaway": "Eye closure is likely a protective bonus, not just a weird coincidence.",
+              "visual_anchor_terms": [
+                "spray cloud",
+                "eye shield",
+                "pressure wave"
+              ],
+              "hook_pattern": "Contrast between reflex and protection",
+              "retention_reason": "It resolves the practical why with a clear payoff: the body may be shielding the eyes from the sneeze blast.",
+              "visual_premise": "A realistic 3D sneeze plume moving forward while the eyelids close before the spray reaches the eyes.",
+              "camera_plan": "Side profile macro shot; show the sneeze plume traveling forward; freeze-frame moment as the eyelids shut just before impact.",
+              "duration_seconds": 6,
+              "viewer_emotion": "Relieved, satisfied"
+            },
+            {
+              "clip_number": 5,
+              "clip_role": "Personal Takeaway",
+              "core_idea": "You close your eyes when you sneeze because your nervous system runs a fast reflex package, and eye closure is part of that automatic protection.",
+              "bridge_from_previous": "Put the pieces together: reflex, muscle burst, and protection.",
+              "next_clip_seed": "",
+              "viewer_takeaway": "The simplest answer is: your body is protecting you before you can even think about it.",
+              "visual_anchor_terms": [
+                "reflex package",
+                "automatic protection",
+                "sneeze finish"
+              ],
+              "hook_pattern": "Clean summary payoff",
+              "retention_reason": "It gives a memorable final answer that ties the whole explanation together in one sentence.",
+              "visual_premise": "A calm anatomical face model resets after the sneeze, with the nervous system pulse fading and the eyelids reopening.",
+              "camera_plan": "Slow pullback from the face to a wider head-and-shoulders anatomical view; gentle fade of the nerve pulse; end on the reopened eyes.",
+              "duration_seconds": 4,
+              "viewer_emotion": "Clear, reassured"
+            }
+          ]
+        },
+        "script_text": "Title: Why Eyes Close on Sneezes\n\nFull Script:\nA sneeze is not just air leaving the nose; it is a sudden reflex that can trigger the eyes to The sneeze starts in the brainstem and uses fast nerve signals, so the body reacts before you can control it? The sneeze reflex recruits many muscles at once, including the muscles around the eyes, so the eyelids often close as Closing the eyes may help protect them from the pressure and spray of a sneeze, even if it is not You close your eyes when you sneeze because your nervous system runs a fast reflex package, and eye closure is\n\nClip 1:\nA sneeze is not just air leaving the nose; it is a sudden reflex that can trigger the eyes to\n\nClip 2:\nThe sneeze starts in the brainstem and uses fast nerve signals, so the body reacts before you can control it?\n\nClip 3:\nThe sneeze reflex recruits many muscles at once, including the muscles around the eyes, so the eyelids often close as\n\nClip 4:\nClosing the eyes may help protect them from the pressure and spray of a sneeze, even if it is not\n\nClip 5:\nYou close your eyes when you sneeze because your nervous system runs a fast reflex package, and eye closure is",
+        "script_clips": [
+          {
+            "clip": 1,
+            "voice_text": "A sneeze is not just air leaving the nose; it is a sudden reflex that can trigger the eyes to"
+          },
+          {
+            "clip": 2,
+            "voice_text": "The sneeze starts in the brainstem and uses fast nerve signals, so the body reacts before you can control it?"
+          },
+          {
+            "clip": 3,
+            "voice_text": "The sneeze reflex recruits many muscles at once, including the muscles around the eyes, so the eyelids often close as"
+          },
+          {
+            "clip": 4,
+            "voice_text": "Closing the eyes may help protect them from the pressure and spray of a sneeze, even if it is not"
+          },
+          {
+            "clip": 5,
+            "voice_text": "You close your eyes when you sneeze because your nervous system runs a fast reflex package, and eye closure is"
+          }
+        ],
+        "viral_clarity": {
+          "score": 85,
+          "grade": "strong",
+          "notes": [
+            "Hook may not create a concrete first-two-second curiosity gap."
+          ]
+        }
+      }
+    }
+  ]
+}

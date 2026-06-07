@@ -1,0 +1,498 @@
+--- PAGE 1 ---
+CURIOUS MATTER LAB
+Instagram & Facebook Science Reel Pipeline
+Complete Upgrade Plan • Content Quality Improvement • March 2026
+5
+Clips per Video
+≤15
+Words per Clip
+8 sec
+Clip Duration
+FREE
+Gemini Model
+4
+Files to Change
+3
+New Rules Added
+
+--- PAGE 2 ---
+SECTION 1 — DIAGNOSIS: What Is Wrong Right Now
+Understanding the gap before we fix it
+1.1 Documentary vs. Friendly — The Core Gap
+Both examples below are exactly 9 words and cover the same science topic (boredom). One sounds like a BBC
+documentary. One sounds like a friend. Only one connects with a real audience.
+CURRENT OUTPUT (Documentary Style)
+TARGET OUTPUT (Friendly Style)
+• "Your mind feels adrift, a vast internal void."
+• "You know that bored feeling when nothing seems
+interesting?"
+• "Its default network ignites, searching for new
+input."
+• "Your brain actually hates that. It starts searching
+— fast."
+• "That preparation means boredom is not empty."
+• "So boredom? It is your brain quietly preparing
+you."
+• Uses words: vast, void, adrift, ignites, default
+network
+• Uses words: you, your, know, actually, quietly,
+preparing
+• Who talks like this? Nobody. It creates distance.
+• This is how a friend explains something over chai.
+1.2 The 4 Root Causes
+1
+Language Too Compressed &
+Academic
+The 15-word limit forces the LLM to delete natural human phrases
+like 'You know when...' or 'Think about it...' and replace them with
+dense formal words. Result: sounds like Wikipedia being read
+aloud, not a person talking.
+2
+Hook Formula Misses the Lived
+Moment
+Current hooks are: Personal Attack, Impossible Claim, Scale Shock.
+These are intellectually clever but emotionally cold. The viewer has
+never experienced a 'scale shock'. They have experienced
+boredom, forgetting a name, feeling warm after rubbing hands.
+TYPE D (Daily Moment hook) is missing.
+3
+Topics Are Research Paper Titles
+Topics like 'Why entropy always increases' or 'Why the future
+affects the past at quantum scale' have no human entry point. A
+normal viewer cannot relate to them. They need to be reframed as
+daily life questions before the agent sees them.
+4
+Bridge Openers Are Too Generic
+The current bridge rule says use templates like 'To understand
+that...' — but the Gemini free model often uses them without filling
+in the specific concept. Result: 'To understand that, we must...'
+which adds zero value and breaks continuity.
+
+--- PAGE 3 ---
+SECTION 2 — THE COMPLETE UPGRADE PLAN
+4 targeted changes across 4 files — no structural rebuild needed
+Overview of All Changes
+CHANGE
+FILE
+IMPACT
+EFFORT
+1. Fix Language Rules
+INSTRUCTIONS.md
+I Highest
+Low — edit text only
+2. Fix Agent Tone Instructions
+config/agents.yaml
+I Highest
+Low — edit YAML text
+3. Fix Topic List
+topics.txt
+I High
+Low — rewrite topics
+4. Add Story Rule to Tasks
+config/tasks.yaml
+I High
+Low — add one rule
+block
+Important: Your 5-clip structure, 15-word limit, and JSON prompt pipeline remain UNCHANGED. You do NOT need to rebuild
+anything. These are targeted edits to existing text in existing files.
+
+--- PAGE 4 ---
+CHANGE 1 — Fix Language Rules
+File: INSTRUCTIONS.md
+FILE: INSTRUCTIONS.md
+This file is the main constitution for your script_writer agent. The language and tone section (Section 3) needs to be updated.
+What to Change in Section 3 — LANGUAGE & TONE RULES
+Find the current 'Tone must be' block in Section 3. Replace it completely with the following:
+REMOVE THIS (Current Section 3 tone block):
+Tone must be: Calm, Curious, Documentary-like, Non-dramatic, Non-clickbait
+Avoid: Over-excited language, 'Mind-blowing', 'crazy', 'shocking'
+Avoid: Technical jargon unless explained intuitively, Long sentences
+Prefer: Short spoken sentences, Natural pauses, Simple cause-effect phrasing
+ADD THIS (New Section 3 tone block):
+TONE RULE — WRITE LIKE A CURIOUS FRIEND, NOT A DOCUMENTARY NARRATOR
+Write as if you are a curious 22-year-old explaining something fascinating
+to a friend at a chai break. Not a professor. Not a BBC narrator. A friend.
+REQUIRED words to use regularly: you, your, we, think about it,
+here is the thing, actually, wait, that means, right, so
+BANNED words — never use these:
+vast, void, adrift, cosmic, ignites, default network, phenomenon,
+immense, resonance, visceral, akin, cerebral, imperceptible
+If you use a science word, explain it in plain English in the SAME sentence.
+Example: 'entropy — that word just means things fall apart on their own'
+Every sentence must pass this test:
+Would a real 16-year-old say this out loud without feeling weird?
+If the answer is NO — rewrite it.
+Indian English rhythm is acceptable and preferred:
+Short, direct, slightly informal, never cold or distant.
+What to Add — New Hook Type D (in Section 2, Clip Roles)
+In Section 2 under 'Clip Roles', find where TYPE A, B, C hooks are listed. Add TYPE D immediately after TYPE C:
+TYPE D — THE DAILY MOMENT (New — add this):
+Start from a real human experience the viewer had today or yesterday.
+Then reveal the science hiding inside that experience.
+Examples of TYPE D hooks:
+'Ever rubbed your hands in winter to feel warm?' → leads to friction
+'You forgot someone's name today, didn't you?' → leads to memory
+'Your room gets messy but never cleans itself.' → leads to entropy
+
+--- PAGE 5 ---
+'You feel sleepy after a big meal, right?' → leads to digestion
+TYPE D hooks are the HIGHEST priority for Indian and global audiences
+because they start from life, not from science.
+What to Add — Forbidden Words List (in Section 10 — ABSOLUTE PROHIBITIONS)
+At the end of Section 10, add this block:
+BANNED VOCABULARY (Add to Section 10):
+These words make scripts sound like documentaries. NEVER use them:
+vast, void, adrift, cosmic whisper, immense, ignites, phenomenon,
+default network, resonance, visceral, akin to, cerebral, imperceptible,
+transcendent, ineffable, undulating, ethereal, quintessential
+REQUIRED FRIENDLY CONNECTORS — use at least 2 per script:
+think about it, here is the thing, you know what,
+that actually means, wait — so, right, which means you
+
+--- PAGE 6 ---
+CHANGE 2 — Fix Agent Tone Instructions
+File: config/agents.yaml
+FILE: config/agents.yaml
+This file defines the personality and goals of each agent. The script_writer and caption_writer agents need updated tone
+instructions.
+2.1 script_writer Agent — Change the Backstory Tone
+In agents.yaml, find the 'script_writer' section. Find the line that says 'David Attenborough measured calm'. This is
+the root cause of the documentary tone. Replace the entire voice style reference:
+REMOVE THIS:
+style: David Attenborough measured calm — thoughtful, never rushed, never excited
+ADD THIS:
+style: Friendly science explainer — like a curious 22-year-old talking
+to a friend. Warm, direct, slightly informal. Simple words. Never cold.
+Never formal. Think Kurzgesagt narration style but for Indian audiences.
+Short sentences. Natural pauses. You-focused language.
+2.2 script_writer Agent — Add Friendly Language Rules to Backstory
+In the script_writer backstory block, after the category-language rules (COSMOS topics, MIND topics, etc.), add
+this new block:
+FRIENDLY LANGUAGE RULE (Add after category language rules):
+Regardless of category, every script must follow these rules:
+1. Use 'you' and 'your' in at least 3 of the 5 clips.
+2. At least ONE clip must start from a daily human experience.
+3. Every science term must be followed by a plain-English explanation.
+4. Banned words: vast, void, adrift, immense, phenomenon, resonance.
+5. The script must sound natural when a real person reads it aloud.
+6. Clip 1 MUST use Type D hook (daily moment) as first priority.
+7. If Clip 1 uses Type A/B/C, it must still feel personal, not cold.
+2.3 script_validator Agent — Add Friendly Check
+In the script_validator backstory, after the 4 checks listed, add CHECK 5:
+5. FRIENDLY LANGUAGE CHECK (New check — add this):
+Count banned words in the script: vast, void, adrift, immense,
+phenomenon, resonance, ignites, default network, cosmic whisper.
+If ANY banned word appears → rewrite that clip.
+Count 'you'/'your' usage → must appear in at least 3 of 5 clips.
+If not → flag and rewrite the clips that are missing it.
+2.4 caption_writer Agent — Simplify Caption Tone
+
+--- PAGE 7 ---
+In the caption_writer backstory, find the tone description. Update it:
+REMOVE THIS:
+Your tone must match the TOPIC PROFILE category: calm-cosmic for COSMOS, warm-introspective
+for MIND, precise for PHYSICS, organic for BIOLOGY.
+ADD THIS:
+Your tone must always feel like a calm, curious friend left a note.
+Never formal. Never cold. Never technical. Simple English only.
+A 14-year-old reading the caption should understand it immediately.
+Category tone is secondary — friendliness and simplicity always come first.
+
+--- PAGE 8 ---
+CHANGE 3 — Fix the Topic List
+File: topics.txt
+FILE: topics.txt
+This file contains all topics the agent pipeline will process. Current topics are research paper titles with no human angle. They
+need to be rewritten as daily life questions.
+The Rule for Writing Topics
+Every topic in topics.txt must pass this test: Can a 14-year-old relate to this from their own life? If no, rewrite it
+so it starts from something they have experienced.
+Complete Rewritten Topic List
+Replace your entire topics.txt with the following. The category tags [COSMOS], [BIOLOGY] etc. remain the same.
+Only the topic description changes:
+Category Tag
+OLD Topic (Remove)
+NEW Topic (Replace With)
+[COSMOS][SERIES:InvisibleUni
+verse]
+Why the future affects the past at
+quantum scale
+Why measuring something can change what
+already happened
+[COSMOS][SERIES:InvisibleUni
+verse]
+Why friction creates heat at the atomic
+level
+Why rubbing your hands together makes
+them warm
+[COSMOS][SERIES:InvisibleUni
+verse]
+Why entropy always increases
+Why your room always gets messy but
+never cleans itself
+[BIOLOGY][SERIES:LifeCode]
+Why your body replaces itself every few
+years
+Why you are not the same person you were
+7 years ago
+[BIOLOGY][SERIES:LifeCode]
+Why sleep is when your brain cleans
+itself
+Why you feel foggy and dull when you do
+not sleep enough
+[BIOLOGY][SERIES:LifeCode]
+Why your gut makes more serotonin
+than your brain
+Why your stomach actually controls your
+mood
+[BIOLOGY][SERIES:LifeCode]
+Why DNA is nature's oldest archive
+Why your body carries instructions older
+than dinosaurs
+[BIOLOGY][SERIES:LifeCode]
+Why viruses are not quite alive
+Why a virus is stranger than anything alive
+or dead
+[PHYSICS]
+Why time moves slower near gravity
+Why time moves faster for your head than
+for your feet
+[CHEMISTRY]
+Why water is the strangest molecule
+Why water is the weirdest thing you drink
+every day
+[CHEMISTRY]
+Why fire is a chemical conversation
+What is actually happening when a candle
+burns
+[CHEMISTRY]
+Why rust is iron returning to its origin
+Why metal slowly disappears when you
+leave it in rain
+[CHEMISTRY]
+Why salt dissolves so perfectly in water
+Why salt completely disappears when you
+stir it in water
+
+--- PAGE 9 ---
+[EARTH]
+Why the ocean drives our weather
+Why the sea is the reason it rains in your
+city
+[EARTH]
+Why soil is the most complex
+ecosystem on Earth
+Why the dirt under your feet is more alive
+than you think
+[EARTH]
+Why mountains are slowly moving
+Why the ground beneath you is silently
+moving right now
+[BIOLOGY]
+Why the human eye cannot see most of
+reality
+How much of the world your eyes are hiding
+from you
+[BIOLOGY]
+Why you don't see the world as it is
+Why what you see right now is already one
+second old
+
+--- PAGE 10 ---
+CHANGE 4 — Add the Story Rule to Tasks
+File: config/tasks.yaml
+FILE: config/tasks.yaml
+This file defines what each agent is asked to do per task. The write_script_task needs one new rule block added at the top of
+its description.
+What to Add — The Story Rule Block
+In tasks.yaml, find the 'write_script_task' section. Find the line that starts with 'HARD REQUIREMENTS:'. BEFORE
+that line, add this new block:
+THE STORY RULE (Add BEFORE 'HARD REQUIREMENTS'):
+These 5 clips are ONE SINGLE STORY, not 5 separate facts.
+Think of it like a 40-second mini-movie with a beginning, middle, and end.
+Clip 1 — Opens the story from a real human experience or feeling.
+Clip 2 — Raises the question: 'But why does this happen?'
+Clip 3 — Gives the simple scientific reason in plain English.
+Clip 4 — Shows the surprising or meaningful side of that reason.
+Clip 5 — Brings it back to the viewer personally. Makes it real for them.
+STORY TEST (run this before finalizing the script):
+If someone watches only Clip 3 out of context — do they feel lost?
+If yes — the story is connected. Good.
+If no — the clips are too independent. Rewrite the bridges.
+LANGUAGE TEST (run this before finalizing):
+Read the script aloud. Does it sound like a real person talking?
+If it sounds like reading a textbook — it is wrong. Rewrite.
+Target: A 14-year-old listening should understand every single word.
+What to Add — Human Translation Step
+In the write_script_task description, find the 'STYLE:' block. After the STYLE block, add this:
+HUMAN TRANSLATION STEP (Add after STYLE block):
+Before writing any clip, complete this internal step:
+Ask yourself: 'What does this topic feel like in daily life?'
+Topic: 'Why entropy always increases'
+Human Translation: 'Why your room gets messy but never cleans itself'
+Topic: 'Why friction creates heat'
+Human Translation: 'Why rubbing your hands makes them warm'
+Topic: 'Why time moves slower near gravity'
+Human Translation: 'Why time moves faster for your head than your feet'
+This human translation MUST appear somewhere in Clip 1 or Clip 2.
+
+--- PAGE 11 ---
+If the human translation is not in the script — the script is INVALID.
+
+--- PAGE 12 ---
+SECTION 3 — BEFORE vs AFTER EXAMPLE
+Same topic. Same word count. Completely different feeling.
+Topic: Why boredom is good for your brain | Category: MIND | All clips ≤ 15 words
+CLIP
+CURRENT OUTPUT (Wrong — Documentary)
+NEW OUTPUT (Correct — Friendly)
+Clip 1
+Hook
+"Your mind feels adrift, a vast internal void."
+"Ever sat doing nothing and felt restless for no
+reason?"
+Clip 2 C
+uriosity
+"To understand that vast internal void, your brain
+actively seeks something more."
+"That restless feeling? Your brain actually hates doing
+nothing."
+Clip 3
+Reason
+"Because of this seeking, its default network
+ignites, searching for new input."
+"Because of this, your brain switches on and starts
+scanning for something new."
+Clip 4
+Meaning
+"So what's happening is this search, which
+actually prepares your mind for future tasks."
+"So that scanning prepares you — ideas and solutions
+come easier after boredom."
+Clip 5
+Anchor
+"That preparation means boredom is not empty
+— it is a tool your brain builds your future."
+"Which means next time you are bored — let it be.
+Your brain is working."
+Key difference: Both versions are under 15 words per clip. Both follow the 5-clip structure. Both use bridge openers. The
+ONLY difference is word choice. 'Default network ignites' → 'your brain switches on'. 'Vast internal void' → 'doing nothing and
+feeling restless'. Same science. Human language. Completely different viewer connection.
+
+--- PAGE 13 ---
+SECTION 4 — TESTING CHECKLIST
+Run this after making all changes — before posting any video
+How to Test That the Changes Are Working
+After making all 4 changes, run the agent on ONE topic from the new list. Then check the generated script against
+this checklist before doing anything else.
+CLIP 1 CHECK
+Does Clip 1 start from a daily human experience or feeling?
+Action:
+If it starts with a definition, a fact, or an abstract concept — FAIL. The Type D (Daily Moment) hook is
+mandatory. Rerun the agent.
+WORD CHECK
+Are any banned words present? (vast, void, adrift, immense, phenomenon, resonance)
+Action:
+Search the script for each banned word. If any appear — the validator did not catch it. Manually
+rewrite that clip.
+YOU/YOUR CHECK
+Does 'you' or 'your' appear in at least 3 of the 5 clips?
+Action:
+Count 'you' and 'your' across all 5 clips. If under 3 clips — the script is too cold and disconnected.
+Rerun.
+READ ALOUD
+CHECK
+Read the full script aloud. Does it sound like a real person talking?
+Action:
+If it sounds robotic, stiff, or like a textbook — it is wrong. Identify the stiff clip and check which banned
+words crept in.
+14-YEAR-OLD
+CHECK
+Would a 14-year-old understand every single word without a dictionary?
+Action:
+Go word by word in each clip. Any word a 14-year-old would not know must be followed by a plain
+English explanation in the same clip.
+STORY FLOW
+CHECK
+Do all 5 clips feel like one continuous story?
+Action:
+Read Clip 3 alone. If it makes complete sense without Clips 1-2 — the bridges are too weak.
+Strengthen the bridge openers.
+WORD COUNT
+CHECK
+Is every clip within the 15-word limit?
+Action:
+Count words in each clip manually. Clip limits: Clip1=14, Clip2=13, Clip3=13, Clip4=15, Clip5=14. If
+over — trim to exact limit.
+
+--- PAGE 14 ---
+SECTION 5 — QUICK REFERENCE CARD
+Keep this page open when reviewing generated scripts
+Banned Words — Never Allow These in Any Script
+vast
+void
+adrift
+cosmic whisper
+immense
+ignites
+default network
+phenomenon
+resonance
+visceral
+akin
+cerebral
+imperceptible
+transcendent
+ethereal
+Required Friendly Words — Use at Least 2 Per Script
+you
+your
+we
+think about it
+here's the thing
+actually
+wait
+that means
+right?
+so basically
+you know what
+which means you
+and here's why
+Per-Clip Word Limits (Unchanged)
+CLIP
+ROLE
+MAX
+WORDS
+APPROX
+DURATION
+PRIMARY RULE
+Clip 1
+Hook
+≤ 14 words
+~8 seconds
+Must start from daily human experience (Type D preferred)
+Clip 2
+Curiosity
+≤ 13 words
+~7 seconds
+Must raise the 'but why?' question using a bridge opener
+Clip 3
+Reason
+≤ 13 words
+~7 seconds
+Give the science reason in the simplest possible English
+Clip 4
+Meaning
+≤ 15 words
+~8 seconds
+Show contrast or surprising implication — save-worthy
+moment
+Clip 5
+Anchor
+≤ 14 words
+~8 seconds
+Bring it back to the viewer personally. 'Which means you...'
+REMEMBER: The 5-clip structure, JSON prompts, Veo video generation, Playwright browser automation, and
+CrewAI pipeline are ALL unchanged. You are only changing the WORDS the agents use — not the system
+itself. These 4 file changes take about 30 minutes to implement. Test on one topic first. If the checklist passes,
+the upgrade is complete.

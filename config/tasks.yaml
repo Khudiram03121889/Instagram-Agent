@@ -7,10 +7,13 @@ build_story_blueprint_task:
 
     PIPELINE GOAL:
     - Viewer understanding comes first.
+    - Retention and visual curiosity matter because the account needs stronger reels, not textbook clips.
     - The explanation must feel smooth, connected, and easy to follow.
     - Default to 5 clips.
+    - Target 24-36 seconds total.
     - Use 6 clips only if 5 would feel too compressed.
     - If the topic still feels crowded in 6 clips, narrow the topic angle.
+    - Use Gemini Omni visual thinking: shot framing, camera motion, style, lighting, environment, and action.
 
     REQUIRED TOP-LEVEL FIELDS:
     - topic_angle
@@ -25,6 +28,12 @@ build_story_blueprint_task:
     - next_clip_seed
     - viewer_takeaway
     - visual_anchor_terms
+    - hook_pattern
+    - retention_reason
+    - visual_premise
+    - camera_plan
+    - duration_seconds
+    - viewer_emotion
 
     ROLE ORDER RULE:
     - 5-clip mode:
@@ -46,6 +55,14 @@ build_story_blueprint_task:
     - No abstract metaphor anchors.
     - They must be easy to show on screen.
 
+    DURATION RULE:
+    - duration_seconds must be exactly one of: 4, 6, 8, 10.
+    - Use 4s for punchy hook/payoff clips.
+    - Use 6s for simple explanation beats.
+    - Use 8s for mechanism clips.
+    - Use 10s only when a dense mechanism truly needs more room.
+    - The total reel duration must be 24-36 seconds.
+
     OUTPUT FORMAT (STRICT):
     Return ONLY valid JSON. No markdown fences. No commentary.
   expected_output: >
@@ -60,23 +77,32 @@ write_script_task:
     {topic_profile}
 
     WRITING GOAL:
+    - The absolute priority is clear and easy understanding for the spectator.
     - Make the topic easy to understand in one listen.
     - Follow the approved story blueprint exactly.
     - Keep the sequence smooth and connected.
 
     SCRIPT RULES:
+    - NEVER copy or paste the "core_idea" or blueprint instructions into the script. You must write original spoken narration.
     - Use the blueprint's clip count and role order exactly.
-    - Each clip explains one idea only.
+    - First write one continuous Full Script that reads naturally from start to finish.
+    - Then divide that exact Full Script into 5 or 6 clips.
+    - Clip text must copy the Full Script in order. Do not add, remove, or reorder words during division.
+    - Sentences can seamlessly flow across clips. You do NOT need to end each clip with a hard stop.
     - Each clip should sound spoken, not compressed or slogan-like.
-    - Use 1 to 3 short sentences per clip.
+    - WORD COUNT: Strict duration-based cap: 4s = 10 words, 6s = 15 words, 8s = 20 words, 10s = 25 words.
+    - TIMING: Each clip must fit under its blueprint duration_seconds.
     - Clips 2+ must continue the planted concept from the previous clip.
     - Use simple common English that a 14-year-old can follow.
     - Avoid jargon unless you explain it immediately in plain English.
-    - Avoid vague lines, mystery-box phrasing, and poetic filler.
+    - Avoid vague lines, mystery-box phrasing, and academic filler.
     - End with a clear personal takeaway.
 
     OUTPUT FORMAT (STRICT):
     Title: <short title>
+
+    Full Script:
+    <one continuous narration made from Clip 1 through the final clip>
 
     Clip 1:
     <text>
@@ -112,6 +138,9 @@ validate_script_task:
     OUTPUT FORMAT (STRICT):
     Title: <short title>
 
+    Full Script:
+    <one continuous narration made from Clip 1 through the final clip>
+
     Clip 1:
     <text>
 
@@ -126,25 +155,41 @@ validate_script_task:
 
 format_json_task:
   description: >
-    Convert the validated reel script into a single JSON list with 5 or 6 clip objects.
+    Convert the reel script into a single JSON list with 5 or 6 clip objects.
 
     {topic_profile}
 
     HARD JSON CONTRACT (EVERY CLIP):
     - Keep voice_text exactly as script text (no rewriting).
     - Keep one identical voice object for all clips.
+    - Set voice.speed to 1.02 for all clips (minimum 1.0) so narration finishes cleanly.
     - Keep one identical background_audio object for all clips.
     - background_audio MUST use keys: generate_with_video, type, volume, sfx_layers.
     - Use topic profile video_style and audio_type exactly.
     - Add clip_role from the approved blueprint.
+    - Add duration_seconds from the approved blueprint.
     - Add sync_terms from the approved blueprint and narration concepts.
     - Add visual_goal that states what the viewer should understand from this clip.
-    - The visual must stay inside the script's established concept. Do not invent new ideas.
+
+    VISUAL PROMPT RULE (MANDATORY - MUST FOLLOW gemini-omni-prompt-generator.skill):
+    - The "visual" field MUST be a single string formatted exactly like this, using literal cinematic details:
+      [Camera]: [SHOT TYPE], [CAMERA MOTION]
+      [Style]: [AESTHETIC], [TEXTURE/FEEL]
+      [Lighting]: [LIGHT SOURCE], [LIGHT QUALITY]
+      [Location]: [ENVIRONMENT DESCRIPTION]
+      [Action]: [CHARACTERS/OBJECTS + ACTIONS matching sync_terms]
+      [Extra]: A {voice_tone} {voice_gender} narrator says: "{voice_text}". Speed: 1.02. Ambient sound bed: {sfx_layers}. Portrait 9:16. No on-screen text.
 
     VISUAL-SCRIPT SYNC RULE:
     - Visual must directly show what voice_text describes.
+    - PACE: Visual prompts must result in high-action, fast-cut, or dynamic motion.
     - Avoid abstract metaphors.
-    - Use literal educational visuals with readable motion and continuity.
+    - Never ask for on-screen text, subtitles, labels, captions, UI text, letters, typography, or written equations.
+    - Make the explanation understandable through creative visuals only: objects, motion, camera reveals, scale comparisons, transitions, and physical cause-and-effect.
+    - sync_terms must be shown as real visual elements or actions, never as printed words.
+    - Every clip will be generated separately in the main Google Flow prompt box with Omni Flash.
+    - Do not use Extend language. Do not write "continue from previous frame" or "previous final frame".
+    - Keep consistency by repeating the same subject world, palette, lighting logic, camera feel, narrator, and audio mood unless the script explicitly changes them.
 
     OUTPUT FORMAT (STRICT):
     Return ONLY valid JSON list. No markdown fences. No commentary.
@@ -154,6 +199,7 @@ format_json_task:
       {
         "clip_label": "CLIP 1",
         "clip_role": "Hook",
+        "duration_seconds": 4,
         "voice_text": "...",
         "sync_terms": ["..."],
         "visual_goal": "...",
@@ -164,7 +210,7 @@ format_json_task:
           "volume": <from topic profile audio_volume>,
           "sfx_layers": "<from topic profile sfx_layers>"
         },
-        "visual": "...",
+        "visual": "[Camera]: ...\n[Style]: ...\n[Lighting]: ...\n[Location]: ...\n[Action]: ...\n[Extra]: ...",
         "video_style": "...",
         "orientation": "portrait",
         "aspect_ratio": "9:16"
@@ -172,7 +218,8 @@ format_json_task:
     ]
   expected_output: >
     A valid JSON list with 5 or 6 clips that preserves strict voice/audio
-    continuity and adds clip_role, sync_terms, and visual_goal for each clip.
+    continuity and adds clip_role, sync_terms, and visual_goal for each clip
+    with visual prompts formatted as per the gemini-omni-prompt-generator skill.
   agent: prompt_engineer
 
 generate_video_task:
@@ -200,7 +247,7 @@ generate_video_task:
 
 generate_caption_task:
   description: >
-    Write a caption for the Instagram Reel based on the validated script.
+    Write a caption for the Instagram Reel based on the script.
 
     {topic_profile}
 
@@ -211,35 +258,32 @@ generate_caption_task:
 
     HARD REQUIREMENTS:
     - Do NOT explain the science again.
-    - Max 2-4 short lines.
+    - The entire caption must be under 100 characters, including spaces, punctuation, emojis, and hashtags.
     - Tone: Calm, Curious, Reflective - and category-appropriate.
     - Follow one of the formats: Quiet Insight, Gentle Curiosity, or Personal Anchor.
-    - Use exactly 4-5 relevant science hashtags.
+    - Use 3-5 short relevant science hashtags inside the 100-character limit.
     - Emojis are ALLOWED and encouraged when they add warmth - use 1-2 max.
+    - Do NOT include a save-prompt sentence.
 
     OUTPUT FORMAT:
-    <Caption Text>
-
-    <Hashtags>
+    <one caption line under 100 total characters>
   expected_output: >
-    A short, reflective caption with 4-5 topic-appropriate hashtags. Tone matches
-    the topic category from the TOPIC PROFILE.
+    A short, reflective caption under 100 characters total, with 1-2 emojis
+    and 3-5 topic-appropriate hashtags.
   agent: caption_writer
 
 archive_content_task:
   description: >
     Collect the outputs from the Script Writer (Script), Prompt Engineer
-    (JSON Prompts), Caption Writer (Caption), and Editing Advisor
-    (Editing Instructions).
+    (JSON Prompts), and Caption Writer (Caption).
 
     1. Format them into a single readable text string with these headers
        in this exact order:
        "--- SCRIPT ---"
        "--- PROMPTS ---"
        "--- CAPTION ---"
-       "--- EDITING INSTRUCTIONS (VN APP) ---"
 
-    Your final answer MUST be the perfectly formatted document containing all four sections.
+    Your final answer MUST be the perfectly formatted document containing all three sections.
 
     CRITICAL FORMAT RULE FOR SCRIPT SECTION:
     - Keep the title line.
@@ -248,54 +292,6 @@ archive_content_task:
     - If the script received does not have clip labels, add them sequentially based on line order.
     - Never output raw unlabelled lines for the script section.
   expected_output: >
-    A single completely formatted text document containing all four sections perfectly assembled.
+    A single completely formatted text document containing the script, prompts,
+    and caption sections perfectly assembled.
   agent: archivist
-
-generate_editing_task:
-  description: >
-    Generate precise VN app editing instructions for the completed reel.
-
-    {topic_profile}
-
-    You have access to:
-    - The validated reel script (5 or 6 clips)
-    - The generated JSON prompts
-    - The topic profile above
-
-    First, analyze the JSON prompts to understand how the video and audio were created.
-    Because the clips were generated with `generate_with_video: true`, recognize that
-    the video and audio are intrinsically combined into a single file by the Veo model.
-
-    YOUR OUTPUT must contain EXACTLY these sections in this order:
-    SECTION A - IMPORT & TIMELINE SETUP
-    SECTION B - CLIP TIMING & PAUSES
-    SECTION C - AUDIO WORKFLOW
-    SECTION D - COLOR GRADE
-    SECTION E - TRANSITIONS BETWEEN CLIPS
-    SECTION F - CAPTION OVERLAY (OPTIONAL)
-    SECTION G - FINAL EXPORT SETTINGS
-
-    SECTION RULES:
-    - Support either 5 or 6 clips.
-    - In SECTION B, list the clips in order and use their clip_role from the JSON.
-    - Keep each generated clip at full duration unless the JSON clearly demands a trim.
-    - Add pauses by role:
-      Hook -> 1.5 seconds after the clip
-      Question -> 1.0 second after the clip
-      Mechanism / Mechanism Part 1 / Mechanism Part 2 -> 1.0 second after the clip
-      Contrast/Payoff -> 2.0 seconds after the clip
-      Personal Takeaway -> 1.5 seconds after the clip
-    - Explain how to add each pause in VN using a freeze frame or black frame.
-    - In SECTION C, do NOT instruct the editor to extract, sync, or separately manage narrator audio.
-    - Add one separate VN background music track across the whole reel at 8% volume with 1-second fade-in and 2-second fade-out.
-    - In SECTION E, keep transitions subtle. Recommended: Dissolve or Fade at 0.3 seconds maximum.
-
-    OUTPUT FORMAT (MANDATORY):
-    - Output plain text only.
-    - Use the section headers exactly as shown above.
-    - Number every instruction within each section starting from 1.
-    - Be specific. Be short per step. One action per numbered point.
-  expected_output: >
-    A complete 7-section editing checklist specific to VN app, the topic's science
-    category, and the reel's clip count. Every instruction is numbered and actionable.
-  agent: editing_advisor

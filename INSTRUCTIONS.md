@@ -97,7 +97,7 @@ To ensure the script feels like a premium documentary, use these techniques:
 - Exactly 5 clips total
 - Each clip ≈ 8 seconds
 - Each clip = one idea only
-- Each clip MUST NOT exceed 15 words (at ~2 words/sec for calm narration within 8 seconds)
+- Each clip MUST be exactly 10-15 words (target 12-13 for best rhythm within 8 seconds)
 
 **Clip Roles (5-Clip Cognitive Sequence)**
 - Clip 1: Hook – **Sensory Entry**. Do NOT start with a definition or a fact. Start with a feeling, a sound, or a weird observation. (e.g., "A flame doesn't just burn; it breathes.")
@@ -216,7 +216,7 @@ Clip 5:
 <spoken script>
 
 **Each clip:**
-- Must be 1–3 short sentences max (≤ 15 words total)
+- Must be 1–3 short sentences max (strictly 10–15 words total)
 - Must clearly connect to the previous clip via a bridge opener (clips 2–5)
 - Must plant a word/concept in its last sentence for the next clip to pick up
 

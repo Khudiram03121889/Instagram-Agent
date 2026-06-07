@@ -1,0 +1,79 @@
+Created At: 2026-06-04T17:27:25Z
+Completed At: 2026-06-04T17:27:25Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 1511
+Total Bytes: 55993
+Showing lines 180 to 250
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+180:         )
+181:     return config
+182: 
+183: 
+184: def parse_cli_args() -> argparse.Namespace:
+185:     parser = argparse.ArgumentParser(description="Instagram Agent pipeline runner")
+186:     parser.add_argument(
+187:         "--flow-live",
+188:         action="store_true",
+189:         help="Launch Google Flow after local validation. This can spend Flow credits.",
+190:     )
+191:     parser.add_argument(
+192:         "--flow-dry-run",
+193:         action="store_true",
+194:         help="Validate script and prompts locally without launching Google Flow.",
+195:     )
+196:     return parser.parse_args()
+197: 
+198: 
+199: def get_env_float(name: str, default: float) -> float:
+200:     raw = os.getenv(name)
+201:     if raw is None or raw.strip() == "":
+202:         return default
+203:     try:
+204:         return float(raw)
+205:     except ValueError:
+206:         print(f"⚠️ Invalid float for {name}='{raw}'. Using default {default}.")
+207:         return default
+208: 
+209: 
+210: def get_env_reasoning(name: str, default: str) -> str:
+211:     allowed = {"none", "low", "medium", "high"}
+212:     value = (os.getenv(name) or default).strip().lower()
+213:     if value not in allowed:
+214:         print(f"⚠️ Invalid reasoning_effort '{value}' for {name}. Using '{default}'.")
+215:         return default
+216:     return value
+217: 
+218: 
+219: def get_env_int(name: str, default: int, minimum: int = 1) -> int:
+220:     raw = os.getenv(name)
+221:     if raw is None or raw.strip() == "":
+222:         return default
+223:     try:
+224:         value = int(raw)
+225:     except ValueError:
+226:         print(f"Invalid integer for {name}='{raw}'. Using default {default}.")
+227:         return default
+228:     if value < minimum:
+229:         print(f"{name} must be >= {minimum}. Using default {default}.")
+230:         return default
+231:     return value
+232: 
+233: 
+234: def get_env_bool(name: str, default: bool = False) -> bool:
+235:     raw = os.getenv(name)
+236:     if raw is None:
+237:         return default
+238:     value = raw.strip().lower()
+239:     if value in {"1", "true", "yes", "on"}:
+240:         return True
+241:     if value in {"0", "false", "no", "off"}:
+242:         return False
+243:     print(f"Invalid boolean for {name}='{raw}'. Using default {default}.")
+244:     return default
+245: 
+246: 
+247: def get_env_str(name: str, default: str) -> str:
+248:     raw = os.getenv(name)
+249:     return raw.strip() if raw and raw.strip() else default
+250: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

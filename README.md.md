@@ -870,3 +870,17 @@ etc.
 
 Do NOT include explanations outside the JSON
 
+
+---
+
+Runtime Controls (Environment Variables)
+
+- MAX_FULL_SCRIPT_REWRITES
+  Number of full script regeneration retries after a failed local validation cycle.
+
+- MAX_SCRIPT_REPAIR_PASSES
+  Number of targeted validator rewrite passes for failing clips only, per script attempt.
+  If unset, this falls back to MAX_LOCAL_REPAIR_ATTEMPTS.
+
+- RUN_POST_TASKS_ON_DRY_RUN
+  Default false. When false, dry run skips caption/editing/archive tasks to reduce token cost.

@@ -1,0 +1,69 @@
+Created At: 2026-06-04T17:27:17Z
+Completed At: 2026-06-04T17:27:17Z
+File Path: `file:///d:/Python/Programs/instagram%20agent/main.py`
+Total Lines: 1511
+Total Bytes: 55993
+Showing lines 1450 to 1510
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1450:                     )
+1451:                     fail_reason = "Browser automation failed before clean generation."
+1452:                     if (
+1453:                         browser_attempt < max_flow_attempts
+1454:                         and retry_on_browser_failure
+1455:                         and not flow_dry_run
+1456:                     ):
+1457:                         print("🔁 Retrying browser stage because paid retry is explicitly enabled.")
+1458:                         continue
+1459:                     break
+1460: 
+1461:                 print("✅ Story blueprint + script + sync preflight + browser generation passed.")
+1462:                 execution_success = True
+1463:                 break
+1464: 
+1465:             if execution_success:
+1466:                 break
+1467: 
+1468:         if not execution_success:
+1469:             raise RuntimeError(
+1470:                 "Pipeline stopped before passing clarity/sync and browser generation gates. "
+1471:                 f"{fail_reason} "
+1472:                 "To allow more local rewrites, raise MAX_FULL_SCRIPT_REWRITES. "
+1473:                 "To allow paid retries, raise MAX_FLOW_ATTEMPTS and enable RETRY_ON_BROWSER_FAILURE."
+1474:             )
+1475: 
+1476:         print("\n🧾 Running post-production text tasks (caption/edit/archive)...")
+1477:         post_result = post_crew.kickoff()
+1478: 
+1479:         print("\n\n########################")
+1480:         print("## CREW EXECUTION ENDED ##")
+1481:         print("########################\n")
+1482:         print(generation_result)
+1483:         print(post_result)
+1484: 
+1485:         if flow_dry_run:
+1486:             print(
+1487:                 f"\n🧪 Dry run complete. Topic '{topic}' remains in the queue because Flow was not launched."
+1488:             )
+1489:         elif all_topics and all_topics[0] == original_topic_line:
+1490:             print(f"\n✅ Marking '{topic}' as complete...")
+1491:             remaining_topics = all_topics[1:]
+1492:             try:
+1493:                 with open(topic_file, "w", encoding="utf-8") as file:
+1494:                     file.write("\n".join(remaining_topics))
+1495:             except Exception as error:
+1496:                 print(f"⚠️ Error updating topics.txt: {error}")
+1497: 
+1498:             try:
+1499:                 with open(completed_file, "a", encoding="utf-8") as file:
+1500:                     file.write(original_topic_line + "\n")
+1501:             except Exception as error:
+1502:                 print(f"⚠️ Error updating completed_topics.txt: {error}")
+1503: 
+1504:     except Exception as error:
+1505:         print(f"\n❌ CREW FAILED: {error}")
+1506:         print(f"   Topic '{topic}' was NOT marked as complete and remains in the queue.")
+1507: 
+1508: 
+1509: if __name__ == "__main__":
+1510:     main()
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

@@ -22,6 +22,7 @@ MAX_CLIP_COUNT = 6
 MIN_WORD_COUNT = 8
 MAX_WORD_COUNT = 42
 MAX_SENTENCE_COUNT = 3
+SCRIPT_WORDS_PER_SECOND = 2.5
 EXPECTED_CLIP_ROLE_SEQUENCES = {
     5: ["Hook", "Question", "Mechanism", "Contrast/Payoff", "Personal Takeaway"],
     6: [
@@ -93,16 +94,44 @@ ERROR_STATE_KEYWORDS = (
     "out of credits",
 )
 SETTINGS_MENU_SELECTORS = [
+    "button[aria-haspopup='menu']:has-text('x2')",
+    "button[aria-haspopup='menu']:has-text('x1')",
+    "button[aria-haspopup='menu']:has-text('x3')",
+    "button[aria-haspopup='menu']:has-text('x4')",
+    "button[aria-haspopup='menu']:has-text('Banana')",
+    "button[aria-haspopup='menu']:has-text('Veo')",
+    "button[aria-haspopup='menu']:has-text('Omni')",
+    "button[aria-haspopup='menu']:has-text('Flash')",
     "button[aria-haspopup='menu']",
     "button[id*='radix']",
 ]
 MODEL_CONTROL_SELECTORS = [
+    "button:has-text('Veo')",
+    "button:has-text('Omni')",
+    "button:has-text('Banana')",
+    "button:has-text('arrow_drop_down')",
     "button[role='combobox']:has-text('Veo')",
+    "button[role='combobox']:has-text('Omni')",
     "select:has-text('Veo')",
+    "select:has-text('Omni')",
 ]
 MODEL_OPTION_SELECTORS = [
+    "[role='menuitem']:has-text('Nano Banana 2')",
+    "[role='menuitem']:has-text('Nano Banana Pro')",
+    "[role='menuitem']:has-text('Veo 3.1 - Fast')",
+    "[role='menuitem']:has-text('Omni Flash')",
+    "[role='option']:has-text('Nano Banana 2')",
+    "[role='option']:has-text('Nano Banana Pro')",
     "[role='option']:has-text('Veo 3.1 - Fast')",
+    "[role='option']:has-text('Omni Flash')",
+    "button:has-text('Nano Banana 2')",
+    "button:has-text('Nano Banana Pro')",
+    "button:has-text('Veo 3.1 - Fast')",
+    "button:has-text('Omni Flash')",
+    "option:has-text('Nano Banana 2')",
+    "option:has-text('Nano Banana Pro')",
     "option:has-text('Veo 3.1 - Fast')",
+    "option:has-text('Omni Flash')",
 ]
 
 
@@ -485,6 +514,50 @@ def _utc_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _dismiss_changelog_modal(page) -> None:
+    try:
+        # Check if the modal is present
+        dialog = page.locator("div[role='dialog']:has(iframe[src*='changelog'])").first
+        if dialog.count() > 0 and dialog.is_visible():
+            print("🔔 Changelog modal detected. Attempting to dismiss...")
+            # Try pressing Escape first
+            page.keyboard.press("Escape")
+            page.wait_for_timeout(1000)
+            
+            if not dialog.is_visible():
+                print("   ✅ Changelog modal dismissed via Escape key.")
+                return
+            
+            # If still visible, try clicking the backdrop
+            backdrop = page.locator("div[data-state='open'][class*='sc-']").first
+            if backdrop.count() > 0 and backdrop.is_visible():
+                try:
+                    backdrop.click(timeout=3000)
+                    page.wait_for_timeout(1000)
+                    print("   ✅ Backdrop clicked.")
+                except Exception as click_err:
+                    print(f"   [WARN] Could not click backdrop: {click_err}")
+                    
+            if not dialog.is_visible():
+                print("   ✅ Changelog modal dismissed via backdrop click.")
+                return
+                
+            # If still visible, try to click a coordinate outside the dialog
+            print("   [WARN] Changelog modal still visible, trying to click outside (10, 10)...")
+            page.mouse.click(10, 10)
+            page.wait_for_timeout(1000)
+            
+            if not dialog.is_visible():
+                print("   ✅ Changelog modal dismissed via outside click.")
+                return
+            else:
+                print("   ❌ Failed to dismiss changelog modal.")
+        else:
+            print("   No changelog modal detected.")
+    except Exception as e:
+        print(f"   [WARN] Error checking/dismissing changelog modal: {e}")
+
+
 def _ensure_flow_editor_ready(page):
     try:
         prompt_box, prompt_selector = _find_first_visible(
@@ -535,17 +608,29 @@ def _ensure_selected(locator, label: str, page=None, timeout_ms: int = 1000) -> 
         raise RuntimeError(f"Could not verify {label}: control did not become active.")
 
 
-def _verify_flow_settings(page) -> None:
+def _verify_flow_settings(page, duration_seconds: int = 6) -> None:
+    page.wait_for_timeout(2000) # Give extra time for model settings pill to render
     settings_btn = None
     last_error = None
     for selector in SETTINGS_MENU_SELECTORS:
-        candidate = page.locator(selector).last
+        candidate = page.locator(selector).first
         try:
             if candidate.count() > 0 and candidate.is_visible():
                 settings_btn = candidate
                 break
         except Exception as exc:
             last_error = exc
+    if settings_btn is None:
+        # Fallback to last match if first match failed
+        for selector in SETTINGS_MENU_SELECTORS:
+            candidate = page.locator(selector).last
+            try:
+                if candidate.count() > 0 and candidate.is_visible():
+                    settings_btn = candidate
+                    break
+            except Exception as exc:
+                last_error = exc
+
     if settings_btn is None:
         detail = f" Last error: {last_error}" if last_error else ""
         raise RuntimeError(f"Could not locate Flow settings menu.{detail}")
@@ -561,11 +646,25 @@ def _verify_flow_settings(page) -> None:
         portrait_tab = page.locator(
             "button[role='tab'][id*='-trigger-PORTRAIT'], button[role='tab']:has-text('Portrait')"
         ).first
-        x2_tab = page.locator("button[role='tab']:has-text('x2')").first
+        if portrait_tab.count() == 0 or not portrait_tab.is_visible():
+            portrait_tab = page.locator(
+                "button[role='tab']:has-text('9:16'), button:has-text('9:16')"
+            ).first
+        x2_tab = page.locator(
+            "button[role='tab']:has-text('2X'), "
+            "button[role='tab']:has-text('x2'), "
+            "button:has-text('2X')"
+        ).first
 
         _ensure_selected(video_tab, "Video mode", page=page)
         _ensure_selected(portrait_tab, "Portrait mode", page=page)
-        _ensure_selected(x2_tab, "x2 duration", page=page)
+        try:
+            _ensure_selected(x2_tab, "2X variant count", page=page)
+        except RuntimeError as e:
+            raise RuntimeError(f"Could not verify 2X variant count: {e}")
+
+        if duration_seconds:
+            _select_flow_duration(page, duration_seconds)
 
         model_control = None
         for selector in MODEL_CONTROL_SELECTORS:
@@ -580,7 +679,7 @@ def _verify_flow_settings(page) -> None:
             raise RuntimeError("Could not locate the Flow model selector.")
 
         model_text = _normalize_space(_read_locator_text(model_control))
-        if "Veo 3.1 - Fast" not in model_text:
+        if not any(m in model_text for m in ["Veo 3.1 - Fast", "Omni Flash", "Nano Banana 2", "Nano Banana Pro", "Banana"]):
             model_control.click()
             page.wait_for_timeout(1000)
             selected = False
@@ -594,11 +693,11 @@ def _verify_flow_settings(page) -> None:
                 except Exception:
                     continue
             if not selected:
-                raise RuntimeError("Could not locate the 'Veo 3.1 - Fast' model option.")
+                raise RuntimeError("Could not locate the model option.")
             page.wait_for_timeout(1000)
             model_text = _normalize_space(_read_locator_text(model_control))
-            if "Veo 3.1 - Fast" not in model_text:
-                raise RuntimeError("Model selector did not confirm 'Veo 3.1 - Fast'.")
+            if not any(m in model_text for m in ["Veo 3.1 - Fast", "Omni Flash", "Nano Banana 2", "Nano Banana Pro", "Banana"]):
+                raise RuntimeError("Model selector did not confirm selection.")
     finally:
         try:
             page.keyboard.press("Escape")
@@ -638,13 +737,82 @@ def _build_cinematic_prompt(item: dict, clip_number: int = 1) -> str:
         f"Visual requirement: {visual}. "
         f"Style: {video_style}. "
         f"Ambient sound bed: {sfx_layers}. "
-        "Portrait 9:16. Keep the visual literal, educational, and continuous with adjacent clips."
+        "Portrait 9:16. Keep the visual literal, educational, and continuous with adjacent clips. "
+        "standalone Omni Flash clip. No on-screen text. Do not render sync terms as printed words."
     )
 
     return prompt
 
 
+def _capture_latest_result_snapshot(page) -> dict:
+    selector = "a[href*='/edit/']:has(img)"
+    locators = page.locator(selector)
+    count = locators.count()
+    if count == 0:
+        return {"selector": selector, "ordinal": 0, "href": None}
+    ordinal = count - 1
+    last_locator = locators.nth(ordinal)
+    href = last_locator.get_attribute("href")
+    return {"selector": selector, "ordinal": ordinal, "href": href}
 
+
+def _classify_generation_timeout(state: dict, baseline_result_count: int) -> str:
+    result_count = state.get("result_count", 0)
+    activity_visible = state.get("activity_visible", False)
+    activity_keywords = state.get("activity_keywords", False)
+    button_enabled = state.get("button_enabled", True)
+
+    if result_count > baseline_result_count:
+        return "complete"
+    elif activity_visible or activity_keywords or not button_enabled:
+        return "in_progress"
+    else:
+        return "idle"
+
+
+def _ensure_extend_mode(page) -> str:
+    selector = "button:has-text('Extend')"
+    locator = page.locator(selector)
+    if locator.get_attribute("aria-pressed") != "true":
+        locator.click()
+    return selector
+
+
+def _open_variant(page, variant: dict) -> str:
+    href = variant.get("href")
+    if href:
+        selector = f"a[href='{href}']"
+        locator = page.locator(selector)
+        if locator.is_visible():
+            locator.click()
+            return selector
+    selector = variant.get("selector")
+    ordinal = variant.get("ordinal", 0)
+    locator = page.locator(selector).nth(ordinal)
+    locator.click()
+    return selector
+
+
+def _select_result_snapshot(page, variant: dict, label: str = "") -> str:
+    href = variant.get("href")
+    if href:
+        selector = f"a[href='{href}']"
+        locator = page.locator(selector)
+        if locator.is_visible():
+            locator.click()
+            return selector
+    selector = variant.get("selector")
+    ordinal = variant.get("ordinal", 0)
+    locator = page.locator(selector).nth(ordinal)
+    locator.click()
+    return selector
+
+
+def _select_flow_duration(page, duration_seconds: int) -> str:
+    selector = f"button[role='tab']:has-text('{duration_seconds}s'), button:has-text('{duration_seconds}s')"
+    locator = page.locator(selector)
+    locator.click()
+    return selector
 
 
 class VideoGenerationTool(BaseTool):
@@ -721,6 +889,43 @@ class VideoGenerationTool(BaseTool):
                         raise ValueError(
                             f"Clip {clip_number}: background_audio.generate_with_video must be true."
                         )
+
+                    # 1. Voice speed check
+                    voice = item.get("voice", {})
+                    if not isinstance(voice, dict):
+                        raise ValueError(f"Clip {clip_number}: voice must be an object.")
+                    
+                    voice_speed = voice.get("speed")
+                    if voice_speed is not None:
+                        try:
+                            if float(voice_speed) < 1.0:
+                                raise ValueError(f"voice.speed must be >= 1.0 (received {voice_speed})")
+                        except ValueError as ve:
+                            if "voice.speed" in str(ve):
+                                raise
+                            pass
+
+                    # 2. Timing / audio length check
+                    speed = float(voice.get("speed", 1.0))
+                    words = _word_count(voice_text)
+                    estimated_seconds = words / (SCRIPT_WORDS_PER_SECOND * speed)
+                    duration_seconds = float(item.get("duration_seconds", 8.0))
+                    if estimated_seconds > duration_seconds:
+                        raise ValueError(
+                            f"Clip {clip_number}: estimated audio length {estimated_seconds:.1f}s exceeds "
+                            f"{duration_seconds:.0f}s limit."
+                        )
+
+                    # 3. Text overlay check in visual
+                    visual_lower = str(item.get("visual", "")).lower()
+                    has_text_request = False
+                    for term in ["on-screen text", "display the word", "render the word", "display text", "text overlay", "show the word", "show word"]:
+                        if term in visual_lower:
+                            if not any(neg in visual_lower for neg in ["no text", "no labels", "no captions", "no on-screen"]):
+                                has_text_request = True
+                                break
+                    if has_text_request:
+                        raise ValueError("visual plan requests rendered text")
 
                     if str(item["orientation"]).strip().lower() != "portrait":
                         raise ValueError(f"Clip {clip_number}: orientation must be 'portrait'.")
@@ -901,6 +1106,9 @@ class VideoGenerationTool(BaseTool):
                 body_text = _body_text(page).lower()
                 if "sign in" in page.title().lower() or "sign in" in body_text or "login" in body_text:
                      return "❌ Error: It seems you are not logged in. Please run 'python setup_auth.py' again."
+
+                # Dismiss any changelog popup
+                _dismiss_changelog_modal(page)
 
                 # --- STEP 1: Ensure the editor is ready ---
                 print("🔎 Checking whether the Flow editor is already open...")

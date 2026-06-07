@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-30T14:35:10.428914Z",
+  "timestamp": "2026-06-06T15:53:10.639077Z",
   "project_name": "contract-pass",
   "status": "passed",
   "clip_count": 5,
@@ -34,7 +34,7 @@
     {
       "clip": 2,
       "clip_role": "Question",
-      "word_count": 16,
+      "word_count": 14,
       "sentence_count": 2,
       "overlap_count": 2,
       "sync_term_count": 2,

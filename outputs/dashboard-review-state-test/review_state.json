@@ -1,0 +1,314 @@
+{
+  "topic": "dashboard-review-state-test",
+  "status": "approved_running_flow",
+  "created_at": "2026-06-06T15:53:10.697381+00:00",
+  "updated_at": "2026-06-06T15:53:10.699543+00:00",
+  "topic_profile": {
+    "category": "PHYSICS"
+  },
+  "blueprint": {
+    "topic_angle": "Why rubbing your hands makes them warm",
+    "clip_count": 5,
+    "clips": [
+      {
+        "clip_number": 1,
+        "clip_role": "Hook",
+        "core_idea": "Rubbing your palms creates friction on a cold day.",
+        "bridge_from_previous": "",
+        "next_clip_seed": "friction",
+        "viewer_takeaway": "The warmth begins with rubbing and friction.",
+        "visual_anchor_terms": [
+          "rubbing",
+          "palms",
+          "friction"
+        ],
+        "hook_pattern": "everyday body moment",
+        "retention_reason": "viewer wants to know why warmth appears fast",
+        "visual_premise": "macro palms rubbing with heat appearing",
+        "camera_plan": "close-up push in on rubbing palms",
+        "duration_seconds": 8,
+        "viewer_emotion": "curious recognition"
+      },
+      {
+        "clip_number": 2,
+        "clip_role": "Question",
+        "core_idea": "Friction raises the question of why the hands start warming.",
+        "bridge_from_previous": "friction",
+        "next_clip_seed": "tiny collisions",
+        "viewer_takeaway": "Friction is the reason the warmth starts.",
+        "visual_anchor_terms": [
+          "friction",
+          "palms",
+          "tiny collisions"
+        ],
+        "hook_pattern": "why question",
+        "retention_reason": "turns friction into a visible cause",
+        "visual_premise": "surface ridges catching and bumping",
+        "camera_plan": "macro tracking shot across skin ridges",
+        "duration_seconds": 6,
+        "viewer_emotion": "focused curiosity"
+      },
+      {
+        "clip_number": 3,
+        "clip_role": "Mechanism",
+        "core_idea": "Tiny collisions push surface particles faster and create heat.",
+        "bridge_from_previous": "tiny collisions",
+        "next_clip_seed": "faster particles",
+        "viewer_takeaway": "Heat builds when particles move faster.",
+        "visual_anchor_terms": [
+          "tiny collisions",
+          "particles",
+          "heat"
+        ],
+        "hook_pattern": "hidden mechanism reveal",
+        "retention_reason": "shows the invisible mechanism",
+        "visual_premise": "particles speed up after tiny collisions",
+        "camera_plan": "push through skin into particle view",
+        "duration_seconds": 6,
+        "viewer_emotion": "aha"
+      },
+      {
+        "clip_number": 4,
+        "clip_role": "Contrast/Payoff",
+        "core_idea": "Without faster particles your hands stay cold, but with them heat appears.",
+        "bridge_from_previous": "faster particles",
+        "next_clip_seed": "warm hands",
+        "viewer_takeaway": "The contrast is cold hands versus warm hands.",
+        "visual_anchor_terms": [
+          "cold hands",
+          "faster particles",
+          "warm hands"
+        ],
+        "hook_pattern": "contrast payoff",
+        "retention_reason": "cold versus warm makes the payoff clear",
+        "visual_premise": "split physical contrast between cold and warm hands",
+        "camera_plan": "side-by-side medium close-up",
+        "duration_seconds": 6,
+        "viewer_emotion": "satisfying clarity"
+      },
+      {
+        "clip_number": 5,
+        "clip_role": "Personal Takeaway",
+        "core_idea": "Warm hands mean your skin is feeling energy spread.",
+        "bridge_from_previous": "warm hands",
+        "next_clip_seed": "",
+        "viewer_takeaway": "When your hands warm up, your skin is feeling energy spread.",
+        "visual_anchor_terms": [
+          "warm hands",
+          "skin",
+          "energy"
+        ],
+        "hook_pattern": "personal takeaway",
+        "retention_reason": "connects the science to the viewer's body",
+        "visual_premise": "warmth spreading through skin",
+        "camera_plan": "gentle pull back from glowing palms",
+        "duration_seconds": 6,
+        "viewer_emotion": "useful understanding"
+      }
+    ]
+  },
+  "script_text": "Title: Test\n\nFull Script:\nTest",
+  "script_clips": [
+    {
+      "clip": 1,
+      "voice_text": "You rub your palms on a cold morning. That rubbing creates friction between your hands."
+    },
+    {
+      "clip": 2,
+      "voice_text": "Because of that friction, tiny collisions start building. Why do those collisions feel warm?"
+    },
+    {
+      "clip": 3,
+      "voice_text": "Those tiny collisions push surface particles faster. Faster particles turn rubbing into rising heat."
+    },
+    {
+      "clip": 4,
+      "voice_text": "Without those faster particles, your hands stay cold. With them, warm hands appear almost immediately."
+    },
+    {
+      "clip": 5,
+      "voice_text": "That means your warm hands are not magic. Your skin is feeling energy spread outward."
+    }
+  ],
+  "viral_clarity": {
+    "score": 100,
+    "grade": "strong",
+    "notes": [
+      "Ready for review."
+    ]
+  },
+  "questions": [
+    {
+      "id": "creative_direction",
+      "question": "What should the agents improve before Flow?",
+      "options": [
+        "Approve as-is",
+        "Make it more surprising",
+        "Make it more relatable",
+        "Make the visuals more cinematic"
+      ]
+    },
+    {
+      "id": "duration_bias",
+      "question": "What pacing should the clip durations prefer?",
+      "options": [
+        "Use agent recommendations",
+        "Shorter and punchier",
+        "More room for mechanism"
+      ]
+    },
+    {
+      "id": "risk",
+      "question": "Viral clarity score is 100/100. Continue?",
+      "options": [
+        "Approve",
+        "Revise script",
+        "Revise visuals"
+      ]
+    }
+  ],
+  "answers": {},
+  "manual_feedback": "Make the hook sharper.",
+  "approved": true,
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "I have successfully generated a new story blueprint and script for you! Please review the clip details below.",
+      "timestamp": "2026-06-03T17:16:11.394489+00:00",
+      "type": "script_review",
+      "data": {
+        "blueprint": {
+          "topic_angle": "Why rubbing your hands makes them warm",
+          "clip_count": 5,
+          "clips": [
+            {
+              "clip_number": 1,
+              "clip_role": "Hook",
+              "core_idea": "Rubbing your palms creates friction on a cold day.",
+              "bridge_from_previous": "",
+              "next_clip_seed": "friction",
+              "viewer_takeaway": "The warmth begins with rubbing and friction.",
+              "visual_anchor_terms": [
+                "rubbing",
+                "palms",
+                "friction"
+              ],
+              "hook_pattern": "everyday body moment",
+              "retention_reason": "viewer wants to know why warmth appears fast",
+              "visual_premise": "macro palms rubbing with heat appearing",
+              "camera_plan": "close-up push in on rubbing palms",
+              "duration_seconds": 8,
+              "viewer_emotion": "curious recognition"
+            },
+            {
+              "clip_number": 2,
+              "clip_role": "Question",
+              "core_idea": "Friction raises the question of why the hands start warming.",
+              "bridge_from_previous": "friction",
+              "next_clip_seed": "tiny collisions",
+              "viewer_takeaway": "Friction is the reason the warmth starts.",
+              "visual_anchor_terms": [
+                "friction",
+                "palms",
+                "tiny collisions"
+              ],
+              "hook_pattern": "why question",
+              "retention_reason": "turns friction into a visible cause",
+              "visual_premise": "surface ridges catching and bumping",
+              "camera_plan": "macro tracking shot across skin ridges",
+              "duration_seconds": 6,
+              "viewer_emotion": "focused curiosity"
+            },
+            {
+              "clip_number": 3,
+              "clip_role": "Mechanism",
+              "core_idea": "Tiny collisions push surface particles faster and create heat.",
+              "bridge_from_previous": "tiny collisions",
+              "next_clip_seed": "faster particles",
+              "viewer_takeaway": "Heat builds when particles move faster.",
+              "visual_anchor_terms": [
+                "tiny collisions",
+                "particles",
+                "heat"
+              ],
+              "hook_pattern": "hidden mechanism reveal",
+              "retention_reason": "shows the invisible mechanism",
+              "visual_premise": "particles speed up after tiny collisions",
+              "camera_plan": "push through skin into particle view",
+              "duration_seconds": 6,
+              "viewer_emotion": "aha"
+            },
+            {
+              "clip_number": 4,
+              "clip_role": "Contrast/Payoff",
+              "core_idea": "Without faster particles your hands stay cold, but with them heat appears.",
+              "bridge_from_previous": "faster particles",
+              "next_clip_seed": "warm hands",
+              "viewer_takeaway": "The contrast is cold hands versus warm hands.",
+              "visual_anchor_terms": [
+                "cold hands",
+                "faster particles",
+                "warm hands"
+              ],
+              "hook_pattern": "contrast payoff",
+              "retention_reason": "cold versus warm makes the payoff clear",
+              "visual_premise": "split physical contrast between cold and warm hands",
+              "camera_plan": "side-by-side medium close-up",
+              "duration_seconds": 6,
+              "viewer_emotion": "satisfying clarity"
+            },
+            {
+              "clip_number": 5,
+              "clip_role": "Personal Takeaway",
+              "core_idea": "Warm hands mean your skin is feeling energy spread.",
+              "bridge_from_previous": "warm hands",
+              "next_clip_seed": "",
+              "viewer_takeaway": "When your hands warm up, your skin is feeling energy spread.",
+              "visual_anchor_terms": [
+                "warm hands",
+                "skin",
+                "energy"
+              ],
+              "hook_pattern": "personal takeaway",
+              "retention_reason": "connects the science to the viewer's body",
+              "visual_premise": "warmth spreading through skin",
+              "camera_plan": "gentle pull back from glowing palms",
+              "duration_seconds": 6,
+              "viewer_emotion": "useful understanding"
+            }
+          ]
+        },
+        "script_text": "Title: Test\n\nFull Script:\nTest",
+        "script_clips": [
+          {
+            "clip": 1,
+            "voice_text": "You rub your palms on a cold morning. That rubbing creates friction between your hands."
+          },
+          {
+            "clip": 2,
+            "voice_text": "Because of that friction, tiny collisions start building. Why do those collisions feel warm?"
+          },
+          {
+            "clip": 3,
+            "voice_text": "Those tiny collisions push surface particles faster. Faster particles turn rubbing into rising heat."
+          },
+          {
+            "clip": 4,
+            "voice_text": "Without those faster particles, your hands stay cold. With them, warm hands appear almost immediately."
+          },
+          {
+            "clip": 5,
+            "voice_text": "That means your warm hands are not magic. Your skin is feeling energy spread outward."
+          }
+        ],
+        "viral_clarity": {
+          "score": 100,
+          "grade": "strong",
+          "notes": [
+            "Ready for review."
+          ]
+        }
+      }
+    }
+  ]
+}

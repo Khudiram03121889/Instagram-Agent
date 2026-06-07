@@ -1,0 +1,146 @@
+[
+  {
+    "clip_label": "CLIP 1",
+    "clip_role": "Hook",
+    "duration_seconds": 4,
+    "voice_text": "Ever noticed your eyes close when you sneeze?",
+    "sync_terms": [
+      "eyes close",
+      "sneeze"
+    ],
+    "visual_goal": "Viewer understands the familiar sneeze moment and sees the eyelids shut instantly.",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 1.02,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "[Camera]: close-up, quick push in\n[Style]: realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA, crisp biological realism with natural cellular tones\n[Lighting]: soft key light, high-contrast clinical clarity\n[Location]: a realistic 3D human face model in a neutral dark studio space\n[Action]: a face model builds a sneeze, nostrils flare, then the eyelids snap shut at the peak of the sneeze burst\n[Extra]: A warm male narrator says: \"Ever noticed your eyes close when you sneeze?\". Speed: 1.02. Ambient sound bed: biophilic forest breath, organic cellular pulse, distant water movement. Portrait 9:16. No on-screen text.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 2",
+    "clip_role": "Question",
+    "duration_seconds": 6,
+    "voice_text": "That eye shut is a fast brainstem reflex you cannot control.",
+    "sync_terms": [
+      "brainstem reflex",
+      "cannot control",
+      "eye shut"
+    ],
+    "visual_goal": "Viewer understands the eye closure comes from a fast automatic control center, not a choice.",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 1.02,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "[Camera]: medium close-up, dissolve into slow lateral drift\n[Style]: realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA, transparent anatomical cutaway with crisp internal detail\n[Lighting]: cool internal glow, high-contrast edge lighting\n[Location]: transparent 3D head cutaway revealing the brainstem and facial nerve pathways\n[Action]: a bright nerve pulse fires from the brainstem and races outward while the face model holds the sneeze reaction and the eyelids shut automatically\n[Extra]: A warm male narrator says: \"That eye shut is a fast brainstem reflex you cannot control.\". Speed: 1.02. Ambient sound bed: biophilic forest breath, organic cellular pulse, distant water movement. Portrait 9:16. No on-screen text.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 3",
+    "clip_role": "Mechanism",
+    "duration_seconds": 8,
+    "voice_text": "The brainstem signal twitch spreads, triggering eyes to shut in one muscle burst.",
+    "sync_terms": [
+      "brainstem signal",
+      "twitch spreads",
+      "eyes to shut",
+      "muscle burst"
+    ],
+    "visual_goal": "Viewer sees the signal spread through the face and the eyelid muscles contract together in one coordinated burst.",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 1.02,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "[Camera]: tight anatomical close-up, tracking shot across the face and upper chest\n[Style]: realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA, layered anatomical motion with natural cellular tones\n[Lighting]: focused internal highlights, clean high-contrast medical lighting\n[Location]: transparent 3D anatomical model showing brainstem, facial muscles, eyelid muscles, and chest muscles\n[Action]: a bright signal pulse spreads from the brainstem through nerve paths, facial muscles twitch, eyelid muscles contract, and the eyes shut in one synchronized muscle burst\n[Extra]: A warm male narrator says: \"The brainstem signal twitch spreads, triggering eyes to shut in one muscle burst.\". Speed: 1.02. Ambient sound bed: biophilic forest breath, organic cellular pulse, distant water movement. Portrait 9:16. No on-screen text.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 4",
+    "clip_role": "Contrast/Payoff",
+    "duration_seconds": 6,
+    "voice_text": "Closing your eyes protects them from the sneeze pressure wave automatically.",
+    "sync_terms": [
+      "protects them",
+      "sneeze pressure wave",
+      "automatically"
+    ],
+    "visual_goal": "Viewer understands the eye closure also acts like protection against the sneeze blast and pressure.",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 1.02,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "[Camera]: side profile macro shot, fast push in then brief freeze-like hold\n[Style]: realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA, dynamic fluid simulation with crisp biological realism\n[Lighting]: bright forward light, sharp high-contrast spray visibility\n[Location]: side view of a realistic 3D face model in a dark studio with a forward-moving sneeze plume\n[Action]: a sneeze pressure wave and spray cloud surge forward while the eyelids close just before the plume reaches the eyes, showing automatic protection\n[Extra]: A warm male narrator says: \"Closing your eyes protects them from the sneeze pressure wave automatically.\". Speed: 1.02. Ambient sound bed: biophilic forest breath, organic cellular pulse, distant water movement. Portrait 9:16. No on-screen text.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  },
+  {
+    "clip_label": "CLIP 5",
+    "clip_role": "Personal Takeaway",
+    "duration_seconds": 4,
+    "voice_text": "This automatic protection reflex package keeps you safe.",
+    "sync_terms": [
+      "automatic protection reflex package",
+      "keeps you safe"
+    ],
+    "visual_goal": "Viewer leaves with the simple takeaway that sneezing triggers a built-in protective reflex.",
+    "voice": {
+      "gender": "male",
+      "tone": "warm, conversational",
+      "speed": 1.02,
+      "pitch": "neutral-low",
+      "style": "Friendly science explainer — curious 22-year-old talking to a friend. Warm, direct, slightly informal. Simple words. Never cold. Never formal."
+    },
+    "background_audio": {
+      "generate_with_video": true,
+      "type": "biophilic ambient — soft forest drone with distant rustling underscore",
+      "volume": 0.09,
+      "sfx_layers": "biophilic forest breath, organic cellular pulse, distant water movement"
+    },
+    "visual": "[Camera]: medium close-up, gentle pullback\n[Style]: realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA, calm anatomical realism with smooth organic motion\n[Lighting]: soft balanced light, reassuring high-contrast clarity\n[Location]: a calm transparent 3D head-and-shoulders anatomical model after the sneeze\n[Action]: the nerve pulse fades, the face relaxes, and the eyelids reopen to show the body returning to rest after the automatic protection response\n[Extra]: A warm male narrator says: \"This automatic protection reflex package keeps you safe.\". Speed: 1.02. Ambient sound bed: biophilic forest breath, organic cellular pulse, distant water movement. Portrait 9:16. No on-screen text.",
+    "video_style": "realistic high-quality microscopic imaging or accurate 3D educational models of organisms, cells, and DNA",
+    "orientation": "portrait",
+    "aspect_ratio": "9:16"
+  }
+]
