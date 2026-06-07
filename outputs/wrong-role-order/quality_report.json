@@ -1,6 +1,0 @@
-{
-  "timestamp": "2026-06-06T15:53:10.671256Z",
-  "project_name": "wrong-role-order",
-  "status": "failed",
-  "error": "Clip 3: clip_role must be 'Mechanism', found 'Personal Takeaway'."
-}

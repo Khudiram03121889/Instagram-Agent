@@ -1,6 +1,0 @@
-{
-  "timestamp": "2026-06-06T15:53:10.662141Z",
-  "project_name": "timing-overflow",
-  "status": "failed",
-  "error": "Clip 1: estimated audio length 15.0s exceeds 8s limit."
-}

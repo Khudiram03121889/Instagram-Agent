@@ -1,6 +1,0 @@
-{
-  "timestamp": "2026-06-06T15:53:18.744613Z",
-  "project_name": "ungrounded-sync-terms",
-  "status": "failed",
-  "error": "Clip 5: visual/script overlap too low (found 0, required 2)."
-}

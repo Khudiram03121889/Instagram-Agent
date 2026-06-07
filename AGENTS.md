@@ -1,241 +1,223 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+This file provides guidance to Antigravity when working with code in this repository.
 
 ## Project Overview
 
-This is an **Instagram Science Reel Generator** that uses CrewAI agents to create short-form educational video content. The pipeline generates scripts, video prompts, and captions for 5-6 clip reels (40-50 seconds) that explain scientific concepts clearly and engagingly.
+This is an **Instagram Science Reel Generator** — an Antigravity-native pipeline that creates short-form educational video content (40-50 seconds, 5-6 clips) for Instagram Reels using Google Flow with **Omni Flash**.
 
-**Architecture**: Multi-stage AI agent pipeline with local validation gates to prevent expensive video generation errors.
+**The pipeline does NOT use CrewAI agents.** All orchestration is done directly by Antigravity.
 
-## Core Pipeline (Sequential Stages)
-
-The system runs through these stages in strict order:
-
-1. **Story Blueprint Designer** → Plans the reel structure (5 or 6 clips with defined roles)
-2. **Script Writer** → Writes narration following the blueprint
-3. **Prompt Engineer** → Converts script into JSON video generation prompts
-4. **Browser Operator** → Automates Google Flow to generate videos
-5. **Caption Writer** + **Archivist** → Creates Instagram caption and archives outputs
-
-**Critical**: Each stage has local validation that blocks progression if quality rules fail. This prevents wasting Flow credits on bad scripts.
-
-## Running the Pipeline
-
-### Development Commands
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run tests (ALWAYS run before making changes to validation logic)
-python -m pytest tests/test_pipeline_contract.py -v
-
-# Dry run (validates locally without launching Flow)
-python main.py --flow-dry-run
-
-# Live run (launches Google Flow after local validation passes)
-python main.py --flow-live
-
-# Quality mode (increases local repair attempts)
-python main.py --flow-live --quality
-```
-
-### Environment Configuration
-
-Key `.env` variables:
-- `OPENAI_API_KEY` (required)
-- `OPENAI_MODEL_SCRIPT` (default: gpt-5.4)
-- `OPENAI_MODEL_SUPPORT` (default: gpt-5.4-mini)
-- `MAX_FULL_SCRIPT_REWRITES` (default: 0, controls full script regeneration attempts)
-- `MAX_LOCAL_REPAIR_ATTEMPTS` (default: 2, controls targeted fix attempts)
-- `FLOW_DRY_RUN` (default: false)
-- `ALLOW_SIXTH_CLIP` (default: true)
-- `CHROME_USER_DATA_DIR` and `CHROME_PROFILE` (for browser auth)
-
-## Critical Architecture Patterns
-
-### Pipeline Contract System
-
-The codebase enforces a **strict contract** between stages to ensure quality:
-
-1. **Blueprint Validation** (`validate_story_blueprint`):
-   - Enforces role sequences: 5-clip or 6-clip modes only
-   - Required fields: `clip_number`, `clip_role`, `core_idea`, `bridge_from_previous`, `next_clip_seed`, `viewer_takeaway`, `visual_anchor_terms`
-   - See `pipeline_contract.py` for constants
-
-2. **Script Validation** (`validate_script_clips`):
-   - Word limits: 12-25 words per clip (STRICT, fails at 26+)
-   - Timing: Each clip must fit in 8 seconds @ 2 words/second
-   - Bridging: Clips 2+ must echo concepts from previous clip
-   - Banned words/phrases to avoid documentary-style language
-   - Full Script Division Rule: clips must exactly match Full Script when joined
-
-3. **Prompt JSON Validation** (in `browser_tool.py`):
-   - Voice continuity: ALL clips must have identical voice settings
-   - Audio continuity: ALL clips must have identical background_audio settings
-   - Sync term grounding: `sync_terms` must appear in both narration AND visual
-   - Speed minimum: voice.speed must be >= 1.0
-
-### Local Repair vs Full Rewrite Strategy
-
-When validation fails:
-
-1. **Deterministic Salvage** (`deterministic_salvage_failed_clips`):
-   - Uses blueprint's `core_idea` directly for failed clips
-   - Adds minimal bridging tokens from `next_clip_seed`
-   - Strips to word limits mechanically
-
-2. **LLM Repair** (if salvage fails):
-   - Targeted repair for specific failed clips only
-   - Uses `script_retry_guidance` with exact error messages
-
-3. **Full Rewrite** (last resort):
-   - Controlled by `MAX_FULL_SCRIPT_REWRITES`
-   - Regenerates entire script from blueprint
-
-## Key Validation Files
-
-- `pipeline_contract.py`: Constants for word limits, timing, clip counts
-- `tests/test_pipeline_contract.py`: Contract tests (run these before changing validators)
-- `main.py`: All validation functions and pipeline orchestration
-- `tools/browser_tool.py`: Pre-flight validation before Flow launch
-
-## Topic Classification System
-
-`tools/topic_classifier.py` classifies topics into 6 categories:
-- COSMOS, MIND, PHYSICS, BIOLOGY, CHEMISTRY, EARTH
-
-Each category has:
-- `video_style`: Visual instructions for that science domain
-- `audio_type`, `sfx_layers`: Category-specific soundscape
-- `LOCKED_VOICE_PROFILE`: Single narrator voice for entire project
-
-**Prefix override**: Topics can force category via `[COSMOS] topic text` syntax.
-
-## Working with Validation Logic
-
-### Before Modifying Validators
-
-1. **Run existing tests**: `python -m pytest tests/test_pipeline_contract.py -v`
-2. **Check contract constants**: `pipeline_contract.py` defines all limits
-3. **Understand the failure**: Read error messages in `validate_script_clips()` or `validate_story_blueprint()`
-
-### Adding New Validation Rules
-
-1. Add rule to appropriate validator in `main.py`
-2. Add test case to `tests/test_pipeline_contract.py`
-3. Update `pipeline_contract.py` if adding new constants
-4. Update `INSTRUCTIONS.md` if agents need to know the rule
-
-### Common Validation Patterns
-
-- **Word count**: `word_count(text)` uses regex tokenization
-- **Overlap checking**: `overlap_count(text, reference)` for bridge validation
-- **Banned content**: `has_phrase(text, BANNED_PHRASES)` for phrase detection
-- **Clip extraction**: `extract_failed_clips(error_text)` parses "Clip N" from errors
-
-## Agent Configuration
-
-Agents and tasks are defined in YAML:
-- `config/agents.yaml`: Role, goal, backstory for each agent
-- `config/tasks.yaml`: Task descriptions with placeholder injection
-
-**Dynamic injection**: `{topic}` and `{topic_profile}` are replaced at runtime.
-
-## Browser Automation
-
-`tools/browser_tool.py` controls Google Flow via Playwright:
-
-- **Login**: Uses `auth.json` (via `manual_cookies.py`) or Chrome profile cookies
-- **Settings verification**: Confirms Veo 3.1 Fast, Portrait, 2X variant
-- **Extend mode**: Clips 2+ use "Extend" to continue from previous frame
-- **Submission detection**: Monitors page state changes to confirm generation started
-
-**Pre-flight checks** block Flow launch if validation fails (saves credits).
-
-## Output Structure
+## Pipeline Architecture (4 Phases)
 
 ```
-outputs/
-  <topic-name>/
-    story_blueprint.json       # Approved blueprint
-    validated_script.txt       # Final script after validation
-    validated_prompts.json     # JSON sent to Flow
-    quality_report.json        # Validation results (if dry run)
-    <topic-name>.txt          # Archived script + prompts + caption
+Phase 1: Blueprint + Script → HUMAN REVIEW GATE
+Phase 2: Prompt Generation (after approval)
+Phase 3: Browser Automation (Google Flow via /browser)
+Phase 4: Captions + Archive
 ```
 
-## Special Files
+### Phase 1: Blueprint + Script Generation
 
-- `topics.txt`: Queue of topics to process (first line is auto-selected)
-- `completed_topics.txt`: Archive of finished topics
-- `INSTRUCTIONS.md`: Full agent instructions (copy of README.md.md content)
-- `pipeline_contract.py`: Single source of truth for validation constants
+1. **Read the first uncommented topic** from `topics.txt`
+2. **Classify the topic** using `tools/topic_classifier.py`:
+   - Import and call `classify_topic(topic)` to get the topic profile
+   - This returns: category, video_style, audio_type, sfx_layers, voice_profile, etc.
+   - Category override: topics prefixed with `[COSMOS]`, `[MIND]`, etc. force a category
+3. **Generate a story blueprint** (JSON) with these rules:
+   - 5 clips (default) or 6 clips if topic needs more room
+   - Required fields per clip: `clip_number`, `clip_role`, `core_idea`, `bridge_from_previous`, `next_clip_seed`, `viewer_takeaway`, `visual_anchor_terms`, `hook_pattern`, `retention_reason`, `visual_premise`, `camera_plan`, `duration_seconds`, `viewer_emotion`
+   - Role order for 5-clip: Hook → Question → Mechanism → Contrast/Payoff → Personal Takeaway
+   - Role order for 6-clip: Hook → Question → Mechanism Part 1 → Mechanism Part 2 → Contrast/Payoff → Personal Takeaway
+   - `duration_seconds` must be one of: 4, 6, 8, 10
+   - Total reel: 24-36 seconds
+   - `visual_anchor_terms`: 2-4 literal nouns/actions (no abstract metaphors)
+4. **Generate a script** following the blueprint:
+   - Write one continuous Full Script first, then divide into clips
+   - Word limits (STRICT): 4s = 10 words, 6s = 15 words, 8s = 20 words, 10s = 25 words
+   - Simple English a 14-year-old can follow
+   - Clips 2+ must bridge from the previous clip
+   - No jargon, no vague lines, no mystery-box phrasing
+5. **Validate the script** against `pipeline_contract.py` constants
+6. **STOP AND PRESENT TO USER** — Show:
+   - The blueprint (clip roles, durations, visual anchors)
+   - The full script with per-clip text
+   - Total duration and word counts per clip
+   - Ask: "Does this look good? Say 'proceed' to generate video prompts."
 
-## Common Development Tasks
+> **CRITICAL**: Do NOT proceed to Phase 2 without explicit user approval.
 
-### Add a new banned word/phrase
+### Phase 2: Prompt Generation
 
-1. Add to `BANNED_SCRIPT_WORDS` or `BANNED_SCRIPT_PHRASES` in `main.py`
-2. Write test in `test_pipeline_contract.py` (see `test_script_validation_rejects_poetic_wording`)
-3. Run tests to confirm
+After user approval, generate Omni Flash prompts for each clip:
 
-### Change word limits
+1. **Read `gemini-omni-prompt-generator.skill`** for formatting rules
+2. **For each clip**, create a prompt object with:
+   - `clip_label`: "CLIP 1", "CLIP 2", etc.
+   - `clip_role`: From blueprint
+   - `duration_seconds`: From blueprint (the /browser agent will select this duration tab)
+   - `voice_text`: Exact script text (never rewrite)
+   - `sync_terms`: Visual elements that must appear in both narration AND visual
+   - `visual_goal`: What the viewer should understand
+   - `voice`: Identical across ALL clips (from topic_classifier's LOCKED_VOICE_PROFILE)
+   - `background_audio`: Identical across ALL clips (from topic profile)
+   - `visual`: Formatted as:
+     ```
+     [Camera]: [SHOT TYPE], [CAMERA MOTION]
+     [Style]: [AESTHETIC], [TEXTURE/FEEL]
+     [Lighting]: [LIGHT SOURCE], [LIGHT QUALITY]
+     [Location]: [ENVIRONMENT DESCRIPTION]
+     [Action]: [CHARACTERS/OBJECTS + ACTIONS matching sync_terms]
+     [Extra]: A {voice_tone} {voice_gender} narrator says: "{voice_text}". Speed: 1.02. Ambient sound bed: {sfx_layers}. Portrait 9:16. No on-screen text.
+     ```
+   - `video_style`: From topic profile
+   - `orientation`: "portrait"
+   - `aspect_ratio`: "9:16"
+3. **Pre-flight validation**:
+   - All clips must have identical voice settings
+   - All clips must have identical background_audio settings
+   - sync_terms must appear in both voice_text AND visual
+   - voice.speed must be >= 1.0
+   - No on-screen text/subtitles/labels in visual prompts
+4. **Save outputs**:
+   - `outputs/<topic-name>/story_blueprint.json`
+   - `outputs/<topic-name>/validated_script.txt`
+   - `outputs/<topic-name>/validated_prompts.json`
 
-1. Update constants in `pipeline_contract.py` (e.g., `SCRIPT_MAX_WORDS`)
-2. Update agent instructions in `config/agents.yaml` if needed
-3. Run full test suite
+### Phase 3: Browser Automation (Google Flow)
 
-### Debug validation failures
+Use the **`/browser` agent** to generate videos on Google Flow.
 
-1. Check `outputs/<topic-name>/quality_report.json` for detailed errors
-2. Read the exact clip text that failed
-3. Look at the validator function raising the error
-4. Check if salvage was attempted (`deterministic_salvage_failed_clips`)
+#### Pre-requisite: Cookie Authentication
+- `auth.json` must exist (created by `python manual_cookies.py`)
+- If `auth.json` is missing or expired, ask the user to run `python manual_cookies.py`
 
-### Test a single validation function
+#### Google Flow Settings (EXACT — match these precisely)
+| Setting | Value | How to Select |
+|---------|-------|---------------|
+| **Mode** | Video | Click the "Video" tab (not Image) |
+| **Sub-mode** | Ingredients | Click the "Ingredients" tab (not Frames) |
+| **Orientation** | 9:16 | Click the "9:16" tab (not 16:9) |
+| **Variations** | x2 | Click the "x2" tab |
+| **Model** | Omni Flash | Click the model dropdown → select "Omni Flash" |
+| **Duration** | Per-clip | Switch the duration tab (4s/6s/8s/10s) BEFORE each clip |
 
-```python
-from main import validate_script_clips, extract_script_title_full_and_clips
+#### Generation Sequence
+1. Navigate to `https://labs.google/fx/tools/flow`
+2. Dismiss any changelog/welcome modals
+3. Set ALL settings above (Video, Ingredients, 9:16, x2, Omni Flash)
+4. **For Clip 1**:
+   - Select the correct duration tab (e.g., 4s for a Hook clip)
+   - Enter the visual prompt from `validated_prompts.json` (the `visual` field)
+   - Click Generate (or Ctrl+Enter)
+   - Wait for generation to complete (2-3 minutes)
+5. **For Clips 2+**:
+   - Switch the duration tab to match this clip's `duration_seconds`
+   - Click the "Extend" button to maintain visual continuity
+   - Enter the visual prompt
+   - Click Generate
+   - Wait for completion
+6. Rename the project to the topic name
 
-# Parse a script
-title, full_script, clips = extract_script_title_full_and_clips(script_text)
+### Phase 4: Captions + Archive
 
-# Run validation
-errors = validate_script_clips(clips, blueprint, full_script)
-print(errors)
+Generate two separate captions:
+
+#### YouTube Title (≤100 characters)
+- Short, curiosity-driven, no hashtags
+- Must include the core hook from the reel
+- Example: `"Why nothing you touch is actually solid 🔬"`
+
+#### Instagram Caption (unlimited, rich)
+- Opening hook line matching the reel's first clip
+- 2-3 lines of reflective commentary
+- Call-to-action (save/share)
+- 10-15 relevant hashtags
+- 2-4 emojis sprinkled naturally
+
+#### Archive
+- Save captions to `outputs/<topic-name>/captions.txt`
+- Combine script + prompts + captions into `outputs/<topic-name>/<topic-name>.txt`
+
+### Topic Completion
+
+After ALL phases complete successfully:
+1. **Remove the topic** from `topics.txt` (delete the first line)
+2. **Append the topic** to `completed_topics.txt`
+3. Confirm to the user: "✅ Topic '<name>' marked as complete."
+
+## Validation Rules (from pipeline_contract.py)
+
+### Word Limits (STRICT)
+- 4-second clip: max 10 words
+- 6-second clip: max 15 words
+- 8-second clip: max 20 words
+- 10-second clip: max 25 words
+- Words per second: 2.5
+
+### Blueprint Validation
+- Clip count: 5 or 6 only
+- Role sequence must follow the exact order
+- All required fields must be present
+- `duration_seconds` must be in {4, 6, 8, 10}
+- Total duration: 24-36 seconds
+- `visual_anchor_terms`: 2-4 literal nouns (no metaphors)
+
+### Script Validation
+- Each clip must not exceed its word limit
+- Clips 2+ must bridge from previous clip concepts
+- No banned words/phrases (documentary-style, vague filler)
+- Full Script = concatenation of all clip texts (division rule)
+
+### Prompt JSON Validation
+- Voice settings identical across all clips
+- Background audio identical across all clips
+- sync_terms must appear in both voice_text AND visual
+- voice.speed >= 1.0
+- No on-screen text in visual prompts
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | This file — master instructions for Antigravity |
+| `INSTRUCTIONS.md` | Detailed validation rules and examples |
+| `topics.txt` | Queue of topics to process |
+| `completed_topics.txt` | Completed topic archive |
+| `pipeline_contract.py` | Validation constants |
+| `tools/topic_classifier.py` | Topic → category classifier |
+| `manual_cookies.py` | Google cookie import for Flow auth |
+| `gemini-omni-prompt-generator.skill` | Omni prompt format rules |
+| `auth.json` | Playwright browser state (gitignored) |
+| `.env` | API keys (gitignored) |
+
+## Common Operations
+
+### Process Next Topic
+```
+1. Read AGENTS.md
+2. Read first topic from topics.txt
+3. Run Phase 1-4 in order
+4. Mark topic as done
 ```
 
-## Testing Philosophy
+### Fix Expired Cookies
+```
+Ask user to run: python manual_cookies.py
+Then paste fresh cookies from browser
+```
 
-- **Contract tests** ensure pipeline stages enforce quality gates
-- **Mock browser tests** verify automation logic without launching browsers
-- **Validation rejection tests** confirm bad scripts are blocked early
-- Run tests BEFORE pushing changes to validators
+### Force Category Override
+Add prefix to topic in topics.txt:
+```
+[COSMOS] Why atoms never touch
+[BIOLOGY] Why your fingers wrinkle in water
+```
 
-## Key Insights
+## Architecture Rationale
 
-1. **Validation happens in layers**: Blueprint → Script → Prompt JSON → Pre-flight (browser_tool)
-2. **Voice continuity is enforced**: All clips in a project share identical voice/audio settings
-3. **Bridging is semantic**: Clips must echo previous concepts using `overlap_count()` checks
-4. **Word limits are HARD**: 25 words = fail (no exceptions, prevents audio truncation)
-5. **Salvage before retry**: Try deterministic fixes before burning LLM calls
-6. **Dry run saves money**: Always test locally before launching Flow
-
-## Architecture Trade-offs
-
-**Why multi-stage with validation gates?**
-- Video generation is expensive (Flow credits)
-- Bad scripts produce unusable videos
-- Local validation costs only API tokens
-
-**Why deterministic salvage?**
-- LLM repairs can introduce new errors
-- Blueprint's `core_idea` is already approved
-- Mechanical fixes are predictable
-
-**Why strict word limits?**
-- 8-second audio window is fixed in video generation
-- Overlong narration gets truncated mid-sentence
-- Better to fail early than produce broken videos
+- **No CrewAI**: Direct Antigravity orchestration is more reliable than CrewAI agent chains
+- **Human review gate**: Prevents wasting expensive Flow credits on bad scripts
+- **Per-clip duration switching**: Different clips need different timing (hook = 4s, mechanism = 8s)
+- **Extend mode**: Maintains visual continuity between clips for seamless stitching
+- **Dual captions**: YouTube needs short titles, Instagram needs rich descriptions
